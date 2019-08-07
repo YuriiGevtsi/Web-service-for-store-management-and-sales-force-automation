@@ -22,11 +22,9 @@
         <div class="col-sm-5">
             <input type="password" name="password"
                    class="form-control ${(passwordError??)?string('is-invalid','')}" placeholder="Password"/>
-            <#if passwordError??>
-            <div class="invalid-feedback">
+            <div class="invalid-feedback" th:if="passwordError">
                 ${passwordError}
             </div>
-        </#if>
     </div>
     </div>
     <p class="mt-5 mb-3 text-muted">&copy; 2018-2019</p>
