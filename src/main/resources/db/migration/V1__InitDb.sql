@@ -5,25 +5,19 @@ create table action (
                         date_finish int4,
                         date_start date,
                         provider_product int8,
-
                         primary key (id_action)
 );
 
 create table barcode (
                          id_barcode int8 not null,
-
                          code varchar(2048),
-
                          provider_product int8,
-
                          primary key (id_barcode)
 );
 
 create table bucket (
                         id_bucket int8 not null,
-
                         count float8,
-
                         provider_product int8,
                         selling_operation int8,
                         primary key (id_bucket)
@@ -45,10 +39,8 @@ create table client_card (
 create table contract (
                           id_contract int8 not null,
                           date_start date,
-                          position
-                                      int8 not null,
-                          worker
-                                      int8 not null,
+                          position int8 not null,
+                          worker int8 not null,
                           primary key (id_contract)
 );
 
@@ -73,15 +65,13 @@ create table delivery_basket (
 create table delivery_connect_order (
                                         id_delivery int8 not null,
                                         id_order int8 not null,
-                                        primary key (id_delivery,
-                                                     id_order)
+                                        primary key (id_delivery, id_order)
 );
 
 create table financial_operations (
                                       id_financial_operations int8 not null,
                                       comment varchar(2048),
-                                      summ numeric(19,
-                                                                  2),
+                                      summ numeric(19, 2),
                                       time date,
                                       type varchar(2048),
                                       shift int4,
@@ -95,8 +85,7 @@ create table manufacturer (
 
 create table measuring_rate_connect_provider_product (
                                                          id_measuring_rate_connect_provider_product int8 not null,
-                                                         coefficient numeric(19,
-                                                                                                        2),
+                                                         coefficient numeric(19, 2),
                                                          name varchar(2048),
                                                          provider_product int8,
                                                          measuring_rate int8,
