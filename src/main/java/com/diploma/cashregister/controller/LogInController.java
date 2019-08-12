@@ -9,6 +9,6 @@ import java.util.Map;
 public class LogInController {
 
     @GetMapping("/")
-    public String greeting(Map<String, Object> model) {return "login";}
+    public String greeting(Map<String, Object> model) {return "main_menu";}
 
 }

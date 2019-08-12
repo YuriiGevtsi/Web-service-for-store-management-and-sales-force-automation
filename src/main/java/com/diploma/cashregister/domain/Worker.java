@@ -17,7 +17,7 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(of = "idWorker")
 @NoArgsConstructor
-public class Worker implements UserDetails {
+public class Worker{
     @Id
     @Column(name = "id_worker")
     private long idWorker;
@@ -44,40 +44,4 @@ public class Worker implements UserDetails {
     @Getter
     private Set<Role> roles;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;//getRoles();
-    }
-
-    @Override
-    public String getPassword() {
-        return null;
-    }
-
-    public boolean isAdmin(){return roles.contains(Role.ADMIN);}
-
-    @Override
-    public String getUsername() {
-        return name;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }
