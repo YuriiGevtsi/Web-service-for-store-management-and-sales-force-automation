@@ -2,7 +2,7 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head th:replace="temp :: fragment" >
+<head th:replace="temps/temp :: fragment" >
 
 </head>
 
@@ -11,7 +11,7 @@
     <div class="form-group row justify-content-center" >
         <label for="login" class="col-sm-1 col-form-label"> Login </label>
         <div class="col-sm-2">
-            <input type="text" id="login" name="username" class="form-control ${(usernameError??)?string('is-invalid','')}"
+            <input type="text" id="login" name="username" class="form-control"
                    placeholder="login" />
             <div class="invalid-feedback" th:if="usernameError">
                 ${usernameError}

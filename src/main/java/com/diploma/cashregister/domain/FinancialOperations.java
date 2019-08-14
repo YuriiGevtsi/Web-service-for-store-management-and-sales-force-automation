@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -18,10 +19,11 @@ import java.util.Objects;
 public class FinancialOperations {
     @Id
     @Column(name = "id_financial_operations")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long idFinancialOperations;
 
     @Column(name = "time")
-    private LocalDate time;
+    private LocalDateTime time;
 
     @Column(name = "type")
     private String type;
@@ -30,7 +32,7 @@ public class FinancialOperations {
     private String comment;
 
     @Column(name = "summ")
-    private BigInteger summ;
+    private float summ;
 
     @ManyToOne
     @JoinColumn(name = "shift", referencedColumnName = "id_shift")

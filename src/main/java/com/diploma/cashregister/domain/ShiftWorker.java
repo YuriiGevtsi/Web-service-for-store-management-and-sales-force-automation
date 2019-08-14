@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -20,10 +21,10 @@ public class ShiftWorker {
     private int idShiftWorker;
 
     @Column(name = "login_time")
-    private LocalDate loginTime;
+    private LocalDateTime loginTime;
 
     @Column(name = "logout_time")
-    private LocalDate logoutTime;
+    private LocalDateTime logoutTime;
 
     @ManyToOne
     @JoinColumn(name = "worker", referencedColumnName = "id_worker")

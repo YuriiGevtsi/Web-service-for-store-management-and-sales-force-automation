@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -20,7 +21,7 @@ public class SellingOperation {
     @Column(name = "id_selling")
     private long idSelling;
 
-    private LocalDate date;
+    private LocalDateTime date;
     private String status;
     private double summ;
 

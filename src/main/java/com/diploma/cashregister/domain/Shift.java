@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -21,10 +22,10 @@ public class Shift {
     private int idShift;
 
     @Column(name = "beginning_time")
-    private LocalDate beginningTime;
+    private LocalDateTime beginningTime;
 
     @Column(name = "ending_time")
-    private LocalDate endingTime;
+    private LocalDateTime endingTime;
 
     @OneToMany(mappedBy = "shift")
     private Collection<SellingOperation> sellingOperations;

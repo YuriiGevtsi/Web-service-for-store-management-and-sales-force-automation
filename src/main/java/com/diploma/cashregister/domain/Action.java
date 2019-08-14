@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -20,10 +21,10 @@ public class Action {
     private long idAction;
 
     @Column(name = "date_start")
-    private LocalDate dateStart;
+    private LocalDateTime dateStart;
 
     @Column(name = "date_finish")
-    private Integer dateFinish;
+    private LocalDateTime dateFinish;
 
     @ManyToOne
     @JoinColumn(name = "provider_product", referencedColumnName = "id_provider_product")

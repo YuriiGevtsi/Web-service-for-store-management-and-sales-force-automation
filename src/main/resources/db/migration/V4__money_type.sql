@@ -1,0 +1,1 @@
+alter table financial_operations alter column summ type float4 using summ::float4;
