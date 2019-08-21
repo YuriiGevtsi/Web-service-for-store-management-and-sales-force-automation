@@ -19,6 +19,7 @@ import java.util.Objects;
 public class SellingOperation {
     @Id
     @Column(name = "id_selling")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long idSelling;
 
     private LocalDateTime date;

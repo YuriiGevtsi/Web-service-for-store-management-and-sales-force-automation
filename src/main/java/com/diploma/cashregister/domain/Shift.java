@@ -19,6 +19,7 @@ import java.util.Objects;
 public class Shift {
     @Id
     @Column(name = "id_shift")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int idShift;
 
     @Column(name = "beginning_time")

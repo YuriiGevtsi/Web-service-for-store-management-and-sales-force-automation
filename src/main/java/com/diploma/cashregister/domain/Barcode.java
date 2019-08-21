@@ -15,6 +15,7 @@ import java.util.Objects;
 public class Barcode {
     @Id
     @Column(name = "id_barcode")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long idBarcode;
 
     @Column(name = "code")

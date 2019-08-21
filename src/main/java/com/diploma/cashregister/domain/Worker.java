@@ -20,6 +20,7 @@ import java.util.Set;
 public class Worker{
     @Id
     @Column(name = "id_worker")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long idWorker;
 
     private String surname;

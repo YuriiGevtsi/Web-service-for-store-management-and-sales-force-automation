@@ -18,6 +18,7 @@ import java.util.Objects;
 public class Action {
     @Id
     @Column(name = "idAction")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long idAction;
 
     @Column(name = "date_start")

@@ -3,6 +3,7 @@ package com.diploma.cashregister.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -11,11 +12,13 @@ import java.util.Objects;
 @Entity
 @Table(name = "order_bucket")
 @Data
+@ToString(of = {"idOrderBucket","amount","pricePerUnit","measuringRate","currency"})
 @EqualsAndHashCode(of = "idOrderBucket")
 @NoArgsConstructor
 public class OrderBucket {
     @Id
     @Column(name = "id_order_bucket")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long idOrderBucket;
 
     @Column(name = "amount")

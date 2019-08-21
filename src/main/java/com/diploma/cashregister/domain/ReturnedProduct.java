@@ -18,6 +18,7 @@ import java.util.Objects;
 public class ReturnedProduct {
     @Id
     @Column(name = "id_returned_product")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long idReturnedProduct;
     private LocalDateTime date;
 

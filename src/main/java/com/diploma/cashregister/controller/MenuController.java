@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.math.BigInteger;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 @Controller
 public class MenuController {
@@ -64,7 +61,7 @@ public class MenuController {
         financialOperations.setType("Выплата");
 
         financialOperationRepo.save(financialOperations);
-        return "redirect:/";
+        return "ok";
     }
 
     @GetMapping("cash_out")

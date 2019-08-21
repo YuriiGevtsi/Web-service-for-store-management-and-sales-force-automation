@@ -18,6 +18,7 @@ import java.util.Objects;
 public class ShiftWorker {
     @Id
     @Column(name = "id_shift_worker")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int idShiftWorker;
 
     @Column(name = "login_time")

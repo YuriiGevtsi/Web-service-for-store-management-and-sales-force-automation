@@ -3,6 +3,7 @@ package com.diploma.cashregister.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -12,21 +13,23 @@ import java.util.Objects;
 @Table(name = "delivery_basket")
 @Data
 @EqualsAndHashCode(of = "idDeliveryBasket")
+@ToString(of = {"idDeliveryBasket","amount","price","measuringRate"})
 @NoArgsConstructor
 public class DeliveryBasket {
-    //nahera nada id?
+
     @Id
     @Column(name = "id_delivery_basket")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long idDeliveryBasket;
 
     @Column(name = "price")
-    private long price;
+    private double price;
 
     @Column(name = "measuring_rate")
     private String measuringRate;
 
     @Column(name = "amount")
-    private long amount;
+    private double amount;
 
     @ManyToOne
     @JoinColumn(name = "delivery", referencedColumnName = "id_delivery")

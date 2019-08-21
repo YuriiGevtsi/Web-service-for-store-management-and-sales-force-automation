@@ -16,6 +16,7 @@ import java.util.Objects;
 public class ClientCard {
     @Id
     @Column(name = "id_card")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private String idCard;
 
     @ManyToOne

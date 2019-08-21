@@ -16,6 +16,7 @@ import java.util.Objects;
 public class Position {
     @Id
     @Column(name = "id_position")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long idPosition;
     private String name;
     private String description;

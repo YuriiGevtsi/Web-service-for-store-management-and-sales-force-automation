@@ -16,6 +16,7 @@ import java.util.Objects;
 public class Provider {
     @Id
     @Column(name = "id_provider")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long idProvider;
 
     private String name;

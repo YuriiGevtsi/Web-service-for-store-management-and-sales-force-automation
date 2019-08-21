@@ -17,6 +17,7 @@ import java.util.Objects;
 public class MeasuringRateConnectProviderProduct {
     @Id
     @Column(name = "id_measuring_rate_connect_provider_product")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long idMeasuringRateConnectProviderProduct;
 
     @Column(name = "coefficient")

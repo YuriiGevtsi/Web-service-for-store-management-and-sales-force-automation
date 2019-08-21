@@ -18,6 +18,7 @@ import java.util.Objects;
 public class WorkerPassword  implements UserDetails{
     @Id
     @Column(name = "id_password")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int idPassword;
 
     private String password;

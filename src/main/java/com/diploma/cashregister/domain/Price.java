@@ -17,6 +17,7 @@ import java.util.Objects;
 public class Price {
     @Id
     @Column(name = "id_price")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long idPrice;
 
     private double price;

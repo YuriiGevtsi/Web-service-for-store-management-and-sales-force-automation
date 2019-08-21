@@ -16,6 +16,7 @@ import java.util.Objects;
 public class ProviderProductMeasuringRate {
     @Id
     @Column(name = "id_provider_product_measuring_rate")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long idProviderProductMeasuringRate;
 
     private String name;

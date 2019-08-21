@@ -15,6 +15,7 @@ import java.util.Collection;
 public class ProviderProduct {
     @Id
     @Column(name = "id_provider_product")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long idProviderProduct;
 
     private String name;
