@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="temps/temp :: fragment">
+</head>
+
+<body>
+<div class="container ">
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-3 text-center">
+            <a href="/selling" class="btn btn-primary btn-lg w-100 p-3">Продажа</a>
+        </div>
+        <div class="col col-lg-3 text-center">
+            <a href="" class="btn btn-primary btn-lg w-100 p-3">Возврат товара</a>
+        </div>
+    </div>
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-3 text-center">
+            <a href="/cash_in" class="btn btn-primary btn-lg w-100 p-3" type="submit">Вплата</a>
+        </div>
+        <div class="col col-lg-3 text-center">
+            <a onclick="$('#deliveryModal').modal('show');" class="btn btn-primary btn-lg w-100 p-3" type="submit">Принять доставку</a>
+        </div>
+    </div>
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-3 text-center">
+            <a href="/cash_out" class="btn btn-primary btn-lg w-100 p-3" type="submit">Выплата</a>
+        </div>
+        <div class="col col-lg-3 text-center">
+            <a class="btn btn-primary btn-lg w-100 p-3" type="submit">Списать товар</a>
+        </div>
+    </div>
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-3 text-center">
+            <a class="btn btn-primary btn-lg w-100 p-3" type="submit">Закончить смену</a>
+        </div>
+        <div class="col col-lg-3 text-center">
+            <a class="btn btn-primary btn-lg w-100 p-3" type="submit">Напечать отчёт</a>
+        </div>
+    </div>
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-3 text-center">
+            <a class="btn btn-primary btn-lg w-100 p-3" type="submit">Мой магазин</a>
+        </div>
+        <div class="col col-lg-3 text-center">
+            <a class="btn btn-primary btn-lg w-100 p-3 " type="submit" data-toggle="modal" data-target="#startShift">Выход</a>
+        </div>
+    </div>
+</div>
+
+    <!-- Modal -->
+    <div class="modal fade " id="shiftModal" role="dialog"  data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body">
+                    <p>Начать смену?</p>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+                    <button type="button" class="btn btn-primary" onclick = "$('.modal').modal('hide')">Да</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+<div th:replace="temps/deliveryModal :: deliveryNumber">
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+    $(window).on('load',function(){
+
+        $('#shiftModal').modal('show');
+    });
+</script>
+
+</body>
+</html>

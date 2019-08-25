@@ -9,5 +9,6 @@ public class CashregisterApplication {
     public static void main(String[] args) {
         SpringApplication.run(CashregisterApplication.class, args);
     }
+    //test
 
 }

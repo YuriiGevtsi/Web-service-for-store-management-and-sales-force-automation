@@ -17,6 +17,7 @@ import java.util.Objects;
 public class WrittenOffProduct {
     @Id
     @Column(name = "id_written_off_product")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int idWrittenOffProduct;
 
     private LocalDate date;

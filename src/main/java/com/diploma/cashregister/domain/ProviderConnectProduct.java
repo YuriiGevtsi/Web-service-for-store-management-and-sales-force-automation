@@ -15,6 +15,7 @@ import java.util.Objects;
 public class ProviderConnectProduct {
     @Id
     @Column(name = "id_provider_connect_product")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long idProviderConnectProduct;
 
     @ManyToOne

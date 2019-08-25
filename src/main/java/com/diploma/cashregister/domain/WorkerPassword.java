@@ -3,8 +3,11 @@ package com.diploma.cashregister.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -12,15 +15,45 @@ import java.util.Objects;
 @Data
 @EqualsAndHashCode(of = "idPassword")
 @NoArgsConstructor
-public class WorkerPassword {
+public class WorkerPassword  implements UserDetails{
     @Id
     @Column(name = "id_password")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int idPassword;
 
     private String password;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "worker", referencedColumnName = "id_worker")
     private Worker worker;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return worker.getRoles();
+    }
+
+    @Override
+    public String getUsername() {
+        return String.valueOf(idPassword);
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

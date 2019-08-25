@@ -15,6 +15,7 @@ import java.util.Objects;
 public class Bucket {
     @Id
     @Column(name = "id_bucket")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long idBucket;
 
     @Column(name = "count")

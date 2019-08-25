@@ -5,11 +5,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -20,6 +17,7 @@ import java.util.Set;
 public class Order {
     @Id
     @Column(name = "id_order")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long idOrder;
 
     @Column(name = "date_of_wishing_delivery")
@@ -56,4 +54,7 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private Collection<OrderBucket> orderBuckets;
 
+    public void setDeliveries(Delivery delivery) {
+        this.deliveries.add(delivery);
+    }
 }

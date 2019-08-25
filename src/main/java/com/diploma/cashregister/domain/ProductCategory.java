@@ -16,6 +16,7 @@ import java.util.Objects;
 public class ProductCategory {
     @Id
     @Column(name = "id_product_category")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int idProductCategory;
 
     private String name;

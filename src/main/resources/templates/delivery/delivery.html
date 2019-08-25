@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="temps/temp :: fragment">
+
+</head>
+<body>
+<div class="container-fluid h-100">
+    <form   class="h-100">
+        <div class="container">
+            <div class="row justify-content-between">
+                <a href="/" type="button" class="btn btn-danger mt-2"><i class="fas fa-times fa-2x" ></i></a>
+                <a href="/" type="button" class="btn btn-warning mt-2">Отложить</a>
+            </div>
+        </div>
+        <div class="container">
+            <div class="form-group row justify-content-center">
+                <label class="col-sm-2 w-25 col-form-label">Номер</label>
+                <div class="col-sm-2 w-50">
+                    <input class="form-control-plaintext" type="text" id="idOrder" th:value="${order.idOrder}" readonly>
+                </div>
+            </div>
+
+        </div>
+        <div class="container">
+            <div class="form-group row justify-content-center">
+                <label for="provider" class="col-sm-2 w-25 col-form-label">Поставщик</label>
+                <div class="col-sm-2 w-50">
+                    <select class="custom-select" id="provider">
+                        <option selected th:text="${order.provider.name}"></option>
+
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <button type="button" class="btn btn-success mb-2 mr-5 "><span class="fas fa-plus"></span></button>
+                <button type="button" class="btn btn-danger mb-2 ml-5"><span class="fas fa-minus"></span></button>
+                <button type="button" class="btn btn-info  offset-md-3 mb-2" >Добавить коментарий</button>
+                <button type="button" class="btn btn-info  offset-md-2 mb-2">Дополнительно</button>
+            </div>
+        </div>
+        <div class="h-50">
+            <table class="table table-hover " id="prods">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Товар</th>
+                    <th scope="col">Количество</th>
+                    <th scope="col">Еденица из.</th>
+                    <th scope="col">Цена/шт.</th>
+                    <th scope="col">Валюта</th>
+                    <th scope="col">В нем НДС</th>
+                    <th scope="col">Сумма</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item,iter: ${bucket}">
+                    <th scope="row" th:id="${item.idOrderBucket}+idOrder" th:text="${iter.index+1}"></th>
+                    <td> <a th:id="${item.idOrderBucket}+name+${item.idOrderBucket}" th:text="${item.providerProduct.name}" /></td>
+                    <td> <input class="form-control-plaintext" name="amount"
+                                th:id="${item.idOrderBucket}+amount"
+                                onkeyup="copyValueTo(this)"
+                                th:value="${item.amount}" type="number"> </td>
+                    <td> <a th:id="${item.idOrderBucket}+measuring" th:text="${item.measuringRate}" /></td>
+                    <td> <a th:id="${item.idOrderBucket}+price" th:text="${item.pricePerUnit}" /></td>
+                    <td><a th:id="${item.idOrderBucket}+currency" th:text="${item.currency}" /></td>
+                    <td><a th:id="${item.idOrderBucket}+vat" th:text="${item.amount}*${item.pricePerUnit}*${item.providerProduct.vat}*0.01" /></td>
+                    <td> <a th:id="${item.idOrderBucket}+summ" th:text="${item.amount}*${item.pricePerUnit}" /> </td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="container  mt-5 ">
+            <div class="row">
+                <div class="col-10">
+                    <div class="row ">
+                        <div class="col-sm col-lg-3 ">
+                            <h3><strong>Итого</strong></h3>
+                        </div>
+                        <div class="col-sm col-lg-3 mt-2">
+                            <p class="h6">Заплачено авансом : </p>
+                        </div>
+                        <div class="col-sm col-lg-1 mt-2" th:text="${pre}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm col-lg-2">
+                            <p class="h6">Сумма :</p>
+                        </div>
+                        <div class="col-sm col-lg-1 " id="summary">
+
+                        </div>
+                        <div class="col-sm col-lg-3">
+                            <p class="h6">Во время доставки :</p>
+                        </div>
+                        <div class="col-sm col-lg-1 " th:text="${post}" id="post">
+
+                        </div>
+                        <div class="col-md-auto">
+                            <p class="h6">К оплате :</p>
+                        </div>
+                        <div class="col-sm col-lg-1 " id="payment">
+
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-2">
+                            <p class="h6"> В нем НДС :</p>
+                        </div>
+                        <div class="col-1" id="vat" >
+
+                        </div>
+                        <div class="col-sm col-lg-3">
+                            <p class="h6">В кредит :</p>
+                        </div>
+                        <div class="col-sm col-lg-1" th:text="${credit}">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="btn btn-success btn-lg mb-3  w-100 h-100" id="submit">Submit</button>
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+</div>
+
+</body>
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+</style>
+<script >
+
+
+    function copyValueTo(fromElem) {
+        let id = fromElem.id.split('a');
+        let  vat = parseFloat(document.getElementById(id[0]+'vat').text)/0.01/parseFloat(document.getElementById(id[0]+'summ').text);
+
+        let summ = parseFloat(fromElem.value) * parseFloat(document.getElementById(id[0]+'price').text);
+
+        document.getElementById(id[0]+'summ').text = summ ;
+
+        document.getElementById(id[0]+'vat').text = (summ * vat * 0.01).toFixed(2)  ;
+
+        document.getElementById('summary').innerText = countSumm('summ') ;
+
+        document.getElementById('vat').innerText = countSumm('vat') ;
+
+        document.getElementById('payment').innerText = countPayment().toString() ;
+
+    }
+
+    function countSumm(str) {
+        let obj = 0;
+        if (str==='summ') {
+            $("a[id*='summ']").each(function () {
+                obj += parseFloat(this.text);
+            });
+        }else {
+            $("a[id*='vat']").each(function () {
+                obj += parseFloat(this.text);
+            });
+        }
+
+        return obj;
+    }
+    function countPayment() {
+        let res = parseFloat($('#summary').text()) - parseFloat($('#post').text());
+        return res;
+    }
+
+    function getTableData() {
+        let obj = Object.create(null);
+
+        $('#prods > tbody  > tr').each(function() {
+            let param = $(this).find('input');
+            obj[param.attr('id').split('a')[0]] = param.val();
+        });
+        obj['order'] = $('#idOrder').val();
+        return JSON.stringify(obj);
+    }
+
+    $(window).on('load',function(){
+        document.getElementById('vat').innerText = countSumm('vat') ;
+        document.getElementById('summary').innerText = countSumm('summ') ;
+        document.getElementById('payment').innerText = countPayment().toString() ;
+    });
+
+
+    $("#submit").click(function(){
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+
+        $.ajax({
+            type: 'POST',
+            contentType : "application/json",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token)
+            },
+            url: 'http://localhost:8080/delivery_number',
+            data: getTableData(),
+            dataType: "json",
+            timeout: 1000000,
+            success : function(data) {
+                console.log("SUCCESS: ", data);
+                window.location = "http://localhost:8080/"
+            },
+            error : function(e) {
+                console.log("ERROR: ", e);
+            },
+            done : function(e) {
+                console.log("DONE");
+            }
+        });
+    });
+
+
+
+</script>
+
+</html>

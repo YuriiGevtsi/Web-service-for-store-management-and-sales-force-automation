@@ -15,6 +15,7 @@ import java.util.Objects;
 public class ProductConnectCategory {
     @Id
     @Column(name = "id_product_category")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int idProductCategory;
 
     @ManyToOne

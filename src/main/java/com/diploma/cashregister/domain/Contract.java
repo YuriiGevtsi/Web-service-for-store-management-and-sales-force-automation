@@ -17,6 +17,7 @@ import java.util.Objects;
 public class Contract {
     @Id
     @Column(name = "id_contract")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long idContract;
 
     @Column(name = "date_start")

@@ -17,6 +17,7 @@ import java.util.Set;
 public class Client {
     @Id
     @Column(name = "id_client")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long idClient;
 
     @Column(name = "name")

@@ -15,6 +15,7 @@ import java.util.Objects;
 public class OrderPayments {
     @Id
     @Column(name = "id_order_payments")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long idOrderPayments;
 
     @Column(name = "type")

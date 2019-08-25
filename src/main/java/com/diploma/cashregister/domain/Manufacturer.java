@@ -16,6 +16,7 @@ import java.util.Objects;
 public class Manufacturer {
     @Id
     @Column(name = "id_manufacturer")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long idManufacturer;
 
     @Column(name = "name")

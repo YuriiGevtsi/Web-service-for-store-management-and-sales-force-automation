@@ -17,6 +17,7 @@ import java.util.Objects;
 public class ProviderPrice {
     @Id
     @Column(name = "id_provider_price")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long idProviderPrice;
 
     private LocalDate date;

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -17,8 +18,9 @@ import java.util.Objects;
 public class ReturnedProduct {
     @Id
     @Column(name = "id_returned_product")
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long idReturnedProduct;
-    private LocalDate date;
+    private LocalDateTime date;
 
     private String reason;
     private double amount;
