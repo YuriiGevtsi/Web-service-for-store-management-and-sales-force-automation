@@ -139,8 +139,6 @@
     }
 </style>
 <script >
-
-
     function copyValueTo(fromElem) {
         let id = fromElem.id.split('a');
         let  vat = parseFloat(document.getElementById(id[0]+'vat').text)/0.01/parseFloat(document.getElementById(id[0]+'summ').text);
@@ -197,8 +195,8 @@
 
 
     $("#submit").click(function(){
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
 
         $.ajax({
             type: 'POST',
@@ -222,9 +220,6 @@
             }
         });
     });
-
-
-
 </script>
 
 </html>

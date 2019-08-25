@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="temps/temp :: fragment">
-</head>
+<head th:replace="temps/temp :: fragment"></head>
 
 <body>
 <div class="container ">
@@ -10,7 +9,7 @@
             <a href="/selling" class="btn btn-primary btn-lg w-100 p-3">Продажа</a>
         </div>
         <div class="col col-lg-3 text-center">
-            <a href="" class="btn btn-primary btn-lg w-100 p-3">Возврат товара</a>
+            <a onclick="$('#returnProdModal').modal('show');" class="btn btn-primary btn-lg w-100 p-3">Возврат товара</a>
         </div>
     </div>
     <div class="row justify-content-md-center">
@@ -31,7 +30,7 @@
     </div>
     <div class="row justify-content-md-center">
         <div class="col col-lg-3 text-center">
-            <a class="btn btn-primary btn-lg w-100 p-3" type="submit">Закончить смену</a>
+            <a onclick="$('#finish').modal('show');" class="btn btn-primary btn-lg w-100 p-3" type="submit">Закончить смену</a>
         </div>
         <div class="col col-lg-3 text-center">
             <a class="btn btn-primary btn-lg w-100 p-3" type="submit">Напечать отчёт</a>
@@ -47,40 +46,124 @@
     </div>
 </div>
 
-    <!-- Modal -->
-    <div class="modal fade " id="shiftModal" role="dialog"  data-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
+<!-- Modal -->
+<div class="modal fade " id="shiftModal" role="dialog"  data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
 
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">×</button>
-                </div>
-                <div class="modal-body">
-                    <p>Начать смену?</p>
-                </div>
-                <div class="modal-footer">
-
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
-                    <button type="button" class="btn btn-primary" onclick = "$('.modal').modal('hide')">Да</button>
-                </div>
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
             </div>
-
+            <div class="modal-body">
+                <p>Начать смену?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+                <button type="button" class="btn btn-primary" onclick = "$('.modal').modal('hide')">Да</button>
+            </div>
         </div>
+
     </div>
-<div th:replace="temps/deliveryModal :: deliveryNumber">
 </div>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<!-- Modal -->
+<div class="modal fade " id="returnProdModal" role="dialog"  data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body">
+                <form method="get" action="/return" class="form-inline">
+                    <div class="form-group mb-2">
+                        <label >Номер чека </label>
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                        <input type="number" class="form-control" name="number" placeholder="#">
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-2">Ok</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade " id="finish" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body d-flex justify-content-center">
+                <label class="h4 mt-2"> Закончить смену? </label>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-primary w-25 ml-5" onclick = "$('.modal').modal('hide'); $('#report').modal('show')">Да</button>
+                <button type="button" class="btn btn-secondary w-25 mr-5" data-dismiss="modal">Нет</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade " id="report" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body d-flex justify-content-center">
+                <label class="h4 mt-2"> Напечатать отчет? </label>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-primary w-25 ml-5" onclick="finishWork(true)">Да</button>
+                <button type="button" class="btn btn-secondary w-25 mr-5" onclick="finishWork(false)">Нет</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="temps/deliveryModal :: deliveryNumber">
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-<script type="text/javascript">
-    $(window).on('load',function(){
-
-        $('#shiftModal').modal('show');
-    });
-</script>
-
 </body>
+
+<script type="text/javascript" th:inline="javascript">
+    $(window).on('load',function(){
+        $('#shiftModal').modal('show');
+        if ([[${receipt}]] != null) alert([[${receipt}]]);
+    });
+
+    function finishWork(report) {
+
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+
+        $.ajax({
+            type: 'GET',
+            contentType : "application/json",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token)
+            },
+            url: 'http://localhost:8080/finish',
+            data: jQuery.param({ param: report}) ,
+            success : function(data) {
+                console.log("SUCCESS: ", data);
+                $.ajax({
+                    type: 'POST',
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader(header, token)
+                    },
+                    url: 'http://localhost:8080/logout',
+                    success : function() {
+                        window.location = "http://localhost:8080/"
+                    }
+                });
+            }
+        });
+    };
+</script>
 </html>
