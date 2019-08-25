@@ -3,8 +3,10 @@ package com.diploma.cashregister.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Collection;
 
 @Entity
@@ -12,6 +14,7 @@ import java.util.Collection;
 @Data
 @EqualsAndHashCode(of = "idProviderProduct")
 @NoArgsConstructor
+@ToString(of = {"idProviderProduct","name","vat","photo","description"})
 public class ProviderProduct {
     @Id
     @Column(name = "id_provider_product")
@@ -66,5 +69,11 @@ public class ProviderProduct {
 
     @OneToMany(mappedBy = "providerProduct")
     private Collection<OrderBucket> orderBuckets;
+
+    public Price getCurrentPrice(){
+        return prices.stream().filter(el->LocalDate.now().isAfter(el.getDateStart()) && LocalDate.now().isBefore(el.getDateFinish()))
+                .findAny()
+                .orElse(null);
+    }
 
 }

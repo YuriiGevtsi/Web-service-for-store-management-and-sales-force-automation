@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="temps/temp :: fragment"></head>
+
+<body>
+<div class="container-fluid h-100">
+    <div class="container">
+        <div class="row justify-content-between">
+            <a href="/" type="button" class="btn btn-danger mt-2"><i class="fas fa-times fa-2x" ></i></a>
+            <label class="col-auto h2 mt-2 ml-5 " th:id="receipt" th:data="${number}" th:text="|Возврат товара, чек № ${number}|"></label>
+            <div class="col-auto mt-2">
+                <label class="sr-only" for="inlineFormInputGroup">Название товара</label>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><i class="fas fa-search"></i></div>
+                    </div>
+                    <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Название товара">
+                </div>
+            </div>
+        </div>
+        <div class="h-50 mt-5">
+            <table class="table table-bordered" id="prods">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Название</th>
+                    <th scope="col">Количество</th>
+                    <th scope="col">Цена</th>
+                    <th scope="col">Сумма</th>
+                    <th scope="col">Количество возврата</th>
+                    <th scope="col">Причина(опционально)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr  th:each="product,iter: ${products}">
+                    <th scope="row" th:id="${product.idBucket}" th:text="${iter.index+1}"></th>
+                    <td > <a th:id="${product.idBucket}+name" th:text="${product.providerProduct.name}" /></td>
+                    <td> <a th:id="${product.idBucket}+amount" th:text="${product.count}" /></td>
+                    <td> <a th:id="${product.idBucket}+price"  th:text="${product.providerProduct.getCurrentPrice().getPrice()}" /></td>
+                    <td><a th:id="${product.idBucket}+summ" th:text="${product.getCount() * product.providerProduct.getCurrentPrice().getPrice()}" /></td>
+                    <td> <input class="form-control-plaintext bg-light rounded" name="amount"
+                                th:id="${product.idBucket}+return"
+                                type="number" th:max="${product.getCount()}" min="0" >
+                    </td>
+                    <td> <textarea  class="form-control-plaintext bg-light rounded" th:id="${product.idBucket}+comment" placeholder="..."></textarea></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="d-flex flex-row-reverse">
+                <div class="col-2 mr-2">
+                    <button type="button" class="btn btn-success btn-lg mb-3 " id="submit">Вернуть товары</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+
+
+    function getTableData() {
+        let obj = Object.create(null);
+
+        $('#prods > tbody  > tr').each(function() {
+            let param = $(this).find('input');
+            let comment = $(this).find('textarea');
+
+            let val = {
+                count: param.val(),
+                comment:comment.val()
+            };
+            obj[param.attr('id').split('r')[0]] = val;
+        });
+        obj['receipt'] =  {
+            id: $('#receipt').attr("data")
+        };
+        return JSON.stringify(obj);
+    }
+
+
+    $("#submit").click(function(){
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+
+        $.ajax({
+            type: 'POST',
+            contentType : "application/json",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token)
+            },
+            url: 'http://localhost:8080/return',
+            data: getTableData(),
+            dataType: "json",
+            timeout: 1000000,
+            success : function(data) {
+                console.log("SUCCESS: ", data);
+                window.location = "http://localhost:8080/"
+            },
+            error : function(e) {
+                console.log("ERROR: ", e);
+            },
+            done : function(e) {
+                console.log("DONE");
+            }
+        });
+    });
+</script>
+</html>

@@ -1,19 +1,15 @@
 package com.diploma.cashregister.controller;
-import com.diploma.cashregister.domain.OrderBucket;
+
 import com.diploma.cashregister.domain.OrderPayments;
-import com.diploma.cashregister.domain.ProviderProduct;
 import com.diploma.cashregister.service.DeliveryService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.rmi.CORBA.ValueHandler;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -47,6 +43,7 @@ public class DeliveryController {
 
         return "delivery/delivery";
     }
+
     @PostMapping(value = "/delivery_number")
     public @ResponseBody String saveDelivery(
             @RequestBody String json

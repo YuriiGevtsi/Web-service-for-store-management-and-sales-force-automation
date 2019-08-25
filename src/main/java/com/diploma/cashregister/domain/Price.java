@@ -3,6 +3,7 @@ package com.diploma.cashregister.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -14,6 +15,7 @@ import java.util.Objects;
 @Data
 @EqualsAndHashCode(of = "idPrice")
 @NoArgsConstructor
+@ToString(of = {"idPrice","price","dateStart","dateFinish"})
 public class Price {
     @Id
     @Column(name = "id_price")
