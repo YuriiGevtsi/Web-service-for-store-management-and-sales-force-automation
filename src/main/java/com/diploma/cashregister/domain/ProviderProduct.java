@@ -18,7 +18,8 @@ import java.util.Collection;
 public class ProviderProduct {
     @Id
     @Column(name = "id_provider_product")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @SequenceGenerator(name="provider_product_id_provider_product_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="provider_product_id_provider_product_seq")
     private long idProviderProduct;
 
     private String name;

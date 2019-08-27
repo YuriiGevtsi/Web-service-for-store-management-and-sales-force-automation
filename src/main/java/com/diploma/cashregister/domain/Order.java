@@ -17,7 +17,8 @@ import java.util.Set;
 public class Order {
     @Id
     @Column(name = "id_order")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @SequenceGenerator(name="orders_id_order_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="orders_id_order_seq")
     private long idOrder;
 
     @Column(name = "date_of_wishing_delivery")

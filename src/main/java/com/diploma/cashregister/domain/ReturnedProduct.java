@@ -18,7 +18,8 @@ import java.util.Objects;
 public class ReturnedProduct {
     @Id
     @Column(name = "id_returned_product")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @SequenceGenerator(name="returned_product_id_returned_product_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="returned_product_id_returned_product_seq")
     private long idReturnedProduct;
     private LocalDateTime date;
 

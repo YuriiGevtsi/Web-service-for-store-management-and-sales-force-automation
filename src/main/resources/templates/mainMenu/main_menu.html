@@ -2,51 +2,52 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="temps/temp :: fragment"></head>
 
-<body class="h-100">
-<div class="container ">
-    <div class="row justify-content-md-center">
-        <div class="col col-lg-3 text-center">
-            <a href="/selling" class="btn btn-primary btn-lg w-100 p-3">Продажа</a>
-        </div>
-        <div class="col col-lg-3 text-center">
-            <a onclick="$('#returnProdModal').modal('show');" class="btn btn-primary btn-lg w-100 p-3">Возврат товара</a>
-        </div>
-    </div>
-    <div class="row justify-content-md-center">
-        <div class="col col-lg-3 text-center">
-            <a href="/cash_in" class="btn btn-primary btn-lg w-100 p-3" >Вплата</a>
-        </div>
-        <div class="col col-lg-3 text-center">
-            <a onclick="$('#deliveryModal').modal('show');" class="btn btn-primary btn-lg w-100 p-3" type="submit">Принять доставку</a>
+<body >
+<div class="container-fluid h-100">
+    <div style="height: 7%"></div>
+    <div class="h-25">
+        <div class="row justify-content-md-center  mt-3 h-100">
+            <div class="col col-lg-3 text-center no-float">
+                <a href="#" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >My shop</a>
+            </div>
+            <div class="col col-lg-3 text-center no-float">
+                <a href="/cash_out" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Pay out</a>
+            </div>
+            <div class="col col-lg-3 text-center no-float">
+                <a href="/cash_in" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Pay in</a>
+            </div>
         </div>
     </div>
-    <div class="row justify-content-md-center">
-        <div class="col col-lg-3 text-center">
-            <a href="/cash_out" class="btn btn-primary btn-lg w-100 p-3" type="submit">Выплата</a>
-        </div>
-        <div class="col col-lg-3 text-center">
-            <a class="btn btn-primary btn-lg w-100 p-3" type="submit">Списать товар</a>
-        </div>
-    </div>
-    <div class="row justify-content-md-center">
-        <div class="col col-lg-3 text-center">
-            <a onclick="$('#finish').modal('show');" class="btn btn-primary btn-lg w-100 p-3" type="submit">Закончить смену</a>
-        </div>
-        <div class="col col-lg-3 text-center">
-            <a class="btn btn-primary btn-lg w-100 p-3" type="submit">Напечать отчёт</a>
+    <div class="h-25">
+        <div class="row justify-content-md-center  mt-3 h-100">
+            <div class="col col-lg-3 text-center no-float">
+                <button  onclick="$('#returnProdModal').modal('show');" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center">Purchase returns</button>
+            </div>
+            <div class="col col-lg-3 text-center no-float">
+                <button  onclick="$('#writeOff').modal('show');" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Write off the product</button>
+            </div>
+            <div class="col col-lg-3 text-center no-float">
+                <button  onclick="$('#deliveryModal').modal('show');" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Accept delivery</button>
+            </div>
         </div>
     </div>
-    <div class="row justify-content-md-center">
-        <div class="col col-lg-3 text-center">
-            <a class="btn btn-primary btn-lg w-100 p-3" type="submit">Мой магазин</a>
-        </div>
-        <div class="col col-lg-3 text-center">
-            <a class="btn btn-primary btn-lg w-100 p-3 " type="submit" data-toggle="modal" data-target="#startShift">Выход</a>
+    <div class="h-25">
+        <div class="row justify-content-md-center mt-3 h-100">
+            <div class="col col-lg-3 text-center no-float ">
+                <button  onclick="$('#finish').modal('show');" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Finish shift</button>
+            </div>
+            <div class="col col-lg-3 text-center no-float">
+                <a href="#" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Print report</a>
+            </div>
+            <div class="col col-lg-3 text-center no-float">
+                <a href="#" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center"  data-toggle="modal" data-target="#startShift">Exit</a>
+            </div>
         </div>
     </div>
+
 </div>
 
-<!-- Modal -->
+<!-- Modal start shift-->
 <div class="modal fade " id="shiftModal" role="dialog"  data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-sm">
 
@@ -67,7 +68,7 @@
     </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal return product-->
 <div class="modal fade " id="returnProdModal" role="dialog"  data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal">
         <!-- Modal content-->
@@ -91,7 +92,7 @@
     </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal finish shift-->
 <div class="modal fade " id="finish" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal">
         <!-- Modal content-->
@@ -108,7 +109,7 @@
     </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal print report-->
 <div class="modal fade " id="report" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal">
         <!-- Modal content-->
@@ -124,24 +125,85 @@
     </div>
 </div>
 
+<!-- Modal write off product-->
+<div class="modal fade " id="writeOff" role="dialog"  data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header justify-content-md-center">
+                <label > Write off the product </label>
+            </div>
+            <div class="modal-body">
+                <form method="post" th:action="@{/write-off}"  class="form">
+                    <div class="row ">
+                        <div class=" col col-lg-2 ">
+                            <label for="barcode" >Barcode</label>
+                        </div>
+                        <div class="col ">
+                            <input type="text" id="barcode" maxlength="5" class="form-control" name="barcode" onkeyup="findProduct(5)">
+                            <div class="invalid-feedback">
+                                No product with this barcode was found.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col col-lg-2  ">
+                            <label for="prodName" >Name </label>
+                        </div>
+                        <div class="col">
+                            <input type="text"  id="prodName" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col col-lg-2  ">
+                            <label >Amount </label>
+                        </div>
+                        <div class="col ">
+                            <input type="number" step="0.1" min="0" class="form-control" name="amount" placeholder="#">
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col col-lg-2 ">
+                            <label >Reason </label>
+                        </div>
+                        <div class="col ">
+                            <textarea class="form-control" name="reason" placeholder="#"></textarea>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row-reverse">
+                        <div class="col-4 mt-2" >
+                            <button type="submit" class="btn btn-primary btn-block" >Ok</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
 <div th:replace="temps/deliveryModal :: deliveryNumber">
+
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 </body>
-
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+</style>
 <script type="text/javascript" th:inline="javascript">
     $(window).on('load',function(){
         $('#shiftModal').modal('show');
         if ([[${receipt}]] != null) alert([[${receipt}]]);
     });
 
+    const token = $("meta[name='_csrf']").attr("content");
+    const header = $("meta[name='_csrf_header']").attr("content");
+
     function finishWork(report) {
-
-        let token = $("meta[name='_csrf']").attr("content");
-        let header = $("meta[name='_csrf_header']").attr("content");
-
         $.ajax({
             type: 'GET',
             contentType : "application/json",
@@ -164,6 +226,38 @@
                 });
             }
         });
-    };
+    }
+
+    function findProduct(val) {
+        let text = $('#barcode').val();
+        if (text.length === val){
+            $.ajax({
+                type: 'get',
+                contentType : "application/json",
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(header, token)
+                },
+                url: 'http://localhost:8080/find-product',
+                data: jQuery.param({ code: text}) ,
+                success : function(data) {
+                    if (data === 'error'){
+                        $('#barcode').addClass('is-invalid');
+                        $('#prodName').val(' ');
+                    }
+                    else {
+                        $('#barcode').addClass('is-valid');
+                        $('#prodName').val(data);
+                    }
+                },
+                error : function(e) {
+                    $('#prodName').val(' ');
+                },
+            });
+        }else {
+            $('#barcode').removeClass('is-invalid');
+            $('#barcode').removeClass('is-valid');
+            $('#prodName').val(' ');
+        }
+    }
 </script>
 </html>

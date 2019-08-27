@@ -17,7 +17,8 @@ import java.util.Objects;
 public class Contract {
     @Id
     @Column(name = "id_contract")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @SequenceGenerator(name="contract_id_contract_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="contract_id_contract_seq")
     private long idContract;
 
     @Column(name = "date_start")

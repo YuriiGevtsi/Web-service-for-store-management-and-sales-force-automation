@@ -16,7 +16,8 @@ import java.util.Objects;
 public class Manufacturer {
     @Id
     @Column(name = "id_manufacturer")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @SequenceGenerator(name="manufacturer_id_manufacturer_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="manufacturer_id_manufacturer_seq")
     private long idManufacturer;
 
     @Column(name = "name")

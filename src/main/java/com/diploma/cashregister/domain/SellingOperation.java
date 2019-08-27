@@ -21,7 +21,8 @@ import java.util.Objects;
 public class SellingOperation {
     @Id
     @Column(name = "id_selling")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @SequenceGenerator(name="selling_operation_id_selling_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="selling_operation_id_selling_seq")
     private long idSelling;
 
     private LocalDateTime date;

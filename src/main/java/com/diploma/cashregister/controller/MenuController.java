@@ -1,15 +1,10 @@
 package com.diploma.cashregister.controller;
 
-import com.diploma.cashregister.domain.Bucket;
-import com.diploma.cashregister.domain.FinancialOperations;
-import com.diploma.cashregister.domain.Price;
-import com.diploma.cashregister.domain.WorkerPassword;
-import com.diploma.cashregister.repos.FinancialOperationRepo;
-import com.diploma.cashregister.repos.SellingOperationRepo;
+import com.diploma.cashregister.domain.*;
+import com.diploma.cashregister.service.ProductService;
 import com.diploma.cashregister.service.SellingOperationService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.MapType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -17,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Set;
@@ -26,9 +22,12 @@ public class MenuController {
 
     @Autowired
     private final SellingOperationService sellingOperationService;
+    @Autowired
+    private final ProductService productService ;
 
-    public MenuController(SellingOperationService sellingOperationService) {
+    public MenuController(SellingOperationService sellingOperationService, ProductService productService) {
         this.sellingOperationService = sellingOperationService;
+        this.productService = productService;
     }
 
     @GetMapping("/")
@@ -71,7 +70,7 @@ public class MenuController {
 
 
         sellingOperationService.saveFinancialOperation(financialOperations);
-        return "ok";
+        return "redirect:/";
     }
 
     @GetMapping("cash_out")
@@ -114,4 +113,27 @@ public class MenuController {
 
         return param;
     }
+
+    @GetMapping("find-product")
+    public @ResponseBody String findProduct(@RequestParam(required = true) String code){
+        ProviderProduct productByBarcode = productService.findProductByBarcode(code);
+        String name = productByBarcode == null ? "error" : productByBarcode.getName();
+        return name;
+    }
+
+    @PostMapping(value = "/write-off")
+    public String writeOff(@RequestParam(required = true) String barcode,
+                                         @RequestParam(required = true) double amount,
+                                         @RequestParam(required = false, defaultValue = "") String reason
+    ){
+        WrittenOffProduct product = new WrittenOffProduct();
+        product.setAmount(amount);
+        product.setDate(LocalDate.now());
+        product.setReason(reason);
+        product.setProviderProduct(productService.findProductByBarcode(barcode));
+
+        productService.saveWrittenOffProduct(product);
+        return "redirect:/";
+    }
+
 }

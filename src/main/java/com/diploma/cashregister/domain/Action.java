@@ -18,7 +18,8 @@ import java.util.Objects;
 public class Action {
     @Id
     @Column(name = "idAction")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @SequenceGenerator(name="action_id_action_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="action_id_action_seq")
     private long idAction;
 
     @Column(name = "date_start")

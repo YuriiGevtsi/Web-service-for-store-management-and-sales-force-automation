@@ -16,7 +16,8 @@ import java.util.Objects;
 public class ProviderProductMeasuringRate {
     @Id
     @Column(name = "id_provider_product_measuring_rate")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @SequenceGenerator(name="provider_product_measuring_rate_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="provider_product_measuring_rate_seq")
     private long idProviderProductMeasuringRate;
 
     private String name;

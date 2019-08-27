@@ -15,7 +15,8 @@ import java.util.Objects;
 public class ProviderConnectProduct {
     @Id
     @Column(name = "id_provider_connect_product")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @SequenceGenerator(name="provider_connect_product_id_provider_connect_product_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="provider_connect_product_id_provider_connect_product_seq")
     private long idProviderConnectProduct;
 
     @ManyToOne

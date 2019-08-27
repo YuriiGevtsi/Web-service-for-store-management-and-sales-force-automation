@@ -18,7 +18,8 @@ import java.util.Objects;
 public class WorkerPassword  implements UserDetails{
     @Id
     @Column(name = "id_password")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @SequenceGenerator(name="worker_password_id_password_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="worker_password_id_password_seq")
     private int idPassword;
 
     private String password;

@@ -1,0 +1,20 @@
+alter table measuring_rate_connect_provider_product alter column id_measuring_rate_connect_provider_product drop default;
+
+drop sequence measuring_rate_connect_provider_product_id_measuring_rate_conne;
+
+create sequence measuring_rate_connect_provider_product_seq;
+
+alter table measuring_rate_connect_provider_product alter column id_measuring_rate_connect_provider_product set default nextval('public.measuring_rate_connect_provider_product_seq');
+
+alter sequence measuring_rate_connect_provider_product_seq owned by measuring_rate_connect_provider_product.id_measuring_rate_connect_provider_product;
+
+
+alter table provider_product_measuring_rate alter column id_provider_product_measuring_rate drop default;
+
+drop sequence provider_product_measuring_rate_id_provider_product_measuring_r;
+
+create sequence provider_product_measuring_rate_seq;
+
+alter table provider_product_measuring_rate alter column id_provider_product_measuring_rate set default nextval('public.provider_product_measuring_rate_seq');
+
+alter sequence provider_product_measuring_rate_seq owned by provider_product_measuring_rate.id_provider_product_measuring_rate;

@@ -17,7 +17,8 @@ import java.util.Objects;
 public class MeasuringRateConnectProviderProduct {
     @Id
     @Column(name = "id_measuring_rate_connect_provider_product")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @SequenceGenerator(name="measuring_rate_connect_provider_product_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="measuring_rate_connect_provider_product_seq")
     private long idMeasuringRateConnectProviderProduct;
 
     @Column(name = "coefficient")

@@ -19,7 +19,8 @@ import java.util.Objects;
 public class FinancialOperations {
     @Id
     @Column(name = "id_financial_operations")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="financial_operations_id_financial_operations_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="financial_operations_id_financial_operations_seq")
     private long idFinancialOperations;
 
     @Column(name = "time")

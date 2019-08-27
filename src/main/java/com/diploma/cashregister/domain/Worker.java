@@ -20,7 +20,8 @@ import java.util.Set;
 public class Worker{
     @Id
     @Column(name = "id_worker")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @SequenceGenerator(name="worker_id_worker_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="worker_id_worker_seq")
     private long idWorker;
 
     private String surname;

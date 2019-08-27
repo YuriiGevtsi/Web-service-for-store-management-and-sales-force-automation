@@ -18,7 +18,8 @@ import java.util.Objects;
 public class OrderBucket {
     @Id
     @Column(name = "id_order_bucket")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @SequenceGenerator(name="order_bucket_id_order_bucket_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="order_bucket_id_order_bucket_seq")
     private long idOrderBucket;
 
     @Column(name = "amount")

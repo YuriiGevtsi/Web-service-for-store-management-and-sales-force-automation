@@ -17,7 +17,8 @@ import java.util.Set;
 public class Client {
     @Id
     @Column(name = "id_client")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @SequenceGenerator(name="client_id_client_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="client_id_client_seq")
     private long idClient;
 
     @Column(name = "name")

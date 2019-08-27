@@ -19,7 +19,8 @@ import java.util.Objects;
 public class Shift {
     @Id
     @Column(name = "id_shift")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @SequenceGenerator(name="shift_id_shift_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="shift_id_shift_seq")
     private int idShift;
 
     @Column(name = "beginning_time")

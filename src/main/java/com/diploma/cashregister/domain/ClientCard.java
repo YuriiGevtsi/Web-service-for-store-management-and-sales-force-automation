@@ -16,7 +16,8 @@ import java.util.Objects;
 public class ClientCard {
     @Id
     @Column(name = "id_card")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @SequenceGenerator(name="client_card_id_card_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="client_card_id_card_seq")
     private String idCard;
 
     @ManyToOne

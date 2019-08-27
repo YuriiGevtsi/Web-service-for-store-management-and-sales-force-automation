@@ -17,7 +17,8 @@ import java.util.Objects;
 public class ProviderPrice {
     @Id
     @Column(name = "id_provider_price")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @SequenceGenerator(name="provider_price_id_provider_price_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="provider_price_id_provider_price_seq")
     private long idProviderPrice;
 
     private LocalDate date;

@@ -17,7 +17,8 @@ import java.util.Objects;
 public class WrittenOffProduct {
     @Id
     @Column(name = "id_written_off_product")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @SequenceGenerator(name="written_off_product_id_written_off_product_seq")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="written_off_product_id_written_off_product_seq")
     private int idWrittenOffProduct;
 
     private LocalDate date;
