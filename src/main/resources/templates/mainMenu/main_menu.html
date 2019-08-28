@@ -11,10 +11,10 @@
                 <a href="#" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >My shop</a>
             </div>
             <div class="col col-lg-3 text-center no-float">
-                <a href="/cash_out" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Pay out</a>
+                <button onclick="cashInOutModal('Cash withdrawal')" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Pay out</button>
             </div>
             <div class="col col-lg-3 text-center no-float">
-                <a href="/cash_in" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Pay in</a>
+                <button onclick="cashInOutModal('Cash acceptance')" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Pay in</button>
             </div>
         </div>
     </div>
@@ -181,7 +181,44 @@
 
     </div>
 </div>
+
+<!-- Modal start shift-->
+<div class="modal fade " id="cashInOut" role="dialog"  data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header justify-content-lg-center">
+                <label id="cashInOutLbl" > Write off the product </label>
+            </div>
+            <div class="modal-body">
+                <div class=" row ">
+                    <div class="col col-lg-3  ">
+                        <label for="amount">Amount</label>
+                    </div>
+                    <div class="col">
+                        <input type="number" step="0.01" min="1" class="form-control valid" id="amount" name="sum" placeholder="Сумма" required>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col col-lg-3  ">
+                        <label for="comment">Comment</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control" id="comment" name="comment" placeholder="Comment">
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-row-reverse">
+                <div class="col-4 mb-2" >
+                    <button type="button" onclick="cashInOut()" class="btn btn-primary btn-block" >Ok</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
 <div th:replace="temps/deliveryModal :: deliveryNumber">
+
 
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -202,6 +239,35 @@
 
     const token = $("meta[name='_csrf']").attr("content");
     const header = $("meta[name='_csrf_header']").attr("content");
+
+    function cashInOutModal(type) {
+        $('#cashInOutLbl').text(type);
+        $('#cashInOut').modal('show');
+    }
+
+    function cashInOut() {
+        let amount = $('#amount').val();
+        let comment = $('#comment').val();
+        let type = (~$('#cashInOutLbl').text().indexOf("withdrawal")) ? 'out' : 'in';
+
+        $.ajax({
+            type: 'post',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token)
+            },
+            url: 'http://localhost:8080/cash',
+            data: jQuery.param({ amount: amount, comment: comment, type: type}) ,
+            success : function(data) {
+                if (data === 'error'){
+
+                }
+                else {
+
+                }
+                $('#cashInOut').modal('hide');
+            }
+        });
+    }
 
     function finishWork(report) {
         $.ajax({

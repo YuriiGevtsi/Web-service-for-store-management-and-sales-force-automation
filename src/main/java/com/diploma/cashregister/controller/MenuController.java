@@ -33,55 +33,30 @@ public class MenuController {
     @GetMapping("/")
     public String greeting(Model model) {return "mainMenu/main_menu";}
 
-    @GetMapping("cash_in")
-    public String cashIn(Model model){
-        model.addAttribute("type","in");
-        return "mainMenu/cashInOut";
-    }
-
-    @PostMapping("cash_in")
-    public String cashIn(
-            @RequestParam(required = true) float sum,
-            @RequestParam(required = false, defaultValue = "Вплата") String comment,
-            Model model,
+    @PostMapping("cash")
+    public @ResponseBody String cashOut(
+            @RequestParam float amount,
+            @RequestParam String comment,
+            @RequestParam String type,
             @AuthenticationPrincipal WorkerPassword workerPassword
     ){
+        ShiftWorker shiftWorker = workerPassword.getWorker().getShiftWorkers().stream().filter(e -> e.getLogoutTime() == null).findAny().orElse(null);
+
         FinancialOperations financialOperations = new FinancialOperations();
-        financialOperations.setComment(comment);
-        financialOperations.setSumm(sum);
+        financialOperations.setComment(comment.isEmpty()? workerPassword.getWorker().getName() : comment );
+        financialOperations.setSumm(amount);
         financialOperations.setTime(LocalDateTime.now());
-        financialOperations.setType("Вплата");
+        financialOperations.setType(type.equalsIgnoreCase("in")? "Cash acceptance" : "Cash withdrawal");
+        if (shiftWorker != null){
+            financialOperations.setShift(shiftWorker.getShift());
+        }
 
         sellingOperationService.saveFinancialOperation(financialOperations);
-        return "redirect:/";
+        return "ok";
     }
-    @PostMapping("cash_out")
-    public String cashOut(
-            @RequestParam(required = true) float sum,
-            @RequestParam(required = false, defaultValue = "Выплата") String comment,
-            Model model,
-            @AuthenticationPrincipal WorkerPassword workerPassword
-    ){
-        FinancialOperations financialOperations = new FinancialOperations();
-        financialOperations.setComment(comment +" " + workerPassword.getWorker().getName());
-        financialOperations.setSumm(sum);
-        financialOperations.setTime(LocalDateTime.now());
-        financialOperations.setType("Выплата");
-
-
-        sellingOperationService.saveFinancialOperation(financialOperations);
-        return "redirect:/";
-    }
-
-    @GetMapping("cash_out")
-    public String cashOut(Model model){
-        model.addAttribute("type","out");
-        return "mainMenu/cashInOut";
-    }
-
 
     @GetMapping("return")
-    public String returnProduct(@RequestParam(required = true) long number, Model model){
+    public String returnProduct(@RequestParam long number, Model model){
         if (sellingOperationService.findReceipt(number)){
             model.addAttribute("receipt","Неверный номер чека");
             return "mainMenu/main_menu";
@@ -108,7 +83,7 @@ public class MenuController {
 
 
     @GetMapping("finish")
-    public @ResponseBody String finishWork(@RequestParam(required = true) String param){
+    public @ResponseBody String finishWork(@RequestParam String param){
         System.out.println(param);
 
         return param;

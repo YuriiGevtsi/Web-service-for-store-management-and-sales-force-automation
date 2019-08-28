@@ -19,7 +19,7 @@ import java.util.Objects;
 public class FinancialOperations {
     @Id
     @Column(name = "id_financial_operations")
-    @SequenceGenerator(name="financial_operations_id_financial_operations_seq")
+    @SequenceGenerator(name="financial_operations_id_financial_operations_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="financial_operations_id_financial_operations_seq")
     private long idFinancialOperations;
 

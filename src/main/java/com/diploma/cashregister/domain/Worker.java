@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -34,7 +35,7 @@ public class Worker{
     @OneToMany(mappedBy = "worker")
     private Collection<Contract> contracts;
 
-    @OneToMany(mappedBy = "worker")
+    @OneToMany(mappedBy = "worker", fetch = FetchType.EAGER)
     private Collection<ShiftWorker> shiftWorkers;
 
     @OneToMany(mappedBy = "worker")
