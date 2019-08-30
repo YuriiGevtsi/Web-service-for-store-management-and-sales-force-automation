@@ -8,7 +8,7 @@
     <div class="h-25">
         <div class="row justify-content-md-center  mt-3 h-100">
             <div class="col col-lg-3 text-center no-float">
-                <a href="#" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >My shop</a>
+                <a href="/myShop" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >My shop</a>
             </div>
             <div class="col col-lg-3 text-center no-float">
                 <button onclick="cashInOutModal('Cash withdrawal')" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Pay out</button>
@@ -34,193 +34,36 @@
     <div class="h-25">
         <div class="row justify-content-md-center mt-3 h-100">
             <div class="col col-lg-3 text-center no-float ">
-                <button  onclick="$('#finish').modal('show');" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Finish shift</button>
+                <button  onclick="$('#finish').modal('show')" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Finish shift</button>
             </div>
             <div class="col col-lg-3 text-center no-float">
-                <a href="#" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Print report</a>
+                <button onclick="$('#printReport').modal('show');" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Print report</button>
             </div>
             <div class="col col-lg-3 text-center no-float">
-                <a href="#" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center"  data-toggle="modal" data-target="#startShift">Exit</a>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<!-- Modal start shift-->
-<div class="modal fade " id="shiftModal" role="dialog"  data-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">×</button>
-            </div>
-            <div class="modal-body">
-                <p>Начать смену?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
-                <button type="button" class="btn btn-primary" onclick = "$('.modal').modal('hide')">Да</button>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<!-- Modal return product-->
-<div class="modal fade " id="returnProdModal" role="dialog"  data-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered modal">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">×</button>
-            </div>
-            <div class="modal-body">
-                <form method="get" action="/return" class="form-inline">
-                    <div class="form-group mb-2">
-                        <label >Номер чека </label>
-                    </div>
-                    <div class="form-group mx-sm-3 mb-2">
-                        <input type="number" class="form-control" name="number" placeholder="#">
-                    </div>
-                    <button type="submit" class="btn btn-primary mb-2">Ok</button>
-                </form>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<!-- Modal finish shift-->
-<div class="modal fade " id="finish" role="dialog" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered modal">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-body d-flex justify-content-center">
-                <label class="h4 mt-2"> Закончить смену? </label>
-            </div>
-            <div class="modal-footer d-flex justify-content-between">
-                <button type="button" class="btn btn-primary w-25 ml-5" onclick = "$('.modal').modal('hide'); $('#report').modal('show')">Да</button>
-                <button type="button" class="btn btn-secondary w-25 mr-5" data-dismiss="modal">Нет</button>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<!-- Modal print report-->
-<div class="modal fade " id="report" role="dialog" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered modal">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-body d-flex justify-content-center">
-                <label class="h4 mt-2"> Напечатать отчет? </label>
-            </div>
-            <div class="modal-footer d-flex justify-content-between">
-                <button type="button" class="btn btn-primary w-25 ml-5" onclick="finishWork(true)">Да</button>
-                <button type="button" class="btn btn-secondary w-25 mr-5" onclick="finishWork(false)">Нет</button>
+                <button onclick="exit()" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Exit</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal write off product-->
-<div class="modal fade " id="writeOff" role="dialog"  data-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered modal">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header justify-content-md-center">
-                <label > Write off the product </label>
-            </div>
-            <div class="modal-body">
-                <form method="post" th:action="@{/write-off}"  class="form">
-                    <div class="row ">
-                        <div class=" col col-lg-2 ">
-                            <label for="barcode" >Barcode</label>
-                        </div>
-                        <div class="col ">
-                            <input type="text" id="barcode" maxlength="5" class="form-control" name="barcode" onkeyup="findProduct(5)">
-                            <div class="invalid-feedback">
-                                No product with this barcode was found.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col col-lg-2  ">
-                            <label for="prodName" >Name </label>
-                        </div>
-                        <div class="col">
-                            <input type="text"  id="prodName" class="form-control" readonly>
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col col-lg-2  ">
-                            <label >Amount </label>
-                        </div>
-                        <div class="col ">
-                            <input type="number" step="0.1" min="0" class="form-control" name="amount" placeholder="#">
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col col-lg-2 ">
-                            <label >Reason </label>
-                        </div>
-                        <div class="col ">
-                            <textarea class="form-control" name="reason" placeholder="#"></textarea>
-                        </div>
-                    </div>
-                    <div class="d-flex flex-row-reverse">
-                        <div class="col-4 mt-2" >
-                            <button type="submit" class="btn btn-primary btn-block" >Ok</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+<div th:replace="temps/temp :: time"></div>
 
-    </div>
-</div>
+<div th:replace="temps/temp :: startShift"></div>
 
-<!-- Modal start shift-->
-<div class="modal fade " id="cashInOut" role="dialog"  data-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered modal-md">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header justify-content-lg-center">
-                <label id="cashInOutLbl" > Write off the product </label>
-            </div>
-            <div class="modal-body">
-                <div class=" row ">
-                    <div class="col col-lg-3  ">
-                        <label for="amount">Amount</label>
-                    </div>
-                    <div class="col">
-                        <input type="number" step="0.01" min="1" class="form-control valid" id="amount" name="sum" placeholder="Сумма" required>
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col col-lg-3  ">
-                        <label for="comment">Comment</label>
-                    </div>
-                    <div class="col">
-                        <input type="text" class="form-control" id="comment" name="comment" placeholder="Comment">
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex flex-row-reverse">
-                <div class="col-4 mb-2" >
-                    <button type="button" onclick="cashInOut()" class="btn btn-primary btn-block" >Ok</button>
-                </div>
-            </div>
-        </div>
+<div th:replace="temps/temp :: returnProdModal"></div>
 
-    </div>
-</div>
-<div th:replace="temps/deliveryModal :: deliveryNumber">
+<div th:replace="temps/temp :: finish"></div>
 
+<div th:replace="temps/temp :: report"></div>
 
-</div>
+<div th:replace="temps/temp :: writeOff"></div>
+
+<div th:replace="temps/temp :: cashInOut"></div>
+
+<div th:replace="temps/temp :: deliveryNumber"></div>
+
+<div th:replace="temps/temp :: printReport"></div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
@@ -232,6 +75,7 @@
     }
 </style>
 <script type="text/javascript" th:inline="javascript">
+
     $(window).on('load',function(){
         $('#shiftModal').modal('show');
         if ([[${receipt}]] != null) alert([[${receipt}]]);
@@ -280,16 +124,34 @@
             data: jQuery.param({ param: report}) ,
             success : function(data) {
                 console.log("SUCCESS: ", data);
-                $.ajax({
-                    type: 'POST',
-                    beforeSend: function(xhr) {
-                        xhr.setRequestHeader(header, token)
-                    },
-                    url: 'http://localhost:8080/logout',
-                    success : function() {
-                        window.location = "http://localhost:8080/"
-                    }
-                });
+               logOut();
+            }
+        });
+    }
+
+    function exit() {
+        $.ajax({
+            type: 'GET',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token)
+            },
+            url: 'http://localhost:8080/exit',
+            success : function(data) {
+                console.log("SUCCESS: ", data);
+                logOut();
+            }
+        });
+    }
+
+    function logOut() {
+        $.ajax({
+            type: 'POST',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token)
+            },
+            url: 'http://localhost:8080/logout',
+            success : function() {
+                window.location = "http://localhost:8080/"
             }
         });
     }

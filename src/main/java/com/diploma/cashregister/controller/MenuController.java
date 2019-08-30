@@ -3,6 +3,7 @@ package com.diploma.cashregister.controller;
 import com.diploma.cashregister.domain.*;
 import com.diploma.cashregister.service.ProductService;
 import com.diploma.cashregister.service.SellingOperationService;
+import com.diploma.cashregister.service.WorkerPasswordService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,13 @@ public class MenuController {
     private final SellingOperationService sellingOperationService;
     @Autowired
     private final ProductService productService ;
+    @Autowired
+    private final WorkerPasswordService workerPasswordService;
 
-    public MenuController(SellingOperationService sellingOperationService, ProductService productService) {
+    public MenuController(SellingOperationService sellingOperationService, ProductService productService, WorkerPasswordService workerPasswordService) {
         this.sellingOperationService = sellingOperationService;
         this.productService = productService;
+        this.workerPasswordService = workerPasswordService;
     }
 
     @GetMapping("/")
@@ -111,4 +115,13 @@ public class MenuController {
         return "redirect:/";
     }
 
+    @GetMapping("exit")
+    public @ResponseBody String logOut(@AuthenticationPrincipal WorkerPassword workerPassword){
+        workerPasswordService.logOutWorker(workerPassword.getWorker());
+        return "ok";
+    }
+    @GetMapping("myShop")
+    public String myShop(){
+        return "mainMenu/myShop";
+    }
 }

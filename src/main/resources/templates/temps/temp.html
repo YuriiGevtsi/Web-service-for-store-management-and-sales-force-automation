@@ -19,5 +19,340 @@
 
 </head>
 <body>
+
+<!-- Modal time -->
+<div class="fixed-bottom d-flex justify-content-center" th:fragment="time">
+    <label id="endtime" />
+    <script>
+        $(window).on('load',function(){
+            startTime()
+        });
+
+        function startTime()
+        {
+            let today=new Date();
+            let h=today.getHours();
+            let m=today.getMinutes();
+            let s = today.getSeconds()
+
+            m= m<10? '0' + m : m;
+            s= s<10? '0' + s : s;
+            $('#endtime').text(h + ' : ' + m + ' : ' + s);
+            setTimeout('startTime()', 500);
+        }
+    </script>
+</div>
+
+<!-- Modal -->
+<div  th:fragment="deliveryNumber" class="modal fade " id="deliveryModal" role="dialog" >
+    <div class="modal-dialog modal-dialog-centered modal">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/delivery_number}" method="get">
+                    <div class="form-row align-items-center">
+                        <label class="col-sm-2 col-form-label" for="number">Номер</label>
+                        <div class="col-auto">
+                            <input id="number" type="number" class="form-control" name="number" placeholder="Номер доставки">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary" onclick = "$('.modal').modal('hide')">Продолжить</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <button type="button" class="btn btn-primary btn-lg mr-3" onclick = "$('.modal').modal('hide')">Самоввоз</button>
+                        <button type="button" class="btn btn-primary btn-lg ml-3" onclick = "$('.modal').modal('hide')">Без номера</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal start shift-->
+<div th:fragment="startShift" class="modal fade " id="shiftModal" role="dialog"  data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Start shift?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" onclick = "$('#shiftModal').modal('hide')">Yes</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal return product-->
+<div th:fragment="returnProdModal" class="modal fade " id="returnProdModal" role="dialog"  data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body">
+                <form method="get" action="/return" class="form-inline">
+                    <div class="form-group mb-2">
+                        <label >Receipt number </label>
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                        <input type="number" class="form-control" name="number" placeholder="#">
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-2">Ok</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal finish shift-->
+<div th:fragment="finish" class="modal fade " id="finish" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body d-flex justify-content-center">
+                <label class="h4 mt-2"> Finish shift? </label>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-primary w-25 ml-5" onclick = "$('.modal').modal('hide'); $('#report').modal('show')">Yes</button>
+                <button type="button" class="btn btn-secondary w-25 mr-5" data-dismiss="modal">No</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal print report-->
+<div th:fragment="report" class="modal fade " id="report" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body d-flex justify-content-center">
+                <label class="h4 mt-2"> Print report? </label>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-primary w-25 ml-5" onclick="finishWork(true)">Yes</button>
+                <button type="button" class="btn btn-secondary w-25 mr-5" onclick="finishWork(false)">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal write off product-->
+<div th:fragment="writeOff" class="modal fade " id="writeOff" role="dialog"  data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header justify-content-md-center">
+                <label > Write off the product </label>
+            </div>
+            <div class="modal-body">
+                <form method="post" th:action="@{/write-off}"  class="form">
+                    <div class="row ">
+                        <div class=" col col-lg-2 ">
+                            <label for="barcode" >Barcode</label>
+                        </div>
+                        <div class="col ">
+                            <input type="text" id="barcode" maxlength="5" class="form-control" name="barcode" onkeyup="findProduct(5)">
+                            <div class="invalid-feedback">
+                                No product with this barcode was found.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col col-lg-2  ">
+                            <label for="prodName" >Name </label>
+                        </div>
+                        <div class="col">
+                            <input type="text"  id="prodName" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col col-lg-2  ">
+                            <label >Amount </label>
+                        </div>
+                        <div class="col ">
+                            <input type="number" step="0.1" min="0" class="form-control" name="amount" placeholder="#">
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col col-lg-2 ">
+                            <label >Reason </label>
+                        </div>
+                        <div class="col ">
+                            <textarea class="form-control" name="reason" placeholder="#"></textarea>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row-reverse">
+                        <div class="col-4 mt-2" >
+                            <button type="submit" class="btn btn-primary btn-block" >Ok</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal menage Employee-->
+<div th:fragment="menageEmployee" class="modal fade " id="menageEmployee" role="dialog"  data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg ">
+        <!-- Modal content-->
+        <div class="modal-content" style="height: 50vh">
+            <div class="modal-header justify-content-center" >
+                        <label class="h3">Menage employee</label>
+            </div>
+            <div class="modal-body container-fluid h-75">
+                <div class="mt-2" style="height: 40%">
+                    <div class="row justify-content-around h-100">
+                        <div class="col col-md-4 text-center no-float ml-5" >
+                            <a href="#" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Add employee</a>
+                        </div>
+                        <div class="col col-md-4 text-center no-float mr-5">
+                            <button onclick="" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Contracts</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5 " style="height: 40%">
+                    <div class="row justify-content-around   h-100">
+                        <div class="col col-md-4 text-center no-float ml-5 mb-2">
+                            <button  onclick="" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >All employees</button>
+                        </div>
+                        <div class="col col-md-4 text-center no-float mr-5 mb-2">
+                            <button  onclick="" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Positions</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal menage products-->
+<div th:fragment="menageProducts" class="modal fade " id="menageProducts" role="dialog"  data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg ">
+        <!-- Modal content-->
+        <div class="modal-content" style="height: 50vh">
+            <div class="modal-header justify-content-center" >
+                        <label class="h3">Menage products</label>
+            </div>
+            <div class="modal-body container-fluid h-75">
+                <div class="mt-2" style="height: 40%">
+                    <div class="row justify-content-around h-100">
+                        <div class="col col-md-4 text-center no-float ml-5" >
+                            <a href="#" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >All products</a>
+                        </div>
+                        <div class="col col-md-4 text-center no-float mr-5">
+                            <button onclick="" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Add new product</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5 " style="height: 40%">
+                    <div class="row justify-content-around   h-100">
+                        <div class="col col-md-4 text-center no-float ml-5 mb-2">
+                            <button  onclick="" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Something</button>
+                        </div>
+                        <div class="col col-md-4 text-center no-float mr-5 mb-2">
+                            <button  onclick="" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Price-list</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Modal printReport-->
+<div th:fragment="printReport" class="modal fade " id="printReport" role="dialog"  data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg ">
+        <!-- Modal content-->
+        <div class="modal-content" style="height: 50vh">
+            <div class="modal-header justify-content-center" >
+                <label class="h3">Reports</label>
+            </div>
+            <div class="modal-body container-fluid h-75">
+                <div class="mt-2" style="height: 40%">
+                    <div class="row justify-content-around h-100">
+                        <div class="col col-md-4 text-center no-float ml-5" >
+                            <a href="#" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Type 1</a>
+                        </div>
+                        <div class="col col-md-4 text-center no-float mr-5">
+                            <button onclick="" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Type 2</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5 " style="height: 40%">
+                    <div class="row justify-content-around   h-100">
+                        <div class="col col-md-4 text-center no-float ml-5 mb-2">
+                            <button  onclick="" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Type 3</button>
+                        </div>
+                        <div class="col col-md-4 text-center no-float mr-5 mb-2">
+                            <button  onclick="" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Type 4</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal cashInOut-->
+<div th:fragment="cashInOut" class="modal fade " id="cashInOut" role="dialog"  data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header justify-content-lg-center">
+                <label id="cashInOutLbl" >  </label>
+            </div>
+            <div class="modal-body">
+                <div class=" row ">
+                    <div class="col col-lg-3  ">
+                        <label for="amount">Amount</label>
+                    </div>
+                    <div class="col">
+                        <input type="number" step="0.01" min="1" class="form-control valid" id="amount" name="sum" placeholder="Amount" required>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col col-lg-3  ">
+                        <label for="comment">Comment</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control" id="comment" name="comment" placeholder="Comment">
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-row-reverse">
+                <div class="col-4 mb-2" >
+                    <button type="button" onclick="cashInOut()" class="btn btn-primary btn-block" >Ok</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 </body>
 </html>

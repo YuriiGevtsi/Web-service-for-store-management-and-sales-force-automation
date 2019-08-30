@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="temps/temp :: fragment"></head>
+<body>
+<div class="container-fluid" style="height: 90%">
+    <div class="mb-4" >
+        <div class="row justify-content-between ">
+            <a href="/" type="button" class="btn btn-danger mt-2 ml-5"><i class="fas fa-times fa-2x mt-1" ></i></a>
+            <div class="col col-lg-3 text-right mt-3">
+                <label class="h2">My shop</label>
+            </div>
+            <div class="col-auto mt-3 mr-5">
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><i class="fas fa-search"></i></div>
+                    </div>
+                    <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Find option">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="h-25 ">
+        <div class="row justify-content-between h-100">
+            <div class="col col-md-3 text-center no-float ml-5">
+                <button onclick="$('#menageProducts').modal('show')" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Products</button>
+            </div>
+            <div class="col col-md-3 text-center no-float ">
+                <button onclick="" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Sales</button>
+            </div>
+            <div class="col col-md-3 text-center no-float mr-5">
+                <button onclick="" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Deliveries</button>
+            </div>
+        </div>
+    </div>
+    <div class="h-25 mt-5">
+        <div class="row justify-content-between   h-100">
+            <div class="col col-md-3 text-center no-float ml-5">
+                <button  onclick="$('#menageEmployee').modal('show')" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center">Employees</button>
+            </div>
+            <div class="col col-md-3 text-center no-float">
+                <button  onclick="" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Shifts</button>
+            </div>
+            <div class="col col-md-3 text-center no-float mr-5">
+                <button  onclick="" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Promotions and discounts</button>
+            </div>
+        </div>
+    </div>
+    <div class="h-25 mt-5">
+        <div class="row justify-content-between  h-100">
+            <div class="col col-md-3 text-center no-float ml-5">
+                <button  onclick="" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Inventory</button>
+            </div>
+            <div class="col col-md-3 text-center no-float">
+                <button onclick="" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Store</button>
+            </div>
+            <div class="col col-md-3 text-center no-float mr-5">
+                <button onclick="" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Suppliers</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="temps/temp :: menageEmployee"></div>
+
+<div th:replace="temps/temp :: menageProducts"></div>
+
+<div th:replace="temps/temp :: time"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+</style>
+<script type="text/javascript" th:inline="javascript">
+
+</script>
+</html>
