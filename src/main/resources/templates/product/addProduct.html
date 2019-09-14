@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="temps/temp :: fragment"></head>
+
+<body>
+<div class="container-fluid h-100">
+    <div class="row mt-3" >
+        <div class="col-sm-5">
+            <a href="/" type="button" class="btn btn-danger mt-2 ml-2"><i class="fas fa-times fa-2x mt-1" ></i></a>
+        </div>
+        <div class="col-sm-6">
+            <label class="h2 mt-2">Add new product</label>
+        </div>
+    </div>
+    <div class="h-25">
+        <div class="row mt-4" >
+            <div class="col-sm-2 ">
+                <div class="d-flex justify-content-center">
+                    <a href="/#" type="button" class="btn btn-info  "><i class="fa fa-print fa-5x" aria-hidden="false"></i></a>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <div class="row " >
+                    <div class="col-sm-5">
+                        <label  for="barcode" class="h5">Barcode</label>
+                    </div>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" id="barcode" placeholder="Input barcode of the product">
+                    </div>
+                </div>
+                <div class="row mt-4" >
+                    <div class="col-sm-5">
+                        <label for="category" class="h5">Category</label>
+                    </div>
+                    <div class="col-sm-5">
+                        <select class="custom-select " data-live-search="true"  id="category">
+                            <option disabled selected>Choose category</option>
+                            <option value="1">from AJAX</option>
+                            <option disabled></option>
+                            <option value="1">add new</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <div class="row" >
+                    <div class="col-sm-5">
+                        <label  for="productName" class="h5">Name</label>
+                    </div>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" id="productName" placeholder="Input name of the product">
+                    </div>
+                </div>
+                <div class="row mt-4" >
+                    <div class="col-sm-5">
+                        <label for="manufacturer" class="h5">Manufacturer</label>
+                    </div>
+                    <div class="col-sm-5">
+                        <select class="custom-select" id="manufacturer">
+                            <option selected>Choose the manufacturer</option>
+                            <option value="1">from AJAX</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="h-75">
+    <div class="row mt-4" >
+        <div class="col-sm-3">
+            <div class="row" >
+                <div class="col">
+                    <div class="d-flex justify-content-center">
+                        <img src="/images/loadimg.png" class="img-rounded center-block" alt="load">
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2" >
+                <div class="col">
+                    <div class="d-flex justify-content-center">
+                <label class="btn btn-primary">
+                    Browse&hellip; <input type="file" style="display: none;">
+                </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="row" >
+                <div class="col-sm-5">
+                    <label  for="measuringRate" class="h5">Base measuring rate</label>
+                </div>
+                <div class="col-sm-5">
+                    <select class="custom-select" id="measuringRate">
+                        <option selected disabled>Choose the measuring rate</option>
+                        <option value="1">from AJAX</option>
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                        <button class="btn btn-info">Add new</button>
+                </div>
+            </div>
+            <div class="row mt-4" >
+                <div class="col-sm-5">
+                    <label  for="provider" class="h5">Provider</label>
+                </div>
+                <div class="col-sm-5">
+                    <select class="custom-select" id="provider">
+                        <option selected disabled>Choose the provider</option>
+                        <option value="1">from AJAX</option>
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-info">Add another</button>
+                </div>
+            </div>
+            <div class="row mt-4" >
+                <div class="col-sm-5">
+                    <label for="vat" class="h5">Price</label>
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" id="price" placeholder="Input price">
+                </div>
+            </div>
+            <div class="row mt-4" >
+                <div class="col-sm-5">
+                    <label for="vat" class="h5">VAT</label>
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" id="vat" placeholder="Input VAT">
+                </div>
+            </div>
+            <div class="row mt-4" >
+                <div class="col-sm-10">
+                    <textarea class="form-control" rows="5" id="description" placeholder="Write a description" ></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 d-flex align-items-end">
+            <button onclick="" class="btn btn-success btn-lg w-75 p-3 h-50 d-flex justify-content-center align-items-center" >Add</button>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</body>
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+</style>
+</html>
