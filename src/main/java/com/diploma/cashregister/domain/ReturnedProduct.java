@@ -18,7 +18,7 @@ import java.util.Objects;
 public class ReturnedProduct {
     @Id
     @Column(name = "id_returned_product")
-    @SequenceGenerator(name="returned_product_id_returned_product_seq")
+    @SequenceGenerator(name="returned_product_id_returned_product_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="returned_product_id_returned_product_seq")
     private long idReturnedProduct;
     private LocalDateTime date;

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ import java.util.Set;
 public class Client {
     @Id
     @Column(name = "id_client")
-    @SequenceGenerator(name="client_id_client_seq")
+    @SequenceGenerator(name="client_id_client_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="client_id_client_seq")
     private long idClient;
 
@@ -28,7 +29,7 @@ public class Client {
     private String surname;
 
     @OneToMany(mappedBy = "client")
-    private Set<ClientCard> clientCards;
+    private Set<ClientCard> clientCards = new HashSet<>();
 
 
 }

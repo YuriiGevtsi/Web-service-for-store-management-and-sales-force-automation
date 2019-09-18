@@ -4,6 +4,8 @@
 
 <body>
 <div class="container-fluid h-100">
+    <form th:action="@{/addProduct}" method="post" enctype="multipart/form-data">
+
     <div class="row mt-3" >
         <div class="col-sm-5">
             <a href="/" type="button" class="btn btn-danger mt-2 ml-2"><i class="fas fa-times fa-2x mt-1" ></i></a>
@@ -25,7 +27,7 @@
                         <label  for="barcode" class="h5">Barcode</label>
                     </div>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" id="barcode" placeholder="Input barcode of the product">
+                        <input type="text" name="barcode" class="form-control" id="barcode" placeholder="Input barcode of the product">
                     </div>
                 </div>
                 <div class="row mt-4" >
@@ -33,11 +35,13 @@
                         <label for="category" class="h5">Category</label>
                     </div>
                     <div class="col-sm-5">
-                        <select class="custom-select " data-live-search="true"  id="category">
-                            <option disabled selected>Choose category</option>
-                            <option value="1">from AJAX</option>
-                            <option disabled></option>
-                            <option value="1">add new</option>
+                        <select class="selectpicker " title="Choose category" name="category"
+                                data-live-search="true"  id="category"  data-width="100%"
+                                onclick="if (this.selectedIndex == 1) $('#productCategory').modal('show')" data-size="5"
+                        >
+                            <option th:value="${category.getIdProductCategory()}" th:each="category : ${categories} " th:text="${category.name}"></option>
+                            <option data-divider="true"></option>
+                            <option >Add new</option>
                         </select>
                     </div>
                 </div>
@@ -48,17 +52,21 @@
                         <label  for="productName" class="h5">Name</label>
                     </div>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" id="productName" placeholder="Input name of the product">
+                        <input type="text" name="productName" class="form-control" id="productName" placeholder="Input name of the product">
                     </div>
                 </div>
                 <div class="row mt-4" >
                     <div class="col-sm-5">
-                        <label for="manufacturer" class="h5">Manufacturer</label>
+                        <label for="manufacturerSelect" class="h5">Manufacturer</label>
                     </div>
                     <div class="col-sm-5">
-                        <select class="custom-select" id="manufacturer">
-                            <option selected>Choose the manufacturer</option>
-                            <option value="1">from AJAX</option>
+                        <select class="selectpicker " data-live-search="true" data-size="5" name="manufacturer"
+                                title="Choose the manufacturer" id="manufacturerSelect"
+                                data-width="100%" onclick="if (this.selectedIndex == 1) $('#manufacturer').modal('show')"
+                        >
+                            <option th:value="${manufacturer.getIdManufacturer()}" th:each="manufacturer : ${manufacturers} " th:text="${manufacturer.name}"></option>
+                            <option data-divider="true"></option>
+                            <option >Add new</option>
                         </select>
                     </div>
                 </div>
@@ -66,85 +74,113 @@
         </div>
     </div>
     <div class="h-75">
-    <div class="row mt-4" >
-        <div class="col-sm-3">
-            <div class="row" >
-                <div class="col">
-                    <div class="d-flex justify-content-center">
-                        <img src="/images/loadimg.png" class="img-rounded center-block" alt="load">
+        <div class="row mt-4" >
+            <div class="col-sm-3">
+                <div class="row" >
+                    <div class="col">
+                        <div class="d-flex justify-content-center">
+                            <img src="/img/loadimg.png" class="img-rounded center-block" id="image" alt="load">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2" >
+                    <div class="col">
+                        <div class="d-flex justify-content-center">
+                            <label class="btn btn-primary">
+                                Browse&hellip; <input id="loadimg" type="file" name="image" style="display: none;">
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row mt-2" >
-                <div class="col">
-                    <div class="d-flex justify-content-center">
-                <label class="btn btn-primary">
-                    Browse&hellip; <input type="file" style="display: none;">
-                </label>
+            <div class="col-sm-6">
+                <div class="row" >
+                    <div class="col-sm-5">
+                        <label  for="measuringRate" class="h5">Base measuring rate</label>
+                    </div>
+                    <div class="col-sm-5">
+                        <select class="selectpicker" data-live-search="true" data-size="5" name="measuring"
+                                title="Choose the measuring rate" id="measuringRate"  data-width="100%"
+                        >
+                            <option th:value="${measuring.getIdProviderProductMeasuringRate()}" th:each="measuring : ${measuringRates} " th:text="${measuring.name}"></option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <button class="btn btn-info" onclick="$('#measuring').modal('show')">Add new</button>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="row" >
-                <div class="col-sm-5">
-                    <label  for="measuringRate" class="h5">Base measuring rate</label>
-                </div>
-                <div class="col-sm-5">
-                    <select class="custom-select" id="measuringRate">
-                        <option selected disabled>Choose the measuring rate</option>
-                        <option value="1">from AJAX</option>
-                    </select>
-                </div>
-                <div class="col-sm-2">
+                <div class="row mt-4" >
+                    <div class="col-sm-5">
+                        <label  for="provider" class="h5">Provider</label>
+                    </div>
+                    <div class="col-sm-5">
+                        <select class="selectpicker" multiple id="provider" data-live-search="true" data-size="5" name="provider"
+                                title="Choose the provider" data-selected-text-format="count > 2" data-width="100%"
+                        >
+                            <option  th:each="provider : ${providers} " th:text="${provider.name}" th:value="${provider.getIdProvider()}"></option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
                         <button class="btn btn-info">Add new</button>
+                    </div>
+                </div>
+                <div class="row mt-4" >
+                    <div class="col-sm-5">
+                        <label for="price" class="h5">Price</label>
+                    </div>
+                    <div class="col-sm-5">
+                        <input type="number" class="form-control" id="price" placeholder="Input price" name="price">
+                    </div>
+                </div>
+                <div class="row mt-4" >
+                    <div class="col-sm-5">
+                        <label for="vat" class="h5">VAT</label>
+                    </div>
+                    <div class="col-sm-5">
+                        <input type="number" class="form-control" id="vat" name="vat" placeholder="Input VAT">
+                    </div>
+                </div>
+                <div class="row mt-4" >
+                    <div class="col-sm-10">
+                        <textarea class="form-control" rows="5" id="description" name="description" placeholder="Write a description" ></textarea>
+                    </div>
                 </div>
             </div>
-            <div class="row mt-4" >
-                <div class="col-sm-5">
-                    <label  for="provider" class="h5">Provider</label>
-                </div>
-                <div class="col-sm-5">
-                    <select class="custom-select" id="provider">
-                        <option selected disabled>Choose the provider</option>
-                        <option value="1">from AJAX</option>
-                    </select>
-                </div>
-                <div class="col-sm-2">
-                    <button class="btn btn-info">Add another</button>
-                </div>
+            <div class="col-sm-3 d-flex align-items-end">
+                <button type="submit"  class="btn btn-success btn-lg w-75 p-3 h-50 d-flex justify-content-center align-items-center" >Add</button>
             </div>
-            <div class="row mt-4" >
-                <div class="col-sm-5">
-                    <label for="vat" class="h5">Price</label>
-                </div>
-                <div class="col-sm-5">
-                    <input type="text" class="form-control" id="price" placeholder="Input price">
-                </div>
-            </div>
-            <div class="row mt-4" >
-                <div class="col-sm-5">
-                    <label for="vat" class="h5">VAT</label>
-                </div>
-                <div class="col-sm-5">
-                    <input type="text" class="form-control" id="vat" placeholder="Input VAT">
-                </div>
-            </div>
-            <div class="row mt-4" >
-                <div class="col-sm-10">
-                    <textarea class="form-control" rows="5" id="description" placeholder="Write a description" ></textarea>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3 d-flex align-items-end">
-            <button onclick="" class="btn btn-success btn-lg w-75 p-3 h-50 d-flex justify-content-center align-items-center" >Add</button>
         </div>
     </div>
+
+    </form>
 </div>
-</div>
-</div>
-</div>
+<div th:replace="temps/temp :: productCategory"></div>
+<div th:replace="temps/temp :: manufacturer"></div>
+<div th:replace="temps/temp :: measuring"></div>
+<div th:replace="temps/temp :: provider"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
 </body>
+<script type="text/javascript">
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            let reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#image').attr('src',e.target.result).width(200)
+                    .height(300);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#loadimg").change(function(){
+        readURL(this);
+    });
+</script>
 <style>
     html, body {
         height: 100%;

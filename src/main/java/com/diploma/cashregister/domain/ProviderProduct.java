@@ -8,6 +8,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.HashSet;
 
 @Entity
 @Table(name = "provider_product")
@@ -18,7 +19,7 @@ import java.util.Collection;
 public class ProviderProduct {
     @Id
     @Column(name = "id_provider_product")
-    @SequenceGenerator(name="provider_product_id_provider_product_seq")
+    @SequenceGenerator(name="provider_product_id_provider_product_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="provider_product_id_provider_product_seq")
     private long idProviderProduct;
 
@@ -28,28 +29,28 @@ public class ProviderProduct {
     private String description;
 
     @OneToMany(mappedBy = "providerProduct")
-    private Collection<Action> actions;
+    private Collection<Action> actions = new HashSet<>();
 
     @OneToMany(mappedBy = "providerProduct")
-    private Collection<Bucket> buckets;
+    private Collection<Bucket> buckets = new HashSet<>();
 
     @OneToMany(mappedBy = "providerProduct")
-    private Collection<DeliveryBasket> deliveryBaskets;
+    private Collection<DeliveryBasket> deliveryBaskets = new HashSet<>();
 
     @OneToMany(mappedBy = "providerProductMeasuringRate")
-    private Collection<MeasuringRateConnectProviderProduct> measuringRateConnectProviderProducts;
+    private Collection<MeasuringRateConnectProviderProduct> measuringRateConnectProviderProducts = new HashSet<>();
 
     @OneToMany(mappedBy = "providerProduct")
-    private Collection<Price> prices;
+    private Collection<Price> prices = new HashSet<>();
 
     @OneToMany(mappedBy = "providerProduct")
-    private Collection<ProductConnectCategory> productConnectCategories;
+    private Collection<ProductConnectCategory> productConnectCategories = new HashSet<>();
 
     @OneToMany(mappedBy = "providerProduct")
-    private Collection<ProviderConnectProduct> providerConnectProducts;
+    private Collection<ProviderConnectProduct> providerConnectProducts = new HashSet<>();
 
     @OneToMany(mappedBy = "providerProduct")
-    private Collection<ProviderPrice> providerPrices;
+    private Collection<ProviderPrice> providerPrices = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "base_measuring_rate", referencedColumnName = "id_provider_product_measuring_rate")
@@ -60,16 +61,16 @@ public class ProviderProduct {
     private Manufacturer manufacturer;
 
     @OneToMany(mappedBy = "providerProduct")
-    private Collection<ReturnedProduct> returnedProducts;
+    private Collection<ReturnedProduct> returnedProducts = new HashSet<>();
 
     @OneToMany(mappedBy = "providerProduct")
-    private Collection<WrittenOffProduct> writtenOffProducts;
+    private Collection<WrittenOffProduct> writtenOffProducts = new HashSet<>();
 
     @OneToMany(mappedBy = "providerProduct")
-    private Collection<Barcode> barcodes;
+    private Collection<Barcode> barcodes = new HashSet<>();
 
     @OneToMany(mappedBy = "providerProduct")
-    private Collection<OrderBucket> orderBuckets;
+    private Collection<OrderBucket> orderBuckets = new HashSet<>();
 
     public Price getCurrentPrice(){
         return prices.stream().filter(el->LocalDate.now().isAfter(el.getDateStart()) && LocalDate.now().isBefore(el.getDateFinish()))

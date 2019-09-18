@@ -21,7 +21,7 @@ import java.util.Set;
 public class Delivery {
     @Id
     @Column(name = "id_delivery")
-    @SequenceGenerator(name="delivery_id_delivery_seq")
+    @SequenceGenerator(name="delivery_id_delivery_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="delivery_id_delivery_seq")
     private long idDelivery;
 

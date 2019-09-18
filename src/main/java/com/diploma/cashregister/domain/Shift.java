@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 
 @Entity
@@ -19,9 +20,9 @@ import java.util.Objects;
 public class Shift {
     @Id
     @Column(name = "id_shift")
-    @SequenceGenerator(name="shift_id_shift_seq")
+    @SequenceGenerator(name="shift_id_shift_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="shift_id_shift_seq")
-    private int idShift;
+    private long idShift;
 
     @Column(name = "beginning_time")
     private LocalDateTime beginningTime;
@@ -30,12 +31,12 @@ public class Shift {
     private LocalDateTime endingTime;
 
     @OneToMany(mappedBy = "shift")
-    private Collection<SellingOperation> sellingOperations;
+    private Collection<SellingOperation> sellingOperations = new HashSet<>();
 
     @OneToMany(mappedBy = "shift")
-    private Collection<FinancialOperations> financialOperations;
+    private Collection<FinancialOperations> financialOperations = new HashSet<>();
 
     @OneToMany(mappedBy = "shift")
-    private Collection<ShiftWorker> shiftWorkers;
+    private Collection<ShiftWorker> shiftWorkers = new HashSet<>();
 
 }

@@ -51,7 +51,6 @@ public class DeliveryController {
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, String> map = objectMapper.readValue(json, new TypeReference<Map<String,String>>(){});
         deliveryService.createDelivery(map);
-        System.out.println( map.get("order") );
         return json;
     }
 }

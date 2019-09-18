@@ -19,7 +19,7 @@ public class DeliveryBasket {
 
     @Id
     @Column(name = "id_delivery_basket")
-    @SequenceGenerator(name="delivery_basket_id_delivery_basket_seq")
+    @SequenceGenerator(name="delivery_basket_id_delivery_basket_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="delivery_basket_id_delivery_basket_seq")
     private long idDeliveryBasket;
 

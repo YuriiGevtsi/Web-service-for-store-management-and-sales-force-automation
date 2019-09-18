@@ -15,7 +15,7 @@ import java.util.Objects;
 public class OrderPayments {
     @Id
     @Column(name = "id_order_payments")
-    @SequenceGenerator(name="order_payments_id_order_payments_seq")
+    @SequenceGenerator(name="order_payments_id_order_payments_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="order_payments_id_order_payments_seq")
     private long idOrderPayments;
 

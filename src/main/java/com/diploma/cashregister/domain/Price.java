@@ -19,7 +19,7 @@ import java.util.Objects;
 public class Price {
     @Id
     @Column(name = "id_price")
-    @SequenceGenerator(name="price_id_price_seq")
+    @SequenceGenerator(name="price_id_price_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="price_id_price_seq")
     private long idPrice;
 

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -17,7 +18,7 @@ import java.util.Set;
 public class Order {
     @Id
     @Column(name = "id_order")
-    @SequenceGenerator(name="orders_id_order_seq")
+    @SequenceGenerator(name="orders_id_order_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="orders_id_order_seq")
     private long idOrder;
 
@@ -43,17 +44,17 @@ public class Order {
     private String amountOfDelivery;
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "orders")
-    private Set<Delivery> deliveries;
+    private Set<Delivery> deliveries = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "provider", referencedColumnName = "id_provider")
     private Provider provider;
 
     @OneToMany(mappedBy = "order")
-    private Collection<OrderPayments> orderPayments;
+    private Collection<OrderPayments> orderPayments = new HashSet<>();
 
     @OneToMany(mappedBy = "order")
-    private Collection<OrderBucket> orderBuckets;
+    private Collection<OrderBucket> orderBuckets = new HashSet<>();
 
     public void setDeliveries(Delivery delivery) {
         this.deliveries.add(delivery);

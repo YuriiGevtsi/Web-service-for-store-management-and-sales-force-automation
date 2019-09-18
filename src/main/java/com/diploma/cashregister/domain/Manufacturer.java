@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 
 @Entity
@@ -16,7 +17,7 @@ import java.util.Objects;
 public class Manufacturer {
     @Id
     @Column(name = "id_manufacturer")
-    @SequenceGenerator(name="manufacturer_id_manufacturer_seq")
+    @SequenceGenerator(name="manufacturer_id_manufacturer_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="manufacturer_id_manufacturer_seq")
     private long idManufacturer;
 
@@ -24,6 +25,6 @@ public class Manufacturer {
     private String name;
 
     @OneToMany(mappedBy = "manufacturer")
-    private Collection<ProviderProduct> providerProducts;
+    private Collection<ProviderProduct> providerProducts = new HashSet<>();
 
 }

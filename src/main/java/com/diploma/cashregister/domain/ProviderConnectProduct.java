@@ -15,7 +15,7 @@ import java.util.Objects;
 public class ProviderConnectProduct {
     @Id
     @Column(name = "id_provider_connect_product")
-    @SequenceGenerator(name="provider_connect_product_id_provider_connect_product_seq")
+    @SequenceGenerator(name="provider_connect_product_id_provider_connect_product_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="provider_connect_product_id_provider_connect_product_seq")
     private long idProviderConnectProduct;
 

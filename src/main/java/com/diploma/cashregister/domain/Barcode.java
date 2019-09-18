@@ -15,7 +15,7 @@ import java.util.Objects;
 public class Barcode {
     @Id
     @Column(name = "id_barcode")
-    @SequenceGenerator(name="barcode_id_barcode_seq")
+    @SequenceGenerator(name="barcode_id_barcode_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="barcode_id_barcode_seq")
     private long idBarcode;
 

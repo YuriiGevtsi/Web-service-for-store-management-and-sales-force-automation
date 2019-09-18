@@ -17,7 +17,7 @@ import java.util.Objects;
 public class Bucket {
     @Id
     @Column(name = "id_bucket")
-    @SequenceGenerator(name="bucket_id_bucket_seq")
+    @SequenceGenerator(name="bucket_id_bucket_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="bucket_id_bucket_seq")
     private long idBucket;
 

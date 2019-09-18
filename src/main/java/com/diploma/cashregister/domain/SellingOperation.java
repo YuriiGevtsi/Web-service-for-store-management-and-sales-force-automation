@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 
 @Entity
@@ -21,7 +22,7 @@ import java.util.Objects;
 public class SellingOperation {
     @Id
     @Column(name = "id_selling")
-    @SequenceGenerator(name="selling_operation_id_selling_seq")
+    @SequenceGenerator(name="selling_operation_id_selling_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="selling_operation_id_selling_seq")
     private long idSelling;
 
@@ -30,7 +31,7 @@ public class SellingOperation {
     private double summ;
 
     @OneToMany(mappedBy = "sellingOperation")
-    private Collection<Bucket> buckets;
+    private Collection<Bucket> buckets = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "client_card", referencedColumnName = "id_card")

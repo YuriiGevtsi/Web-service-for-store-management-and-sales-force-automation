@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 
 @Entity
@@ -16,13 +17,13 @@ import java.util.Objects;
 public class ProductCategory {
     @Id
     @Column(name = "id_product_category")
-    @SequenceGenerator(name="product_category_id_product_category_seq")
+    @SequenceGenerator(name="product_category_id_product_category_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="product_category_id_product_category_seq")
-    private int idProductCategory;
+    private long idProductCategory;
 
     private String name;
 
     @OneToMany(mappedBy = "productCategory")
-    private Collection<ProductConnectCategory> productConnectCategories;
+    private Collection<ProductConnectCategory> productConnectCategories = new HashSet<>();
 
 }

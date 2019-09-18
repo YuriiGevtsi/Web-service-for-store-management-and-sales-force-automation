@@ -18,9 +18,9 @@ import java.util.Objects;
 public class ShiftWorker {
     @Id
     @Column(name = "id_shift_worker")
-    @SequenceGenerator(name="shift_worker_id_shift_worker_seq")
+    @SequenceGenerator(name="shift_worker_id_shift_worker_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="shift_worker_id_shift_worker_seq")
-    private int idShiftWorker;
+    private long idShiftWorker;
 
     @Column(name = "login_time")
     private LocalDateTime loginTime;

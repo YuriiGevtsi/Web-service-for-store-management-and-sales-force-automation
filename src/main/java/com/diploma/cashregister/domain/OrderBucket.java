@@ -18,7 +18,7 @@ import java.util.Objects;
 public class OrderBucket {
     @Id
     @Column(name = "id_order_bucket")
-    @SequenceGenerator(name="order_bucket_id_order_bucket_seq")
+    @SequenceGenerator(name="order_bucket_id_order_bucket_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="order_bucket_id_order_bucket_seq")
     private long idOrderBucket;
 

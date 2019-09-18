@@ -17,7 +17,7 @@ import java.util.Objects;
 public class MeasuringRateConnectProviderProduct {
     @Id
     @Column(name = "id_measuring_rate_connect_provider_product")
-    @SequenceGenerator(name="measuring_rate_connect_provider_product_seq")
+    @SequenceGenerator(name="measuring_rate_connect_provider_product_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="measuring_rate_connect_provider_product_seq")
     private long idMeasuringRateConnectProviderProduct;
 
