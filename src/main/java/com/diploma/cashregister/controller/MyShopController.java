@@ -54,6 +54,7 @@ public class MyShopController {
     @PostMapping("addProduct")
     public String saveProduct(@RequestParam String barcode,
                               @RequestParam String productName,
+                              @RequestParam Double providerPrice,
                               @RequestParam Double price,
                               @RequestParam Double vat,
                               @RequestParam(required = false, defaultValue = "") String description,
@@ -71,12 +72,19 @@ public class MyShopController {
         saveFile(product,image);
         productService.saveProduct(product,manufacturer,measuring);
 
-        productService.productAddProviderPrice(price,product);
+        productService.productAddProviderPrice(providerPrice,product);
+        productService.productAddProductPrice(price,product);
         productService.productAddBarcode(barcode,product.getIdProviderProduct());
         productService.productAddCategory(category,product);
         productService.productAddProvider(provider,product);
 
          return "redirect:/myShop";
+    }
+
+    @GetMapping("allProducts")
+    public String allProducts(Model model){
+        model.addAttribute("products",productService.getAllProducts());
+        return "product/allProducts";
     }
 
     private void saveFile(@Valid ProviderProduct product, @RequestParam("file") MultipartFile file) throws IOException {

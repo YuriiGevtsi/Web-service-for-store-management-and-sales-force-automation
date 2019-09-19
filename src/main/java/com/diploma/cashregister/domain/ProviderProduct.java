@@ -7,8 +7,11 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Optional;
 
 @Entity
 @Table(name = "provider_product")
@@ -72,10 +75,17 @@ public class ProviderProduct {
     @OneToMany(mappedBy = "providerProduct")
     private Collection<OrderBucket> orderBuckets = new HashSet<>();
 
-    public Price getCurrentPrice(){
-        return prices.stream().filter(el->LocalDate.now().isAfter(el.getDateStart()) && LocalDate.now().isBefore(el.getDateFinish()))
-                .findAny()
-                .orElse(null);
+    public Double getCurrentPrice(){
+        Optional<Price> price = prices.stream().filter(el -> LocalDate.now().isAfter(el.getDateStart()) && LocalDate.now().isBefore(el.getDateFinish())).min(Comparator.comparingLong(x -> ChronoUnit.DAYS.between(x.getDateStart(), LocalDate.now())));
+        return price != null ? price.get().getPrice() : 0;
+    }
+
+    public Barcode getCurrentBarcode(){
+        return barcodes.stream().findAny().get();
+    }
+
+    public ProductCategory getMainCategory(){
+        return getProductConnectCategories().stream().findAny().get().getProductCategory();
     }
 
 }

@@ -5,7 +5,6 @@
     <meta th:name="_csrf" th:content="${_csrf.token}" type="hidden"/>
     <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>CashRegister</title>
-
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
@@ -13,10 +12,11 @@
             src="https://code.jquery.com/jquery-3.4.1.js"
             integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
             crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js"></script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+
+
 </head>
 <body>
 
@@ -73,7 +73,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -118,7 +117,6 @@
                 </form>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -218,7 +216,7 @@
         <!-- Modal content-->
         <div class="modal-content" style="height: 50vh">
             <div class="modal-header justify-content-center" >
-                        <label class="h3">Menage employee</label>
+                <label class="h3">Menage employee</label>
             </div>
             <div class="modal-body container-fluid h-75">
                 <div class="mt-2" style="height: 40%">
@@ -253,13 +251,13 @@
         <!-- Modal content-->
         <div class="modal-content" style="height: 50vh">
             <div class="modal-header justify-content-center" >
-                        <label class="h3">Menage products</label>
+                <label class="h3">Menage products</label>
             </div>
             <div class="modal-body container-fluid h-75">
                 <div class="mt-2" style="height: 40%">
                     <div class="row justify-content-around h-100">
                         <div class="col col-md-4 text-center no-float ml-5" >
-                            <a href="#" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >All products</a>
+                            <a href="/allProducts" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >All products</a>
                         </div>
                         <div class="col col-md-4 text-center no-float mr-5">
                             <a href="/addProduct" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Add new product</a>
@@ -448,6 +446,77 @@
                     </div>
                 </form>
             </div>
+        </div>
+    </div>
+</div>
+<!-- Modal datepicker-->
+<div th:fragment="datepicker" class="modal fade " id="datepicker" role="dialog"  data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-3 mb-2 d-flex justify-content-end ">
+                            <label class="mt-1 h4">Choose date: </label>
+                        </div>
+                        <div class="col-sm-2 mb-2">
+                            <input type="number" min="1" max="31" onkeyup="checkDate()" class="form-control" id="day" placeholder="Day">
+                        </div>
+                        <div class="col-sm-2  mb-2" >
+                            <select class="selectpicker"  id="month" onchange="dayPicker()"  data-size="5" title="Month" data-width="100%">
+                            </select>
+                        </div>
+                        <div class="col-sm-2  mb-2">
+                            <select class="selectpicker" onchange="createPicker()" id="year"  data-size="5" title="Year" data-width="100%">
+                                <option selected th:text="${#dates.format(#dates.createNow(), 'yyyy')}" th:value="${#dates.format(#dates.createNow(), 'yyyy')}"></option>
+                                <option th:text="${#dates.format(#dates.createNow(), 'yyyy')} + 1" th:value="${#dates.format(#dates.createNow(), 'yyyy') + 1}"></option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2  mb-3">
+                        <button type="submit"  class="btn btn-primary w-100 mb-2">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                function createPicker() {
+                    let currentDate = new Date();
+                    let months = ["Jan/01", "Feb/02", "Mar/03", "Apr/04", "May/05", "Jun/05", "Jul/07", "Aug/08", "Sep/09", "Oct/10", "Nov/11", "Dec/12"];
+                    $('#month').children('option:not(:first)').remove();
+
+                    if (currentDate.getFullYear().toString() === $( "#year option:selected" ).val()){
+                        months.forEach(function (i,index) {
+                            if (index >= currentDate.getMonth()){
+                                $('#month').append($('<option />').text(i).val(index));
+                            }
+                        });
+                    }else {
+                        months.forEach(function (i,index) {
+                            $('#month').append($('<option />').text(i).val(index));
+                        });
+                    }
+
+                    $('#month').selectpicker('refresh');
+
+
+                }
+                function dayPicker() {
+                    let currentDate = new Date();
+                    if (currentDate.getMonth().toString() === $( "#month option:selected" ).val() && currentDate.getFullYear().toString() === $( "#year option:selected" ).val()){
+                        $('#day').attr({
+                            "max" : new Date($( "#year option:selected" ).val(), $( "#month option:selected" ).val()+1, 0).getDate(),
+                            "min" : currentDate.getDate()
+                        });
+                    }
+                }
+                function checkDate() {alert();
+                    if ($('#day').val() < $('#day').attr('min') || $('#day').val() > $('#day').attr('max')) $('#day').cleanData
+                }
+            </script>
         </div>
     </div>
 </div>

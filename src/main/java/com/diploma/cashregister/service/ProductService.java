@@ -28,11 +28,13 @@ public class ProductService {
     @Autowired
     private final ProviderPriceRepo providerPriceRepo;
     @Autowired
+    private final PriceRepo priceRepo;
+    @Autowired
     private final ProductConnectCategoryRepo productConnectCategoryRepo;
     @Autowired
     private final ProviderConnectProductRepo providerConnectProductRepo;
 
-    public ProductService(ProductRepo productRepo, BarcodeRepo barcodeRepo, WrittenOffProductRepo writtenOffProductRepo, CategoryRepo categoryRepo, ManufacturerRepo manufacturerRepo, MeasuringRepo measuringRepo, ProviderRepo providerRepo, ProviderPriceRepo providerPriceRepo, ProductConnectCategoryRepo productConnectCategoryRepo, ProviderConnectProductRepo providerConnectProductRepo) {
+    public ProductService(ProductRepo productRepo, BarcodeRepo barcodeRepo, WrittenOffProductRepo writtenOffProductRepo, CategoryRepo categoryRepo, ManufacturerRepo manufacturerRepo, MeasuringRepo measuringRepo, ProviderRepo providerRepo, ProviderPriceRepo providerPriceRepo, PriceRepo priceRepo, ProductConnectCategoryRepo productConnectCategoryRepo, ProviderConnectProductRepo providerConnectProductRepo) {
         this.productRepo = productRepo;
         this.barcodeRepo = barcodeRepo;
         this.writtenOffProductRepo = writtenOffProductRepo;
@@ -41,6 +43,7 @@ public class ProductService {
         this.measuringRepo = measuringRepo;
         this.providerRepo = providerRepo;
         this.providerPriceRepo = providerPriceRepo;
+        this.priceRepo = priceRepo;
         this.productConnectCategoryRepo = productConnectCategoryRepo;
         this.providerConnectProductRepo = providerConnectProductRepo;
     }
@@ -114,6 +117,20 @@ public class ProductService {
         productRepo.save(product);
     }
 
+    public void productAddProductPrice(Double price, ProviderProduct product) {
+        Price prodPrice = new Price();
+        prodPrice.setDateStart(LocalDate.now());
+        prodPrice.setPrice(price);
+        prodPrice.setProviderProduct(product);
+
+        Collection<Price> prices = product.getPrices();
+        prices.add(prodPrice);
+        product.setPrices(prices);
+
+        priceRepo.save(prodPrice);
+        productRepo.save(product);
+    }
+
     public void productAddCategory(Long category, ProviderProduct product) {
         ProductConnectCategory productConnectCategory = new ProductConnectCategory();
         productConnectCategory.setProductCategory(categoryRepo.findById(category).get());
@@ -138,5 +155,9 @@ public class ProductService {
 
         providerConnectProductRepo.save(providerConnectProduct);
         productRepo.save(product);
+    }
+
+    public List<ProviderProduct>  getAllProducts() {
+        return productRepo.findAll();
     }
 }

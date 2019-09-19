@@ -53,7 +53,7 @@ public class SellingOperationService {
 //            comment = map.get(prod.getProviderProduct().getIdProviderProduct()).get("comment");
             if (!count.isEmpty()){
                 prod.setCount(prod.getCount() - Double.parseDouble(count));
-                price[0] += prod.getProviderProduct().getCurrentPrice().getPrice() * Double.parseDouble(count);
+                price[0] += prod.getProviderProduct().getCurrentPrice() * Double.parseDouble(count);
                 bucketRepo.save(prod);
             }
         });

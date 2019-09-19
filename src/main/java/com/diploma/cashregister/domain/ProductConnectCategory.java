@@ -3,13 +3,14 @@ package com.diploma.cashregister.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "product_connect_category")
-@Data
+@Data@ToString(of = "idProductCategory")
 @EqualsAndHashCode(of = "idProductCategory")
 @NoArgsConstructor
 public class ProductConnectCategory {
