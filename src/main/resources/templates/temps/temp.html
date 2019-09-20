@@ -465,7 +465,6 @@
                 <div class="container-fluid">
                     <form action="#">
                     <div class="row">
-
                         <div class="col-sm-3 mb-2 d-flex justify-content-end ">
                             <label class="mt-1 h4">Choose date: </label>
                         </div>
@@ -476,11 +475,11 @@
                             </select>
                         </div>
                         <div class="col-sm-2  mb-2" >
-                            <select class="selectpicker"  id="month" required onchange="dayPicker()"  data-size="5" title="Month" data-width="100%">
+                            <select class="selectpicker"  id="month" required data-size="5" title="Month" data-width="100%">
                             </select>
                         </div>
                         <div class="col-sm-2 mb-2">
-                            <input type="number" min="1" required max="31" onkeyup="checkDate()" class="form-control" id="day" placeholder="Day">
+                            <input type="number" min="1" required max="31" class="form-control" id="day" placeholder="Day">
                         </div>
                         <div class="col-sm-2  mb-3">
                         <button type="submit" onclick="setDate()" class="btn btn-primary w-100 mb-2">Ok</button>
@@ -507,29 +506,24 @@
                             $('#month').append($('<option />').text(i).val(index+1));
                         });
                     }
-
                     $('#month').selectpicker('refresh');
-
-
                 }
-                function dayPicker() {
-                    let currentDate = new Date();
-                    if (currentDate.getMonth().toString() === $( "#month option:selected" ).val() && currentDate.getFullYear().toString() === $( "#year option:selected" ).val()){
-                        $('#day').attr({
-                            "max" : new Date($( "#year option:selected" ).val(), $( "#month option:selected" ).val(), 0).getDate(),
-                            "min" : currentDate.getDate()
-                        });
-                    }
-                }
-                function checkDate() {
 
-                }
                 function setDate() {
-                    let val = $( "#year option:selected" ).val() +'-' + $( "#month option:selected" ).val() +'-'+$('#day').val() ;
-                    $('#expire').val(val);
-                    $('#expireLbl').text(' Expire date : '+ val);
-                    if ($('#day').val() < $('#day').attr('min') || $('#day').val() > $('#day').attr('max')){
-
+                    let currentDate = new Date();
+                    let day = $('#day').val();
+                    if (day > new Date($("#year option:selected" ).val(), $( "#month option:selected" ).val(), 0).getDate()){
+                        $('#day')[0].setCustomValidity('Day must be lower then ' +  new Date($("#year option:selected" ).val(), $( "#month option:selected" ).val(), 0).getDate())
+                    }
+                    else if ((currentDate.getMonth() + 1).toString() === $("#month option:selected").val() && currentDate.getFullYear().toString() === $("#year option:selected").val() && day < currentDate.getDate()) {
+                        $('#day')[0].setCustomValidity('Day must be upper then ' + currentDate.getDate())
+                    }
+                    else {
+                        $('#datepicker').modal('hide');
+                        $('#day')[0].setCustomValidity('');
+                        let val = $( "#year option:selected" ).val() +'-' + $( "#month option:selected" ).val() +'-'+$('#day').val() ;
+                        $('#expire').val(val);
+                        $('#expireLbl').text(' Expire date : '+ val);
                     }
                 }
             </script>
