@@ -162,4 +162,11 @@ public class ProductService {
     public List<ProviderProduct>  getAllProducts() {
         return productRepo.findAll();
     }
+
+    public void removeProduct(List<String> list) {
+        list.forEach(e->{
+            ProviderProduct product = productRepo.findById(Long.valueOf(e)).get();
+            productRepo.delete(product);
+        });
+    }
 }

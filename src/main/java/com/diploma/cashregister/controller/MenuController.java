@@ -35,7 +35,30 @@ public class MenuController {
     }
 
     @GetMapping("/")
-    public String greeting(Model model) {return "mainMenu/main_menu";}
+    public String greeting(@AuthenticationPrincipal WorkerPassword workerPassword, Model model) {
+        Shift shift = workerPasswordService.getCurrentShift();
+        if (shift == null) model.addAttribute("shift",false);
+        else model.addAttribute("shift",true);
+
+        ShiftWorker shiftWorker = workerPasswordService.getCurrentShiftWorker(workerPassword.getWorker()).orElse(null);
+        if (shiftWorker == null  ) {
+            model.addAttribute("shiftWorker",false);
+            if (shift != null)workerPasswordService.createShiftWorker(workerPassword.getWorker(),shift );
+        }else model.addAttribute("shiftWorker",true);
+
+        model.addAttribute("worker",workerPassword.getWorker());
+        return "mainMenu/main_menu";
+    }
+    @PostMapping("/")
+    public String startShift(@AuthenticationPrincipal WorkerPassword workerPassword) {
+        workerPasswordService.createShift(workerPassword.getWorker());
+        return "redirect:/";
+    }
+    @PostMapping("/noShift")
+    public String noShift(@AuthenticationPrincipal WorkerPassword workerPassword) {
+        workerPasswordService.createShiftWorker(workerPassword.getWorker(),null );
+        return "redirect:/";
+    }
 
     @PostMapping("cash")
     public @ResponseBody String cashOut(
@@ -87,8 +110,8 @@ public class MenuController {
 
 
     @GetMapping("finish")
-    public @ResponseBody String finishWork(@RequestParam String param){
-        System.out.println(param);
+    public @ResponseBody String finishWork(@AuthenticationPrincipal WorkerPassword workerPassword, @RequestParam String param){
+        workerPasswordService.closeShift(workerPassword.getWorker());
 
         return param;
     }

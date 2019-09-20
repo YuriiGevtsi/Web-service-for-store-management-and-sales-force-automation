@@ -2,13 +2,14 @@ package com.diploma.cashregister.controller;
 
 import com.diploma.cashregister.domain.ProviderProduct;
 import com.diploma.cashregister.service.ProductService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import net.minidev.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -16,6 +17,8 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -88,6 +91,17 @@ public class MyShopController {
     public String allProducts(Model model){
         model.addAttribute("products",productService.getAllProducts());
         return "product/allProducts";
+    }
+
+    @PostMapping(value = "/removeProducts")
+    public @ResponseBody
+    String removeProducts(
+            @RequestBody String json
+    ) throws IOException {
+        List<String> list = new ObjectMapper().readValue(json, List.class);
+    productService.removeProduct(list);
+        System.out.println(list.get(0));
+        return json;
     }
 
     private void saveFile(@Valid ProviderProduct product, @RequestParam("file") MultipartFile file) throws IOException {

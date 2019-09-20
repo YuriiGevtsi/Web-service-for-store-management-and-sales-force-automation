@@ -7,25 +7,17 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col">
-                <a href="/" type="button" class="btn btn-danger mt-2"><i class="fas fa-times fa-2x" ></i></a>
+                <a href="/myShop" type="button" class="btn btn-danger mt-2"><i class="fas fa-times fa-2x" ></i></a>
             </div>
         </div>
     </div>
     <div class="container">
         <div class="row d-flex justify-content-between mt-2">
             <div class="col">
-                <button type="button" class="btn btn-success mb-2 mr-5 "><span class="fas fa-plus"></span></button>
+                <a href="/addProduct" type="button" class="btn btn-success mb-2 mr-5 "><span class="fas fa-plus"></span></a>
             </div>
             <div class="col">
                 <button type="button" onclick="myFunction()" class="btn btn-danger mb-2 ml-5"><span class="fas fa-minus"></span></button>
-            </div>
-            <div class="col">
-                <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text"><i class="fas fa-search"></i></div>
-                    </div>
-                    <input  onkeyup="myFunction()" type="text" class="form-control" id="search" placeholder="Search">
-                </div>
             </div>
         </div>
     </div>
@@ -46,8 +38,8 @@
             </thead>
             <tbody>
             <tr th:each="item,iter: ${products}">
-                <th  scope="row" th:id="${item.getIdProviderProduct()}">
-                    <input style="width: 100%; height: 1.5rem"  type="checkbox" th:id="${iter.index}" >
+                <th  scope="row" >
+                    <input style="width: 100%; height: 1.5rem"  type="checkbox" th:id="${item.getIdProviderProduct()}" >
                 </th>
                 <td> <a th:id="${item.getCurrentBarcode()}+code" th:text="${item.getCurrentBarcode().getCode()}"/></td>
                 <td> <a th:id="${item.getIdProviderProduct()}+name" th:text="${item.getName()}"/></td>
@@ -75,26 +67,42 @@
 </style>
 <script>
     function myFunction() {
-        let filter, j, i;
-        filter = $('#search').val().toUpperCase();
+        let j, i;
         let rows = $('#prods').find('> tbody > tr');
+        let products = [];
         for (i = 0; i < rows.length; i++) {
-            rows[i].style.display = "";
-        }
-        for (i = 0; i < rows.length; i++) {
-
-            let count = 0;
-            let cells = rows.eq(i).find('td');
-
+            let cells = rows.eq(i).find('input');
             for (j = 0; j < cells.length; j++) {
-                if (cells.eq(j).text().toUpperCase().indexOf(filter) > -1) {
-                    count++;
+                if (cells.eq(j).prop("checked") === true) {
+                    products.push(cells.eq(j).attr('id'));
+                    rows[i].style.display = "none";//temporary
                 }
             }
-            if (count === 0){
-                rows[i].style.display = "none";
-            }
         }
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+        $.ajax({
+            type: 'POST',
+            contentType : "application/json",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token)
+            },
+            url: 'http://localhost:8080/removeProducts',
+            data:  JSON.stringify(products),
+            dataType: "json",
+            timeout: 1000000,
+            success : function(data) {
+                console.log("SUCCESS: ", data);
+                window.location = "http://localhost:8080/myShop"
+            },
+            error : function(e) {
+                console.log("ERROR: ", e);
+            },
+            done : function(e) {
+                console.log("DONE");
+            }
+        });
+
     }
     $(document).ready( function () {
         $('#prods').DataTable();

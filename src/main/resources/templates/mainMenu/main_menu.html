@@ -34,7 +34,7 @@
     <div class="h-25">
         <div class="row justify-content-md-center mt-3 h-100">
             <div class="col col-lg-3 text-center no-float ">
-                <button  onclick="$('#finish').modal('show')" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Finish shift</button>
+                <button  onclick="$('#finish').modal('show')" th:disabled="${shift ? false : true}" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Finish shift</button>
             </div>
             <div class="col col-lg-3 text-center no-float">
                 <button onclick="$('#printReport').modal('show');" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Print report</button>
@@ -76,9 +76,8 @@
 </style>
 <script type="text/javascript" th:inline="javascript">
 
-    $(window).on('load',function(){
-        $('#shiftModal').modal('show');
-        if ([[${receipt}]] != null) alert([[${receipt}]]);
+    $(window).on('load', () => {
+        if (![[${shift}]] && ![[${shiftWorker}]])  $('#shiftModal').modal('show');
     });
 
     const token = $("meta[name='_csrf']").attr("content");
@@ -102,12 +101,6 @@
             url: 'http://localhost:8080/cash',
             data: jQuery.param({ amount: amount, comment: comment, type: type}) ,
             success : function(data) {
-                if (data === 'error'){
-
-                }
-                else {
-
-                }
                 $('#cashInOut').modal('hide');
             }
         });

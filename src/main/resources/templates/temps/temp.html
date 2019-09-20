@@ -80,20 +80,21 @@
 </div>
 
 <!-- Modal start shift-->
-<div th:fragment="startShift" class="modal fade " id="shiftModal" role="dialog"  data-keyboard="false">
+<div th:fragment="startShift" class="modal fade " id="shiftModal" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-sm">
 
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">×</button>
-            </div>
             <div class="modal-body">
                 <p>Start shift?</p>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                <button type="button" class="btn btn-primary" onclick = "$('#shiftModal').modal('hide')">Yes</button>
+            <div class="modal-footer d-flex justify-content-between">
+                <form th:action="@{/noShift}" method="post" >
+                    <input type="submit" class="btn btn-secondary" value="No">
+                </form>
+                <form th:action="@{/}" method="post" >
+                    <input type="submit" class="btn btn-primary" value="Yes" >
+                </form>
             </div>
         </div>
 

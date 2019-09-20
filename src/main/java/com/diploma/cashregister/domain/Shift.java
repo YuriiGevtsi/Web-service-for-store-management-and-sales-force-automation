@@ -39,4 +39,7 @@ public class Shift {
     @OneToMany(mappedBy = "shift")
     private Collection<ShiftWorker> shiftWorkers = new HashSet<>();
 
+    public void setShiftWorkers(ShiftWorker shiftWorkers) {
+        this.shiftWorkers.add(shiftWorkers);
+    }
 }
