@@ -76,7 +76,10 @@ public class ProviderProduct {
     private Collection<OrderBucket> orderBuckets = new HashSet<>();
 
     public Double getCurrentPrice(){
-        Optional<Price> price = prices.stream().filter(el -> LocalDate.now().isAfter(el.getDateStart()) && LocalDate.now().isBefore(el.getDateFinish())).min(Comparator.comparingLong(x -> ChronoUnit.DAYS.between(x.getDateStart(), LocalDate.now())));
+        Optional<Price> price = prices.stream().filter(el ->
+                (LocalDate.now().isAfter(el.getDateStart()) || LocalDate.now().isEqual(el.getDateStart()))
+                        && (LocalDate.now().isBefore(el.getDateFinish()) || LocalDate.now().isEqual(el.getDateFinish())) )
+                            .min(Comparator.comparingLong(x -> ChronoUnit.DAYS.between(x.getDateStart(), LocalDate.now())));
         return price != null ? price.get().getPrice() : 0;
     }
 

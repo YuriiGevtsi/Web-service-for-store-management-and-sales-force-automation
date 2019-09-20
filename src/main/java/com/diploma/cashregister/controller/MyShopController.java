@@ -14,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Controller
@@ -56,6 +58,7 @@ public class MyShopController {
                               @RequestParam String productName,
                               @RequestParam Double providerPrice,
                               @RequestParam Double price,
+                              @RequestParam String date,
                               @RequestParam Double vat,
                               @RequestParam(required = false, defaultValue = "") String description,
                               @RequestParam MultipartFile image,
@@ -73,7 +76,7 @@ public class MyShopController {
         productService.saveProduct(product,manufacturer,measuring);
 
         productService.productAddProviderPrice(providerPrice,product);
-        productService.productAddProductPrice(price,product);
+        productService.productAddProductPrice(price,date,product);
         productService.productAddBarcode(barcode,product.getIdProviderProduct());
         productService.productAddCategory(category,product);
         productService.productAddProvider(provider,product);

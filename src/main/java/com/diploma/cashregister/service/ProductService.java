@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 
@@ -117,9 +118,10 @@ public class ProductService {
         productRepo.save(product);
     }
 
-    public void productAddProductPrice(Double price, ProviderProduct product) {
+    public void productAddProductPrice(Double price, String date, ProviderProduct product) {
         Price prodPrice = new Price();
         prodPrice.setDateStart(LocalDate.now());
+        prodPrice.setDateFinish(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         prodPrice.setPrice(price);
         prodPrice.setProviderProduct(product);
 

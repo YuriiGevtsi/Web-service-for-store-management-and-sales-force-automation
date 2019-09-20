@@ -4,21 +4,33 @@
 <body>
 
 <div class="container-fluid h-100">
-    <div class="container">
-        <div class="row justify-content-start">
-            <a href="/" type="button" class="btn btn-danger mt-2"><i class="fas fa-times fa-2x" ></i></a>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <a href="/" type="button" class="btn btn-danger mt-2"><i class="fas fa-times fa-2x" ></i></a>
+            </div>
         </div>
     </div>
     <div class="container">
-        <div class="row">
-            <button type="button" class="btn btn-success mb-2 mr-5 "><span class="fas fa-plus"></span></button>
-            <button type="button" class="btn btn-danger mb-2 ml-5"><span class="fas fa-minus"></span></button>
-            <button type="button" class="btn btn-info  offset-md-3 mb-2" >Add comment</button>
-            <button type="button" class="btn btn-info  offset-md-2 mb-2">Additionally</button>
+        <div class="row d-flex justify-content-between mt-2">
+            <div class="col">
+                <button type="button" class="btn btn-success mb-2 mr-5 "><span class="fas fa-plus"></span></button>
+            </div>
+            <div class="col">
+                <button type="button" onclick="myFunction()" class="btn btn-danger mb-2 ml-5"><span class="fas fa-minus"></span></button>
+            </div>
+            <div class="col">
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><i class="fas fa-search"></i></div>
+                    </div>
+                    <input  onkeyup="myFunction()" type="text" class="form-control" id="search" placeholder="Search">
+                </div>
+            </div>
         </div>
     </div>
     <div class="h-50">
-        <table class="table table-hover " id="prods">
+        <table class="table table-hover table-striped " id="prods">
             <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
@@ -41,7 +53,7 @@
                 <td> <a th:id="${item.getIdProviderProduct()}+name" th:text="${item.getName()}"/></td>
                 <td> <a th:id="${item.getIdProviderProduct()}+measuring" th:text="${item.providerProductMeasuringRate.name}" /></td>
                 <td> <a th:id="${item.getIdProviderProduct()}+manufacrurer" th:text="${item.manufacturer.name}" /></td>
-                <td> <a th:id="${item.getIdProviderProduct()}+dateof" th:text="hz" /></td>
+                <td> <a th:id="${item.getIdProviderProduct()}+dateof" th:text="${item.providerPrices.stream().findFirst().get().getDate()}" /></td>
                 <td> <a th:id="${item.getIdProviderProduct()}+vat" th:text="${item.vat}"/></td>
                 <td> <a th:id="${item.getIdProviderProduct()}+price" th:text="${item.currentPrice}" /> </td>
                 <td> <a th:id="${item.getIdProviderProduct()}+category" th:text="${item.getMainCategory().getName()}" /> </td>
@@ -61,4 +73,31 @@
         margin: 0;
     }
 </style>
+<script>
+    function myFunction() {
+        let filter, j, i;
+        filter = $('#search').val().toUpperCase();
+        let rows = $('#prods').find('> tbody > tr');
+        for (i = 0; i < rows.length; i++) {
+            rows[i].style.display = "";
+        }
+        for (i = 0; i < rows.length; i++) {
+
+            let count = 0;
+            let cells = rows.eq(i).find('td');
+
+            for (j = 0; j < cells.length; j++) {
+                if (cells.eq(j).text().toUpperCase().indexOf(filter) > -1) {
+                    count++;
+                }
+            }
+            if (count === 0){
+                rows[i].style.display = "none";
+            }
+        }
+    }
+    $(document).ready( function () {
+        $('#prods').DataTable();
+    } );
+</script>
 </html>
