@@ -36,8 +36,8 @@
                     <th scope="row" th:id="${product.idBucket}" th:text="${iter.index+1}"></th>
                     <td > <a th:id="${product.idBucket}+name" th:text="${product.providerProduct.name}" /></td>
                     <td> <a th:id="${product.idBucket}+amount" th:text="${product.count}" /></td>
-                    <td> <a th:id="${product.idBucket}+price"  th:text="${product.providerProduct.getCurrentPrice()}" /></td>
-                    <td><a th:id="${product.idBucket}+summ" th:text="${product.getCount() * product.providerProduct.getCurrentPrice()}" /></td>
+                    <td> <a th:id="${product.idBucket}+price"  th:text="${product.providerProduct.getCurrentPrice().getPrice()}" /></td>
+                    <td><a th:id="${product.idBucket}+summ" th:text="${product.getCount() * product.providerProduct.getCurrentPrice().getPrice()}" /></td>
                     <td> <input class="form-control-plaintext bg-light rounded" name="amount"
                                 th:id="${product.idBucket}+return"
                                 type="number" th:max="${product.getCount()}" min="0" >

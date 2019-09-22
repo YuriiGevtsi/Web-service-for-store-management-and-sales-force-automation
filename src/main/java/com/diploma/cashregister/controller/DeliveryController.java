@@ -28,16 +28,15 @@ public class DeliveryController {
     }
 
     @GetMapping("/delivery_number")
-    public String getDelivery(@RequestParam long number,
+    public String getDelivery(@RequestParam(required = true) long number,
                            Model model
     ) {
         Set<OrderPayments> orderPayments = deliveryService.getOrderPayments(number);
 
         orderPayments.stream().forEach(payment ->{
             if (payment.getType().equalsIgnoreCase("pre")) model.addAttribute("pre", payment.getSum());
-            if (payment.getType().equalsIgnoreCase("onDelivery")) model.addAttribute("post", payment.getSum() );
-            if (payment.getType().equalsIgnoreCase("credit"))  model.addAttribute("credit", payment.getSum());
-            
+            else if (payment.getType().equalsIgnoreCase("onDelivery")) model.addAttribute("post", payment.getSum());
+            else  model.addAttribute("credit", payment.getSum());
         });
         model.addAttribute("order",deliveryService.getOrder(number));
         model.addAttribute("bucket",deliveryService.getProductFromOrderBucket(number));
