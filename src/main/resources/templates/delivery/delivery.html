@@ -64,7 +64,7 @@
                     <td> <a th:id="${item.idOrderBucket}+measuring" th:text="${item.measuringRate}" /></td>
                     <td> <a th:id="${item.idOrderBucket}+price" th:text="${item.pricePerUnit}" /></td>
                     <td><a th:id="${item.idOrderBucket}+currency" th:text="${item.currency}" /></td>
-                    <td><a th:id="${item.idOrderBucket}+vat" th:text="${item.amount}*${item.pricePerUnit}*${item.providerProduct.vat}*0.01" /></td>
+                    <td><a th:id="${item.idOrderBucket}+vat" th:text="${#numbers.formatDecimal((item.amount*item.pricePerUnit*item.providerProduct.vat*0.01), 0, 2)}" /></td>
                     <td> <a th:id="${item.idOrderBucket}+summ" th:text="${item.amount}*${item.pricePerUnit}" /> </td>
 
                 </tr>
@@ -147,11 +147,12 @@
 
         document.getElementById(id[0]+'vat').text = (summ * vat * 0.01).toFixed(2)  ;
 
-        document.getElementById('summary').innerText = countSumm('summ') ;
+        document.getElementById('summary').innerText = countSumm('summ').toString() ;
 
         document.getElementById('vat').innerText = countSumm('vat') ;
 
         document.getElementById('payment').innerText = countPayment().toString() ;
+
 
     }
 
@@ -159,7 +160,7 @@
         let obj = 0;
         if (str==='summ') {
             $("a[id*='summ']").each(function () {
-                obj += parseFloat(this.text);
+                obj += parseFloat(this.text);;
             });
         }else {
             $("a[id*='vat']").each(function () {

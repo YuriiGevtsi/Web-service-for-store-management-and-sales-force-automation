@@ -84,7 +84,7 @@ public class ProviderProduct {
     }
 
     public Barcode getCurrentBarcode(){
-        return barcodes.stream().findAny().get();
+        return barcodes.stream().findFirst().get();
     }
 
     public ProductCategory getMainCategory(){
