@@ -19,7 +19,7 @@ public class Barcode {
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="barcode_id_barcode_seq")
     private long idBarcode;
 
-    @Column(name = "code",unique = true)
+    @Column(name = "code")
     private String code;
 
     @ManyToOne
