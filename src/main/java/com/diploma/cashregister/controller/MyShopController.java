@@ -2,9 +2,7 @@ package com.diploma.cashregister.controller;
 
 import com.diploma.cashregister.domain.ProviderProduct;
 import com.diploma.cashregister.service.ProductService;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.minidev.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -15,10 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -68,23 +63,30 @@ public class MyShopController {
                               @RequestParam Long category,
                               @RequestParam Long manufacturer,
                               @RequestParam Long measuring,
-                              @RequestParam Long provider
+                              @RequestParam Long provider,
+                              @RequestParam(required = false, defaultValue = "-1") Long idProduct
                               ) throws IOException {
-        ProviderProduct product = new ProviderProduct();
+        ProviderProduct product;
+        if (idProduct!=-1) product = productService.getProduct(String.valueOf(idProduct));
+        else product = new ProviderProduct();
 
         product.setDescription(description);
         product.setName(productName);
         product.setVat(vat);
+
         saveFile(product,image);
         productService.saveProduct(product,manufacturer,measuring);
 
-        productService.productAddProviderPrice(providerPrice,product);
-        productService.productAddProductPrice(price,date,product);
-        productService.productAddBarcode(barcode,product.getIdProviderProduct());
-        productService.productAddCategory(category,product);
-        productService.productAddProvider(provider,product);
+        if (!product.getCurrentProviderPrice().equals(providerPrice))productService.productAddProviderPrice(providerPrice,product);
+        if (idProduct == -1)productService.productAddProductPrice(price,date,product);
+        else productService.productEditPrice(price,date,product);
+        if (!product.getCurrentBarcode().getCode().equals(barcode))productService.productAddBarcode(barcode,product.getIdProviderProduct());
+        if (product.getMainCategory().getIdProductCategory() != category && idProduct != -1) productService.editCategory(category,product);
+        else productService.productAddCategory(category,product);
+        if (!product.findProvider(provider))productService.productAddProvider(provider,product);
 
-         return "redirect:/myShop";
+        if (idProduct == -1)return "redirect:/myShop";
+        else return "redirect:/allProducts";
     }
 
     @GetMapping("allProducts")
@@ -102,6 +104,16 @@ public class MyShopController {
     productService.removeProduct(list);
         System.out.println(list.get(0));
         return json;
+    }
+
+    @GetMapping("editProduct")
+    public String editProduct(Model model, @RequestParam String idProduct){
+        model.addAttribute("categories",productService.getCategories());
+        model.addAttribute("manufacturers",productService.getManufacturers());
+        model.addAttribute("measuringRates",productService.getMeasuringRates());
+        model.addAttribute("providers",productService.getProviders());
+        model.addAttribute("product", productService.getProduct(idProduct));
+        return "product/addProduct";
     }
 
     private void saveFile(@Valid ProviderProduct product, @RequestParam("file") MultipartFile file) throws IOException {

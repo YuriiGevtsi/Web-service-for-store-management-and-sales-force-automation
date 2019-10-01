@@ -162,11 +162,27 @@ public class ProductService {
     public List<ProviderProduct>  getAllProducts() {
         return productRepo.findAll();
     }
+    public ProviderProduct  getProduct(String id) {
+        return productRepo.findById(Long.valueOf(id)).get();
+    }
 
     public void removeProduct(List<String> list) {
         list.forEach(e->{
             ProviderProduct product = productRepo.findById(Long.valueOf(e)).get();
             productRepo.delete(product);
         });
+    }
+
+    public void productEditPrice(Double price, String date, ProviderProduct product) {
+        Price currentPrice = product.getCurrentPrice();
+        currentPrice.setDateFinish(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        currentPrice.setPrice(price);
+        priceRepo.save(currentPrice);
+    }
+
+    public void editCategory(Long category, ProviderProduct product) {
+        ProductCategory mainCategory = product.getMainCategory();
+        mainCategory.setName(categoryRepo.findById(category).get().getName());
+        categoryRepo.save(mainCategory);
     }
 }
