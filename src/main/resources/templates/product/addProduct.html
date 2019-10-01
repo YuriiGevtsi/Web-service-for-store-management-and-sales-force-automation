@@ -8,10 +8,10 @@
 
     <div class="row mt-3" >
         <div class="col-sm-5">
-            <a href="/myShop" type="button" class="btn btn-danger mt-2 ml-2"><i class="fas fa-times fa-2x mt-1" ></i></a>
+            <a th:href=" ${product} ? '/allProducts' : '/myShop'" type="button" class="btn btn-danger mt-2 ml-2"><i class="fas fa-times fa-2x mt-1" ></i></a>
         </div>
         <div class="col-sm-6">
-            <label class="h2 mt-2">Add new product</label>
+            <label class="h2 mt-2" th:text="${product} ? 'Edit product' : 'Add new product'"></label>
         </div>
     </div>
     <div class="h-25">
@@ -27,7 +27,7 @@
                         <label  for="barcode" class="h5">Barcode</label>
                     </div>
                     <div class="col-sm-5">
-                        <input type="text" name="barcode" class="form-control" id="barcode" placeholder="Input barcode of the product">
+                        <input type="text" name="barcode" class="form-control" th:value="${product} ? ${product.getCurrentBarcode().getCode()}" id="barcode" placeholder="Input barcode of the product">
                     </div>
                 </div>
                 <div class="row mt-4" >
@@ -39,7 +39,8 @@
                                 data-live-search="true"  id="category"  data-width="100%" data-size="5"
                                 onchange="if($('#category option:selected').val() == '-1') $('#productCategory').modal('show') "
                         >
-                            <option th:value="${category.getIdProductCategory()}" th:each="category : ${categories} " th:text="${category.name}"></option>
+                            <option th:value="${category.getIdProductCategory()}" th:each="category : ${categories} " th:text="${category.name}"
+                                    th:selected="${product} ? (${product.getMainCategory().getName() == category.name} ? true : false) : false"></option>
                             <option data-divider="true"></option>
                             <option  value="-1">Add new</option>
                         </select>
@@ -52,7 +53,7 @@
                         <label  for="productName" class="h5">Name</label>
                     </div>
                     <div class="col-sm-5">
-                        <input type="text" name="productName" class="form-control" id="productName" placeholder="Input name of the product">
+                        <input type="text" name="productName" class="form-control" id="productName" th:value="${product} ? ${product.getName()}" placeholder="Input name of the product">
                     </div>
                 </div>
                 <div class="row mt-4" >
@@ -64,7 +65,8 @@
                                 title="Choose the manufacturer" id="manufacturerSelect"
                                 data-width="100%" onchange="if($('#manufacturerSelect option:selected').val() == '-1') $('#manufacturer').modal('show')"
                         >
-                            <option th:value="${manufacturer.getIdManufacturer()}" th:each="manufacturer : ${manufacturers} " th:text="${manufacturer.name}"></option>
+                            <option th:value="${manufacturer.getIdManufacturer()}" th:each="manufacturer : ${manufacturers} " th:text="${manufacturer.name}"
+                                    th:selected="${product} ? (${product.getManufacturer().getName() == manufacturer.name} ? true : false) : false"></option>
                             <option data-divider="true"></option>
                             <option value="-1">Add new</option>
                         </select>
@@ -79,7 +81,7 @@
                 <div class="row" >
                     <div class="col">
                         <div class="d-flex justify-content-center">
-                            <img src="/img/loadimg.png" class="img-rounded center-block" id="image" alt="load">
+                            <img th:src="${product} ? '/img/'+ ${product.getPhoto()} : '/img/loadimg.png'" width="225" th:height="${product} ? 325 : 225" class="img-rounded center-block" id="image" alt="load">
                         </div>
                     </div>
                 </div>
@@ -102,7 +104,8 @@
                         <select class="selectpicker" data-live-search="true" data-size="5" name="measuring"
                                 title="Choose the measuring rate" id="measuringRate"  data-width="100%"
                         >
-                            <option th:value="${measuring.getIdProviderProductMeasuringRate()}" th:each="measuring : ${measuringRates} " th:text="${measuring.name}"></option>
+                            <option th:value="${measuring.getIdProviderProductMeasuringRate()}" th:each="measuring : ${measuringRates} " th:text="${measuring.name}"
+                                    th:selected="${product} ? (${product.getProviderProductMeasuringRate().getName() == measuring.name} ? true : false) : false"></option>
                         </select>
                     </div>
                     <div class="col-sm-2">
@@ -117,7 +120,8 @@
                         <select class="selectpicker" multiple id="provider" data-live-search="true" data-size="5" name="provider"
                                 title="Choose the provider" data-selected-text-format="count > 2" data-width="100%"
                         >
-                            <option  th:each="provider : ${providers} " th:text="${provider.name}" th:value="${provider.getIdProvider()}"></option>
+                            <option  th:each="provider : ${providers} " th:text="${provider.name}" th:value="${provider.getIdProvider()}"
+                                     th:selected="${product} ? (${product.findProvider(provider.getIdProvider())} ? true : false) : false"></option>
                         </select>
                     </div>
                     <div class="col-sm-2">
@@ -129,7 +133,7 @@
                         <label for="price" class="h5">Provider price</label>
                     </div>
                     <div class="col-sm-5">
-                        <input type="number" min="0.01" step="0.01" class="form-control" id="providerPrice" placeholder="Input price" name="providerPrice">
+                        <input type="number" class="form-control" id="providerPrice" placeholder="Input price"  th:value="${product} ? ${product.getCurrentProviderPrice()}" name="providerPrice">
                     </div>
                 </div>
                 <div class="row mt-4" >
@@ -137,9 +141,19 @@
                         <label for="price" class="h5">Price</label>
                     </div>
                     <div class="col-sm-5">
-                        <input type="number" min="0.01" step="0.01" class="form-control" id="price" placeholder="Input price" name="price">
-                        <small id="expireLbl" class="form-text text-muted" th:text="' Expire date : ' + ${#dates.format(#dates.createNow(), 'yyyy')} +'-12-31'"></small>
-                        <input type="hidden" class="form-control" id="expire"  name="date" th:value="${#dates.format(#dates.createNow(), 'yyyy')} + '-12-31'">
+                        <input type="number" class="form-control" id="price" placeholder="Input price" th:value="${product} ?(${product.getCurrentPrice()} ? ${product.getCurrentPrice().getPrice()} : 0) " name="price">
+                        <small id="expireLbl" class="form-text text-muted"
+                               th:text="${product} ?
+                                                    (${product.getCurrentPrice()} ?
+                                                                                    ' Expire date : ' + ${product.getCurrentPrice().getDateFinish()} :
+                                                                                    ' Expire date : ' + ${#dates.format(#dates.createNow(), 'yyyy')} +'-12-31')
+                                                    : ' Expire date : ' + ${#dates.format(#dates.createNow(), 'yyyy')} +'-12-31'"
+                        ></small>
+                        <input type="hidden" class="form-control" id="expire"  name="date" th:value="${product} ?
+                                                    (${product.getCurrentPrice()} ?
+                                                                                   ${product.getCurrentPrice().getDateFinish()} :
+                                                                                   ${#dates.format(#dates.createNow(), 'yyyy')} +'-12-31')
+                                                    :${#dates.format(#dates.createNow(), 'yyyy')} +'-12-31'">
                     </div>
                     <div class="col-sm-2">
                         <button class="btn btn-info" onclick="$('#datepicker').modal('show'); createPicker()" type="button">Expire date</button>
@@ -150,12 +164,12 @@
                         <label for="vat" class="h5">VAT</label>
                     </div>
                     <div class="col-sm-5">
-                        <input type="number" min="0.01" step="0.01" class="form-control" id="vat" name="vat" placeholder="Input VAT">
+                        <input type="number" class="form-control" id="vat" name="vat" placeholder="Input VAT" th:value="${product} ? ${product.getVat()}">
                     </div>
                 </div>
                 <div class="row mt-4" >
                     <div class="col-sm-10">
-                        <textarea class="form-control" rows="5" id="description" name="description" placeholder="Write a description" ></textarea>
+                        <textarea class="form-control" rows="5" id="description" name="description" placeholder="Write a description" th:text="${product} ? ${product.getDescription()}"></textarea>
                     </div>
                 </div>
             </div>
@@ -164,7 +178,7 @@
             </div>
         </div>
     </div>
-
+        <input type="hidden" th:value="${product} ? ${product.getIdProviderProduct()}" name="idProduct">
     </form>
 </div>
 <div th:replace="temps/temp :: productCategory"></div>

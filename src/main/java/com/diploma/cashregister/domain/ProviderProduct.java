@@ -75,20 +75,29 @@ public class ProviderProduct {
     @OneToMany(mappedBy = "providerProduct")
     private Collection<OrderBucket> orderBuckets = new HashSet<>();
 
-    public Double getCurrentPrice(){
+    public Price getCurrentPrice(){
         Optional<Price> price = prices.stream().filter(el ->
                 (LocalDate.now().isAfter(el.getDateStart()) || LocalDate.now().isEqual(el.getDateStart()))
                         && (LocalDate.now().isBefore(el.getDateFinish()) || LocalDate.now().isEqual(el.getDateFinish())) )
                             .min(Comparator.comparingLong(x -> ChronoUnit.DAYS.between(x.getDateStart(), LocalDate.now())));
-        return price != null ? price.get().getPrice() : 0;
+        return price.isPresent() ? price.get() : null;
+    }
+    public Double getCurrentProviderPrice(){
+        Optional<ProviderPrice> price = providerPrices.stream()
+                            .min(Comparator.comparingLong(x -> ChronoUnit.DAYS.between(x.getDate(), LocalDate.now())));
+        return price.isPresent() ? price.get().getPrice() : 0;
     }
 
     public Barcode getCurrentBarcode(){
-        return barcodes.stream().findFirst().get();
+        return barcodes.stream().findAny().get();
     }
 
     public ProductCategory getMainCategory(){
         return getProductConnectCategories().stream().findAny().get().getProductCategory();
+    }
+
+    public boolean findProvider(Long idProviderProduct){
+        return providerConnectProducts.stream().anyMatch(el->el.getProvider().getIdProvider() == idProviderProduct);
     }
 
 }
