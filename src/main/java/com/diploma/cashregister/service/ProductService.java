@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -161,6 +162,9 @@ public class ProductService {
 
     public List<ProviderProduct>  getAllProducts() {
         return productRepo.findAll();
+    }
+    public List<ProviderProduct> getAllProductsByProvider(long provider) {
+        return productRepo.findAll().stream().filter(product -> product.findProvider(provider)).collect(Collectors.toList());
     }
     public ProviderProduct  getProduct(String id) {
         return productRepo.findById(Long.valueOf(id)).get();

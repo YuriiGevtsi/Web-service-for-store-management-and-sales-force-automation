@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="temps/temp :: fragment">
+
+</head>
+<body><script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+<div class="container-fluid h-100">
+    <form   class="h-100">
+        <div class="row mt-3" >
+            <div class="col-sm-5">
+                <a href="/myShop" type="button" class="btn btn-danger mt-2 ml-2"><i class="fas fa-times fa-2x mt-1" ></i></a>
+            </div>
+            <div class="col-sm-6">
+                <label class="h2 mt-2">Create new order</label>
+            </div>
+        </div>
+        <div class="container">
+            <div class="form-group row justify-content-center">
+                <label for="provider" class="col-sm-2 w-25 col-form-label">Provider</label>
+                <div class="col-sm-2 w-50">
+                    <select class="selectpicker" title="Choose provider" name="provider"
+                            data-live-search="true"  id="provider"   data-size="5"
+                            onchange="checkProvider()"
+                    >
+                        <option th:value="${provider.getIdProvider()}" th:each="provider : ${suppliers} " th:text="${provider.name}"
+                                th:selected="${supplier} ? (${supplier == provider.idProvider} ? true : false) : false"></option>
+                        <option data-divider="true"></option>
+                        <option  value="-1">Add new</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <button type="button" onclick="$('#menageDeliveries').modal('show'); setTimeout(function() { $('#header').click(); }, 200);" class="btn btn-success mb-2 mr-5 "><span class="fas fa-plus"></span></button>
+                <button type="button" id="deleteItem" class="btn btn-danger mb-2 ml-5"><span class="fas fa-minus"></span></button>
+                <button type="button" class="btn btn-info  offset-md-1 mb-2" >Add comment</button>
+                <button type="button" class="btn btn-info  offset-md-2 mb-2">Additionally</button>
+                <button type="button" class="btn btn-info  offset-md-2 mb-2" onclick="showDistributionOfPayment()">Payments</button>
+            </div>
+        </div>
+        <div class="h-50">
+            <table class="table table-hover " id="productsTable">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Number of products</th>
+                    <th scope="col">Measuring rate</th>
+                    <th scope="col">Unit price</th>
+                    <th scope="col">Currency</th>
+                    <th scope="col">VAT</th>
+                    <th scope="col">Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="container  mt-5 ">
+            <div class="row">
+                <div class="col-sm-10">
+                    <div class="row mt-3">
+                        <div class="col-sm col-sm-3 ">
+                            <h3><strong>Total</strong></h3>
+                        </div>
+                        <div class="col-sm col-sm-1 mt-2 ">
+                        </div>
+                        <div class="col-sm col-sm-1 mt-2 ">
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-sm col-sm-2">
+                            <p class="h6">Total amount :</p>
+                        </div>
+                        <div class="col-sm col-sm-1 " id="amount">
+
+                        </div>
+                        <div class="col-sm col-sm-3">
+                            <p class="h6">Prepayment :</p>
+                        </div>
+
+                        <div class="col-sm col-sm-1 " id="prepayment">0</div>
+
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-2">
+                            <p class="h6"> Includes VAT :</p>
+                        </div>
+                        <div class="col-1" id="vat" >
+
+                        </div>
+                        <div class="col-sm col-sm-3">
+                            <p class="h6">During delivery :</p>
+                        </div>
+                        <div class="col-sm col-sm-1 " id="onDelivery">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2 mt-3">
+                    <button type="button" class="btn btn-success btn-sm mb-3  w-100 h-100" id="submit">Submit</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Modal add prod to order-->
+<div class="modal fade " id="menageDeliveries" role="dialog"  data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg ">
+        <!-- Modal content-->
+        <div class="modal-content" style="height: 70vh"  >
+            <div class="modal-header justify-content-center" >
+                <label class="h3">Menage deliveries</label>
+            </div>
+            <div class="modal-body container-fluid h-75">
+                <div class="container ">
+                    <table class="table table-hover table-striped " width="100%" id="prods">
+                        <thead class="thead-dark" id="head">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col" id="header">Barcode</th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Measuring rate</th>
+                            <th scope="col">Price</th>
+                            <th hidden></th>
+                            <th hidden></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="item,iter: ${products}" th:onclick=" 'selectItem(' + ${item.idProviderProduct} + ')'" >
+                            <th  scope="row" >
+                                <input style="width: 100%; height: 1.5rem"  type="checkbox" th:id="${item.getIdProviderProduct()}" >
+                            </th>
+                            <td> <a th:id="${item.getCurrentBarcode()}+code" th:text="${item.getCurrentBarcode().getCode()}"/></td>
+                            <td> <a th:id="${item.getIdProviderProduct()}+name" th:text="${item.getName()}"/></td>
+                            <td> <a th:id="${item.getIdProviderProduct()}+measuring" th:text="${item.providerProductMeasuringRate.name}" /></td>
+                            <td> <a th:id="${item.getIdProviderProduct()}+price" th:text="${item.getCurrentPrice()} ? ${item.getCurrentPrice().getPrice()}" /> </td>
+                            <td hidden> <a th:id="${item.getIdProviderProduct()}+id" th:text="${item.idProviderProduct}" /> </td>
+                            <td hidden> <a th:id="${item.getIdProviderProduct()}+vat" th:text="${item.getVat()}" /> </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-success btn-sm mt-2" onclick="fillTableData()">Add to order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal payments-->
+<div th:fragment="payments" class="modal fade " id="payments" role="dialog"  data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header justify-content-lg-center">
+                <label > Distribution of payment </label>
+            </div>
+            <div class="modal-body">
+                <div class=" row ">
+                    <div class="col col-sm-4  ">
+                        <label id="onDeliveryLbl">On delivery </label>
+                    </div>
+                    <div class="col">
+                        <input type="range" class="slider" min="0" onchange="compareSliders(1)" id="onDeliverySlider">
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col col-sm-4  ">
+                        <label id="prepaymentLbl" >Prepayment</label>
+                    </div>
+                    <div class="col">
+                         <input type="range" class="slider" min="0" onchange="compareSliders(0)" id="prepaymentSlider">
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-row-reverse">
+                <div class="col-4 mb-2" >
+                    <button type="button" id="applyPayments" class="btn btn-primary btn-block" >Ok</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+    .slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 25px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+    }
+
+
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        background: #4CAF50;
+        cursor: pointer;
+    }
+
+</style>
+<script type="text/javascript" th:inline="javascript">
+
+
+    function getTableData() {
+        let obj = Object.create(null);
+
+        $('#prods > tbody  > tr').each(function() {
+            let param = $(this).find('input');
+            obj[param.attr('id').split('a')[0]] = param.val();
+        });
+        obj['order'] = $('#idOrder').val();
+        return JSON.stringify(obj);
+    }
+
+    $("#submit").click(function(){
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+
+        $.ajax({
+            type: 'POST',
+            contentType : "application/json",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token)
+            },
+            url: 'http://localhost:8080/delivery_number',
+            data: getTableData(),
+            dataType: "json",
+            timeout: 1000000,
+            success : function(data) {
+                console.log("SUCCESS: ", data);
+                window.location = "http://localhost:8080/"
+            },
+            error : function(e) {
+                console.log("ERROR: ", e);
+            },
+            done : function(e) {
+                console.log("DONE");
+            }
+        });
+    });
+
+    function checkProvider() {
+        let id = $('#provider option:selected').val();
+        window.location = "http://localhost:8080/createOrder?provider="+id;
+    }
+
+    $(document).ready( function () {
+        $('#prods').dataTable( {
+            "sScrollY": "35vh",
+            "sDom": "frtiS",
+            "bDeferRender": true,
+            "bInfo": false
+        });
+        $('#productsTable').dataTable( {
+            "sScrollY": "45vh",
+            "sDom": "frtiS",
+            "bDeferRender": true,
+            "bInfo": false
+        });
+        $('#productsTable tbody').on( 'click', 'tr', function () {
+            $(this).toggleClass('selected');
+        } );
+    } );
+
+    function selectItem(id) {
+        let elementById = document.getElementById(id);
+        if (elementById.checked ) elementById.checked = false;
+        else elementById.checked = true;
+    }
+
+    function fillTableData() {
+        let table = $('#prods').DataTable();
+        table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+            let row = $(this.node()).find('input');
+            if (row.prop('checked')){
+                row.prop('checked',false);
+                let el = [];
+                el.push($(this.node()).find('a').eq(4).text());
+                el.push($(this.node()).find('a').eq(1).text());
+                el.push($(this.node()).find('a').eq(2).text());
+                el.push($(this.node()).find('a').eq(3).text());
+                el.push("PLN");
+                el.push($(this.node()).find('a').eq(5).text());
+
+                $('#productsTable').dataTable().fnAddData( [
+                    el[0],
+                    el[1],
+                    '<input class="form-control-plaintext" name="amount" min="1" onchange="copyValueTo()" type="number">' ,
+                    el[2],
+                    el[3],
+                    el[4],
+                    el[5],
+                    '<input class="form-control-plaintext" name="sum" disabled  type="text">'
+                ]);
+            }
+        } );
+        $('#menageDeliveries').modal('hide');
+    }
+
+    function copyValueTo() {
+        let totalVAT = 0;
+        let totalAmount = 0;
+        let table = $('#productsTable').DataTable();
+        table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+            let from = $(this.node()).find('input').eq(0);
+            let amount = parseFloat(this.data()[4])*from.val();
+            totalVAT+=parseFloat(this.data()[6])*from.val();
+            totalAmount+=amount;
+            table.cell({ row: rowIdx, column: 7 }).data(amount).draw();
+        } );
+        document.getElementById('amount').innerText = totalAmount ;
+        document.getElementById('vat').innerText = totalVAT ;
+        if ($('#prepayment').text() === "0"){
+            $('#onDelivery').text(totalAmount);
+            $('#prepayment').text(0);
+        }else {
+            if (totalAmount == 0){
+                $('#onDelivery').text(0);
+                $('#prepayment').text(0);
+            }
+            else $('#onDelivery').text(totalAmount - $('#prepayment').text());
+        }
+    }
+    function showDistributionOfPayment() {
+        $('#payments').modal('show');
+        let on = document.getElementById("onDeliverySlider");
+        let pre = document.getElementById("prepaymentSlider");
+        if (on.value == 50){
+            on.max = $('#amount').text();
+            on.value = $('#amount').text();
+            pre.max = $('#amount').text();
+            pre.value = 0;
+            $('#onDeliveryLbl').text( 'On delivery ' + $('#amount').text());
+        }else {
+            on.max = $('#amount').text();
+            pre.max = $('#amount').text();
+            on.value = on.max - pre.value;
+            $('#onDeliveryLbl').text( 'On delivery ' + on.value);
+            $('#prepaymentLbl').text( 'Prepayment ' + pre.value);
+        }
+
+
+    }
+    function compareSliders(number) {
+        let on = document.getElementById("onDeliverySlider");
+        let pre = document.getElementById("prepaymentSlider");
+        let sum = $('#amount').text();
+        if (number === 1) {
+            pre.value = sum - on.value;
+        } else {
+            on.value = sum - pre.value;
+        }
+        $('#onDeliveryLbl').text( 'On delivery ' + on.value);
+        $('#prepaymentLbl').text( 'Prepayment ' + pre.value);
+    }
+
+    $('#applyPayments').click( function () {
+        $('#onDelivery').text(document.getElementById("onDeliverySlider").value);
+        $('#prepayment').text(document.getElementById("prepaymentSlider").value);
+        $('#payments').modal('hide');
+    });
+
+    $('#deleteItem').click( function () {
+        $('#productsTable').DataTable().row('.selected').remove().draw( false );
+        copyValueTo();
+    } );
+
+</script>
+
+</html>

@@ -69,8 +69,6 @@
 
 
     function editProduct(idProduct) {
-        let token = $("meta[name='_csrf']").attr("content");
-        let header = $("meta[name='_csrf_header']").attr("content");
         window.location = "http://localhost:8080/editProduct?idProduct=" + idProduct;
     }
 
@@ -113,7 +111,11 @@
 
     }
     $(document).ready( function () {
-        $('#prods').DataTable();
+        $('#prods').DataTable({
+            "sScrollY": "50vh",
+            "sDom": "frtiS",
+            "bDeferRender": true
+        } );
     } );
 </script>
 </html>

@@ -1,7 +1,9 @@
 package com.diploma.cashregister.controller;
 
 import com.diploma.cashregister.domain.OrderPayments;
+import com.diploma.cashregister.domain.ProviderProduct;
 import com.diploma.cashregister.service.DeliveryService;
+import com.diploma.cashregister.service.ProductService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +19,12 @@ import java.util.Set;
 public class DeliveryController {
     @Autowired
     private final DeliveryService deliveryService;
+    @Autowired
+    private final ProductService productService;
 
-    public DeliveryController(DeliveryService deliveryService) {
+    public DeliveryController(DeliveryService deliveryService, ProductService productService) {
         this.deliveryService = deliveryService;
+        this.productService = productService;
     }
 
     @GetMapping("delivery")
@@ -42,6 +47,16 @@ public class DeliveryController {
         model.addAttribute("bucket",deliveryService.getProductFromOrderBucket(number));
 
         return "delivery/delivery";
+    }
+
+    @GetMapping("/createOrder")
+    public String getDelivery(Model model,@RequestParam(required = false,defaultValue = "-1") long provider ) {
+        if (provider != -1){
+            model.addAttribute("supplier",provider);
+            model.addAttribute("products",productService.getAllProductsByProvider(provider));
+        }
+        model.addAttribute("suppliers",deliveryService.getProviders());
+        return "delivery/createOrder";
     }
 
     @PostMapping(value = "/delivery_number")

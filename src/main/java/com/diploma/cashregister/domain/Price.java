@@ -31,7 +31,7 @@ public class Price {
     @Column(name = "date_finish")
     private LocalDate dateFinish;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "provider_product", referencedColumnName = "id_provider_product")
     private ProviderProduct providerProduct;
 

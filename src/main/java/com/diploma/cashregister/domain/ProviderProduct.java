@@ -43,7 +43,8 @@ public class ProviderProduct {
     @OneToMany(mappedBy = "providerProductMeasuringRate")
     private Collection<MeasuringRateConnectProviderProduct> measuringRateConnectProviderProducts = new HashSet<>();
 
-    @OneToMany(mappedBy = "providerProduct")
+
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "providerProduct")
     private Collection<Price> prices = new HashSet<>();
 
     @OneToMany(mappedBy = "providerProduct")
@@ -100,4 +101,7 @@ public class ProviderProduct {
         return providerConnectProducts.stream().anyMatch(el->el.getProvider().getIdProvider() == idProviderProduct);
     }
 
+    public boolean checkProvider(Long idProvider){
+        return providerConnectProducts.stream().anyMatch(e -> e.getProvider().getIdProvider() == idProvider);
+    }
 }

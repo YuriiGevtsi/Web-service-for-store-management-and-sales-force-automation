@@ -81,7 +81,7 @@
                 <div class="row" >
                     <div class="col">
                         <div class="d-flex justify-content-center">
-                            <img th:src="${product} ? '/img/'+ ${product.getPhoto()} : '/img/loadimg.png'" width="225" th:height="${product} ? 325 : 225" class="img-rounded center-block" id="image" alt="load">
+                            <img th:src="${product} ? ( ${product.getPhoto()} ? '/img/'+ ${product.getPhoto()} :  '/img/loadimg.png' ): '/img/loadimg.png'" width="225" th:height="${product} ? ( ${product.getPhoto()} ? 325 :  225 ) : 225" class="img-rounded center-block" id="image" alt="load">
                         </div>
                     </div>
                 </div>

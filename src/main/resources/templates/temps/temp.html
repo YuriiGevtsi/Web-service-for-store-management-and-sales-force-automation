@@ -12,6 +12,7 @@
             src="https://code.jquery.com/jquery-3.4.1.js"
             integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
             crossorigin="anonymous"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
@@ -280,10 +281,42 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 
+<!-- Modal menage deliveries-->
+<div th:fragment="menageDeliveries" class="modal fade " id="menageDeliveries" role="dialog"  data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg ">
+        <!-- Modal content-->
+        <div class="modal-content" style="height: 50vh">
+            <div class="modal-header justify-content-center" >
+                <label class="h3">Menage deliveries</label>
+            </div>
+            <div class="modal-body container-fluid h-75">
+                <div class="mt-2" style="height: 40%">
+                    <div class="row justify-content-around h-100">
+                        <div class="col col-md-4 text-center no-float ml-5" >
+                            <a href="/createOrder" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Create order</a>
+                        </div>
+                        <div class="col col-md-4 text-center no-float mr-5">
+                            <a href="#" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >All orders</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5 " style="height: 40%">
+                    <div class="row justify-content-around   h-100">
+                        <div class="col col-md-4 text-center no-float ml-5 mb-2">
+                            <button  onclick="" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Edit order</button>
+                        </div>
+                        <div class="col col-md-4 text-center no-float mr-5 mb-2">
+                            <button  onclick="" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Suppliers</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Modal printReport-->
 <div th:fragment="printReport" class="modal fade " id="printReport" role="dialog"  data-keyboard="false">
@@ -463,29 +496,29 @@
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
-                    <form action="#">
-                    <div class="row">
-                        <div class="col-sm-3 mb-2 d-flex justify-content-end ">
-                            <label class="mt-1 h4">Choose date: </label>
+                    <form action="#" >
+                        <input th:if="${(param.idProduct != null)}" type="hidden" name="idProduct" th:value="${(param.idProduct[0])}">
+                        <div class="row">
+                            <div class="col-sm-3 mb-2 d-flex justify-content-end ">
+                                <label class="mt-1 h4">Choose date: </label>
+                            </div>
+                            <div class="col-sm-2  mb-2">
+                                <select class="selectpicker" onchange="createPicker()" id="year"  data-size="5" title="Year" data-width="100%">
+                                    <option selected th:text="${#dates.format(#dates.createNow(), 'yyyy')}" th:value="${#dates.format(#dates.createNow(), 'yyyy')}"></option>
+                                    <option th:text="${#dates.format(#dates.createNow(), 'yyyy')} + 1" th:value="${#dates.format(#dates.createNow(), 'yyyy') + 1}"></option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2  mb-2" >
+                                <select class="selectpicker"  id="month" required data-size="5" title="Month" data-width="100%">
+                                </select>
+                            </div>
+                            <div class="col-sm-2 mb-2">
+                                <input type="number" min="1" required max="31" class="form-control" id="day" placeholder="Day">
+                            </div>
+                            <div class="col-sm-2  mb-3">
+                                <button type="submit" onclick="setDate()" class="btn btn-primary w-100 mb-2">Ok</button>
+                            </div>
                         </div>
-                        <div class="col-sm-2  mb-2">
-                            <select class="selectpicker" onchange="createPicker()" id="year"  data-size="5" title="Year" data-width="100%">
-                                <option selected th:text="${#dates.format(#dates.createNow(), 'yyyy')}" th:value="${#dates.format(#dates.createNow(), 'yyyy')}"></option>
-                                <option th:text="${#dates.format(#dates.createNow(), 'yyyy')} + 1" th:value="${#dates.format(#dates.createNow(), 'yyyy') + 1}"></option>
-                            </select>
-                        </div>
-                        <div class="col-sm-2  mb-2" >
-                            <select class="selectpicker"  id="month" required data-size="5" title="Month" data-width="100%">
-                            </select>
-                        </div>
-                        <div class="col-sm-2 mb-2">
-                            <input type="number" min="1" required max="31" class="form-control" id="day" placeholder="Day">
-                        </div>
-                        <div class="col-sm-2  mb-3">
-                        <button type="submit" onclick="setDate()" class="btn btn-primary w-100 mb-2">Ok</button>
-                        </div>
-
-                    </div>
                     </form>
                 </div>
             </div>
@@ -518,10 +551,14 @@
                     else if ((currentDate.getMonth() + 1).toString() === $("#month option:selected").val() && currentDate.getFullYear().toString() === $("#year option:selected").val() && day < currentDate.getDate()) {
                         $('#day')[0].setCustomValidity('Day must be upper then ' + currentDate.getDate())
                     }
+                    else if($("#month option:selected").val() === "" || $('#day').val() === "") { $('#day')[0].setCustomValidity('Day must be selected ')}
                     else {
                         $('#datepicker').modal('hide');
                         $('#day')[0].setCustomValidity('');
-                        let val = $( "#year option:selected" ).val() +'-' + $( "#month option:selected" ).val() +'-'+$('#day').val() ;
+                        let day ;
+                        if ($('#day').val() < 10) day = '0' + $('#day').val();
+                        else day = $('#day').val();
+                        let val = $( "#year option:selected" ).val() +'-' + $("#month option:selected" ).val() +'-'+day;
                         $('#expire').val(val);
                         $('#expireLbl').text(' Expire date : '+ val);
                     }

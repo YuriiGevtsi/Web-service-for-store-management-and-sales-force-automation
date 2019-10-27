@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,13 +26,16 @@ public class DeliveryService {
 
     @Autowired
     private final DeliveryBasketRepo deliveryBasketRepo;
+    @Autowired
+    private final ProviderRepo providerRepo;
 
-    public DeliveryService(OrderRepo orderRepo, OrderBucketRepo orderBucketRepo, OrderPaymentsRepo orderPaymentsRepo, DeliveryRepo deliveryRepo, DeliveryBasketRepo deliveryBasketRepo) {
+    public DeliveryService(OrderRepo orderRepo, OrderBucketRepo orderBucketRepo, OrderPaymentsRepo orderPaymentsRepo, DeliveryRepo deliveryRepo, DeliveryBasketRepo deliveryBasketRepo, ProviderRepo providerRepo) {
         this.orderRepo = orderRepo;
         this.orderBucketRepo = orderBucketRepo;
         this.orderPaymentsRepo = orderPaymentsRepo;
         this.deliveryRepo = deliveryRepo;
         this.deliveryBasketRepo = deliveryBasketRepo;
+        this.providerRepo = providerRepo;
     }
 
     public Order getOrder(long id){
@@ -77,5 +81,9 @@ public class DeliveryService {
             delivery.setDelivery_baskets(deliveryItem);
             deliveryBasketRepo.save(deliveryItem);
         });
+    }
+
+    public List<Provider> getProviders() {
+        return providerRepo.findAll();
     }
 }
