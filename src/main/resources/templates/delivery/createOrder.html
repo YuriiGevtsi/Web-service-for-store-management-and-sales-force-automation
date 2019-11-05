@@ -11,7 +11,8 @@
                 <a href="/myShop" type="button" class="btn btn-danger mt-2 ml-2"><i class="fas fa-times fa-2x mt-1" ></i></a>
             </div>
             <div class="col-sm-6">
-                <label class="h2 mt-2">Create new order</label>
+                <label class="h2 mt-2" th:text="${order} ? 'Edit order № ' : 'Create new order'"></label>
+                <label class="h2 mt-2" id="idOrder" th:text="${order} ? ${order.idOrder} : ''"></label>
             </div>
         </div>
         <div class="container">
@@ -36,7 +37,7 @@
                 <button type="button" onclick="$('#menageDeliveries').modal('show'); setTimeout(function() { $('#header').click(); }, 200);" class="btn btn-success mb-2 mr-5 "><span class="fas fa-plus"></span></button>
                 <button type="button" id="deleteItem" class="btn btn-danger mb-2 ml-5"><span class="fas fa-minus"></span></button>
                 <button type="button" class="btn btn-info  offset-md-1 mb-2" >Add comment</button>
-                <button type="button" class="btn btn-info  offset-md-2 mb-2">Additionally</button>
+                <button type="button" onclick="$('#datepicker').modal('show'); createPicker();" class="btn btn-info  offset-md-2 mb-2">Date of delivery</button>
                 <button type="button" class="btn btn-info  offset-md-2 mb-2" onclick="showDistributionOfPayment()">Payments</button>
             </div>
         </div>
@@ -54,7 +55,21 @@
                     <th scope="col">Amount</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody th:if="${order}">
+                <tr th:each="item,iter: ${bucket}">
+                    <td th:text="${item.providerProduct.idProviderProduct}"></td>
+                    <td th:text="${item.getProviderProduct().name}"></td>
+                    <th  scope="row" >
+                    <input class="form-control-plaintext" name="amount" min="1" onchange="copyValueTo()" type="number" th:value="${item.amount}">
+                    </th>
+                    <td th:text="${item.measuringRate}"></td>
+                    <td th:text="${item.pricePerUnit}"></td>
+                    <td th:text="${item.currency}"></td>
+                    <td th:text="${item.providerProduct.getVat()}"></td>
+                    <th  scope="row" >
+                    <input class="form-control-plaintext" name="sum" disabled th:value="${item.amount * item.pricePerUnit}" type="text">
+                    </th>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -74,14 +89,15 @@
                         <div class="col-sm col-sm-2">
                             <p class="h6">Total amount :</p>
                         </div>
-                        <div class="col-sm col-sm-1 " id="amount">
-
-                        </div>
+                        <div class="col-sm col-sm-1 " th:text="${order} ? ${order.price} : ''" id="amount">0</div>
                         <div class="col-sm col-sm-3">
                             <p class="h6">Prepayment :</p>
                         </div>
-
-                        <div class="col-sm col-sm-1 " id="prepayment">0</div>
+                        <div class="col-sm col-sm-1 " th:text="${pre} ? ${pre} : '0'" id="prepayment">0</div>
+                        <div class="col-sm col-sm-2">
+                            <p class="h6">Date of delivery :</p>
+                        </div>
+                        <div class="col-sm col-sm-3 " th:text="${order} ? ${order.dateOfWishingDelivery}" id="dateOfDelivery">Choose date of delivery</div>
 
                     </div>
                     <div class="row mt-2">
@@ -92,9 +108,9 @@
 
                         </div>
                         <div class="col-sm col-sm-3">
-                            <p class="h6">During delivery :</p>
+                            <p class="h6" >During delivery :</p>
                         </div>
-                        <div class="col-sm col-sm-1 " id="onDelivery">
+                        <div class="col-sm col-sm-1 " id="onDelivery" th:text="${post} ? ${post} : ''">
                         </div>
                     </div>
                 </div>
@@ -136,7 +152,7 @@
                             <td> <a th:id="${item.getCurrentBarcode()}+code" th:text="${item.getCurrentBarcode().getCode()}"/></td>
                             <td> <a th:id="${item.getIdProviderProduct()}+name" th:text="${item.getName()}"/></td>
                             <td> <a th:id="${item.getIdProviderProduct()}+measuring" th:text="${item.providerProductMeasuringRate.name}" /></td>
-                            <td> <a th:id="${item.getIdProviderProduct()}+price" th:text="${item.getCurrentPrice()} ? ${item.getCurrentPrice().getPrice()}" /> </td>
+                            <td> <a th:id="${item.getIdProviderProduct()}+price" th:text="${item.getCurrentProviderPrice()} ? ${item.getCurrentProviderPrice()}" /> </td>
                             <td hidden> <a th:id="${item.getIdProviderProduct()}+id" th:text="${item.idProviderProduct}" /> </td>
                             <td hidden> <a th:id="${item.getIdProviderProduct()}+vat" th:text="${item.getVat()}" /> </td>
                         </tr>
@@ -165,7 +181,7 @@
                         <label id="onDeliveryLbl">On delivery </label>
                     </div>
                     <div class="col">
-                        <input type="range" class="slider" min="0" onchange="compareSliders(1)" id="onDeliverySlider">
+                        <input type="range" class="slider" min="0" max="0" onchange="compareSliders(1)" id="onDeliverySlider">
                     </div>
                 </div>
                 <div class="row mt-2">
@@ -173,7 +189,7 @@
                         <label id="prepaymentLbl" >Prepayment</label>
                     </div>
                     <div class="col">
-                         <input type="range" class="slider" min="0" onchange="compareSliders(0)" id="prepaymentSlider">
+                         <input type="range" class="slider" min="0" max="0" onchange="compareSliders(0)" id="prepaymentSlider">
                     </div>
                 </div>
             </div>
@@ -183,10 +199,10 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 </div>
+<div th:replace="temps/temp :: datepicker"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -224,35 +240,44 @@
 
     function getTableData() {
         let obj = Object.create(null);
-
-        $('#prods > tbody  > tr').each(function() {
-            let param = $(this).find('input');
-            obj[param.attr('id').split('a')[0]] = param.val();
-        });
-        obj['order'] = $('#idOrder').val();
+        let table = $('#productsTable').DataTable();
+        table.rows().every( function ( rowIdx ) {
+            let id = this.data()[0];
+            let count =$(this.node()).find('input').eq(0).val();
+            obj[id] = count;
+        } );
+        obj['provider'] = $('#provider option:selected').val();
+        obj['order'] = $('#idOrder').text();
+        obj['onDelivery'] = $('#onDelivery').text();
+        obj['prepayment'] = $('#prepayment').text();
+        obj['date'] = $('#dateOfDelivery').text();
+        obj['price'] = document.getElementById('amount').innerText;
         return JSON.stringify(obj);
     }
 
     $("#submit").click(function(){
         let token = $("meta[name='_csrf']").attr("content");
         let header = $("meta[name='_csrf_header']").attr("content");
-
+        let url ;
+        if ($('#idOrder').text().length > 0)url = 'http://localhost:8080/updateOrder'
+        else url = 'http://localhost:8080/createOrder'
+alert(getTableData())
         $.ajax({
             type: 'POST',
             contentType : "application/json",
             beforeSend: function(xhr) {
                 xhr.setRequestHeader(header, token)
             },
-            url: 'http://localhost:8080/delivery_number',
+            url: url,
             data: getTableData(),
             dataType: "json",
             timeout: 1000000,
             success : function(data) {
                 console.log("SUCCESS: ", data);
-                window.location = "http://localhost:8080/"
+                window.location = "http://localhost:8080/myShop"
             },
             error : function(e) {
-                console.log("ERROR: ", e);
+                console.log(e);
             },
             done : function(e) {
                 console.log("DONE");
@@ -281,6 +306,8 @@
         $('#productsTable tbody').on( 'click', 'tr', function () {
             $(this).toggleClass('selected');
         } );
+
+        copyValueTo();
     } );
 
     function selectItem(id) {
@@ -322,7 +349,7 @@
         let totalVAT = 0;
         let totalAmount = 0;
         let table = $('#productsTable').DataTable();
-        table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+        table.rows().every( function ( rowIdx ) {
             let from = $(this.node()).find('input').eq(0);
             let amount = parseFloat(this.data()[4])*from.val();
             totalVAT+=parseFloat(this.data()[6])*from.val();
@@ -339,9 +366,19 @@
                 $('#onDelivery').text(0);
                 $('#prepayment').text(0);
             }
-            else $('#onDelivery').text(totalAmount - $('#prepayment').text());
+            else{
+                let l = totalAmount - $('#prepayment').text();
+                if (l> 0){
+                    $('#onDelivery').text(l);
+                }else {
+                    $('#onDelivery').text(0);
+                    $('#prepayment').text(l - (-$('#prepayment').text()));
+                }
+
+            }
         }
     }
+
     function showDistributionOfPayment() {
         $('#payments').modal('show');
         let on = document.getElementById("onDeliverySlider");
@@ -362,6 +399,7 @@
 
 
     }
+
     function compareSliders(number) {
         let on = document.getElementById("onDeliverySlider");
         let pre = document.getElementById("prepaymentSlider");
@@ -382,7 +420,7 @@
     });
 
     $('#deleteItem').click( function () {
-        $('#productsTable').DataTable().row('.selected').remove().draw( false );
+        $('#productsTable').DataTable().rows('.selected').remove().draw( false );
         copyValueTo();
     } );
 

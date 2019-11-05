@@ -1,7 +1,7 @@
 package com.diploma.cashregister.controller;
 
+import com.diploma.cashregister.domain.Order;
 import com.diploma.cashregister.domain.OrderPayments;
-import com.diploma.cashregister.domain.ProviderProduct;
 import com.diploma.cashregister.service.DeliveryService;
 import com.diploma.cashregister.service.ProductService;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -32,21 +32,37 @@ public class DeliveryController {
         return "delivery/delivery";
     }
 
+    @GetMapping("findOrder")
+    public @ResponseBody String findOrder(@RequestParam long number){
+        if (deliveryService.getOrder(number) != null && !deliveryService.getOrder(number).getStatus().equals("accepted"))
+            return "ok";
+        else return "No order";
+    }
+
     @GetMapping("/delivery_number")
-    public String getDelivery(@RequestParam(required = true) long number,
-                           Model model
+    public String getDelivery(@RequestParam long number,@RequestParam String action,
+                              Model model
     ) {
-        Set<OrderPayments> orderPayments = deliveryService.getOrderPayments(number);
+        Order order = deliveryService.getOrder(number);
+        if (order != null && !order.getStatus().equals("accepted")){
 
-        orderPayments.stream().forEach(payment ->{
-            if (payment.getType().equalsIgnoreCase("pre")) model.addAttribute("pre", payment.getSum());
-            else if (payment.getType().equalsIgnoreCase("onDelivery")) model.addAttribute("post", payment.getSum());
-            else  model.addAttribute("credit", payment.getSum());
-        });
-        model.addAttribute("order",deliveryService.getOrder(number));
-        model.addAttribute("bucket",deliveryService.getProductFromOrderBucket(number));
+            Set<OrderPayments> orderPayments = deliveryService.getOrderPayments(number);
 
-        return "delivery/delivery";
+            orderPayments.stream().forEach(payment ->{
+                if (payment.getType().equalsIgnoreCase("pre")) model.addAttribute("pre", payment.getSum());
+                else if (payment.getType().equalsIgnoreCase("onDelivery")) model.addAttribute("post", payment.getSum());
+            });
+            model.addAttribute("order", order);
+            model.addAttribute("bucket",deliveryService.getProductFromOrderBucket(number));
+            if (action.equals("edit")){
+                model.addAttribute("supplier",order.getProvider().getIdProvider());
+                model.addAttribute("products",productService.getAllProductsByProvider(order.getProvider().getIdProvider()));
+                model.addAttribute("suppliers",deliveryService.getProviders());
+                return "delivery/createOrder";
+            }else return "delivery/delivery";
+        }else {
+            return "redirect:/";
+        }
     }
 
     @GetMapping("/createOrder")
@@ -67,5 +83,32 @@ public class DeliveryController {
         Map<String, String> map = objectMapper.readValue(json, new TypeReference<Map<String,String>>(){});
         deliveryService.createDelivery(map);
         return json;
+    }
+    @PostMapping(value = "/createOrder")
+    public @ResponseBody String saveOrder(
+            @RequestBody String json
+    ) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, String> map = objectMapper.readValue(json, new TypeReference<Map<String,String>>(){});
+        try {
+            deliveryService.createOrder(map);
+            return json;
+        } catch (Exception e) {
+            return e.getLocalizedMessage();
+        }
+    }
+    @PostMapping(value = "/updateOrder")
+    public @ResponseBody String updateOrder(
+            @RequestBody String json
+    ) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, String> map = objectMapper.readValue(json, new TypeReference<Map<String,String>>(){});
+        try {
+            deliveryService.updateOrder(map);
+            return json;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return e.getLocalizedMessage();
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.diploma.cashregister.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -14,6 +15,7 @@ import java.util.Objects;
 @Data
 @EqualsAndHashCode(of = "idProvider")
 @NoArgsConstructor
+@ToString(of = {"idProvider","name","address","eMail"})
 public class Provider {
     @Id
     @Column(name = "id_provider")

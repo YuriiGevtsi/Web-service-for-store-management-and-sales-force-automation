@@ -37,7 +37,7 @@
             let today=new Date();
             let h=today.getHours();
             let m=today.getMinutes();
-            let s = today.getSeconds()
+            let s = today.getSeconds();
 
             m= m<10? '0' + m : m;
             s= s<10? '0' + s : s;
@@ -52,23 +52,25 @@
     <div class="modal-dialog modal-dialog-centered modal">
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">×</button>
+            <div class="modal-header justify-content-sm-center">
+                    <label class="h5 mt-2" id="action" th:text="${shift} ? 'Accept delivery' : 'Edit order'" > </label>
             </div>
             <div class="modal-body">
-                <form th:action="@{/delivery_number}" method="get">
                     <div class="form-row align-items-center">
                         <label class="col-sm-2 col-form-label" for="number">Number</label>
-                        <div class="col-auto">
+                        <div class="col-sm-7">
                             <input id="number" type="number" class="form-control" name="number" placeholder="Number of delivery">
+                            <div class="invalid-feedback">
+                                No order with this number was found.
+                            </div>
                         </div>
-                        <div class="col-auto">
-                            <button type="submit" class="btn btn-primary" onclick = "$('.modal').modal('hide')">Continue</button>
+                        <div class="col-sm-2 justify-content-sm-end">
+                            <button type="button" class="btn btn-primary" id="submit">Continue</button>
                         </div>
                     </div>
-                </form>
             </div>
-            <div class="modal-footer">
+            <!--/*@thymesVar id="shift" type=""*/-->
+            <div class="modal-footer" th:if="${shift}">
                 <div class="container">
                     <div class="row justify-content-center">
                         <button type="button" class="btn btn-primary btn-lg mr-3" onclick = "$('.modal').modal('hide')">Самоввоз</button>
@@ -77,6 +79,41 @@
                 </div>
             </div>
         </div>
+        <script>
+            $("#submit").click(function(){
+                let token = $("meta[name='_csrf']").attr("content");
+                let header = $("meta[name='_csrf_header']").attr("content");
+                let number = $('#number').val();
+                let action = $('#action').text();
+                $.ajax({
+                    type: 'GET',
+                    contentType : "application/json",
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader(header, token)
+                    },
+                    url: 'http://localhost:8080/findOrder',
+                    data:jQuery.param({ number: number}),
+                    success : function(data) {
+                        if (data === "ok") {
+                            $('.modal').modal('hide');
+                            $('#number').removeClass('is-invalid');
+                            if (~action.indexOf('Edit')){
+                                window.location = "http://localhost:8080/delivery_number?number=" + number + '&action=edit';
+                            }else window.location = "http://localhost:8080/delivery_number?number=" + number+ '&action=accept';
+                        }
+                        else {
+                            $('#number').addClass('is-invalid');
+                        }
+                    },
+                    error : function(e) {
+                        console.log("ERROR: ", e);
+                    },
+                    done : function(e) {
+                        console.log("DONE");
+                    }
+                });
+            });
+        </script>
     </div>
 </div>
 
@@ -306,7 +343,7 @@
                 <div class="mt-5 " style="height: 40%">
                     <div class="row justify-content-around   h-100">
                         <div class="col col-md-4 text-center no-float ml-5 mb-2">
-                            <button  onclick="" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Edit order</button>
+                            <button onclick="$('#deliveryModal').modal('show');" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Edit order</button>
                         </div>
                         <div class="col col-md-4 text-center no-float mr-5 mb-2">
                             <button  onclick="" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Suppliers</button>
@@ -503,9 +540,9 @@
                                 <label class="mt-1 h4">Choose date: </label>
                             </div>
                             <div class="col-sm-2  mb-2">
-                                <select class="selectpicker" onchange="createPicker()" id="year"  data-size="5" title="Year" data-width="100%">
+                                <select class="selectpicker"  onchange="createPicker()" id="year"  data-size="5" title="Year" data-width="100%">
                                     <option selected th:text="${#dates.format(#dates.createNow(), 'yyyy')}" th:value="${#dates.format(#dates.createNow(), 'yyyy')}"></option>
-                                    <option th:text="${#dates.format(#dates.createNow(), 'yyyy')} + 1" th:value="${#dates.format(#dates.createNow(), 'yyyy') + 1}"></option>
+                                    <option th:text="1 + ${#dates.format(#dates.createNow(), 'yyyy')}" th:value="${#dates.format(#dates.createNow(), 'yyyy')} + 1"></option>
                                 </select>
                             </div>
                             <div class="col-sm-2  mb-2" >
@@ -516,7 +553,8 @@
                                 <input type="number" min="1" required max="31" class="form-control" id="day" placeholder="Day">
                             </div>
                             <div class="col-sm-2  mb-3">
-                                <button type="submit" onclick="setDate()" class="btn btn-primary w-100 mb-2">Ok</button>
+                                <!--/*@thymesVar id="suppliers" type=""*/-->
+                                <button th:type="${suppliers} ? 'button' : 'submit'" onclick="setDate()" class="btn btn-primary w-100 mb-2">Ok</button>
                             </div>
                         </div>
                     </form>
@@ -555,12 +593,17 @@
                     else {
                         $('#datepicker').modal('hide');
                         $('#day')[0].setCustomValidity('');
-                        let day ;
+                        let day, month ;
+                        if ($("#month option:selected" ).val() < 10) month = '0' + $("#month option:selected" ).val();
+                        else month = $("#month option:selected" ).val();
+
                         if ($('#day').val() < 10) day = '0' + $('#day').val();
                         else day = $('#day').val();
-                        let val = $( "#year option:selected" ).val() +'-' + $("#month option:selected" ).val() +'-'+day;
+
+                        let val = $( "#year option:selected" ).val() +'-' + month +'-'+day;
                         $('#expire').val(val);
                         $('#expireLbl').text(' Expire date : '+ val);
+                        document.getElementById('dateOfDelivery').innerText = val;
                     }
                 }
             </script>

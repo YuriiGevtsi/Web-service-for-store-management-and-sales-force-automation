@@ -56,17 +56,16 @@
                 <tbody>
                 <tr th:each="item,iter: ${bucket}">
                     <th scope="row" th:id="${item.idOrderBucket}+idOrder" th:text="${iter.index+1}"></th>
-                    <td> <a th:id="${item.idOrderBucket}+name+${item.idOrderBucket}" th:text="${item.providerProduct.name}" /></td>
+                    <td> <a th:id="${item.providerProduct.idProviderProduct}+name+${item.idOrderBucket}" th:text="${item.providerProduct.name}" /></td>
                     <td> <input class="form-control-plaintext" name="amount"
-                                th:id="${item.idOrderBucket}+amount"
-                                onkeyup="copyValueTo(this)"
+                                th:id="${item.providerProduct.idProviderProduct}+amount"
+                                onchange="copyValueTo(this)"
                                 th:value="${item.amount}" type="number"> </td>
-                    <td> <a th:id="${item.idOrderBucket}+measuring" th:text="${item.measuringRate}" /></td>
-                    <td> <a th:id="${item.idOrderBucket}+price" th:text="${item.pricePerUnit}" /></td>
-                    <td><a th:id="${item.idOrderBucket}+currency" th:text="${item.currency}" /></td>
-                    <td><a th:id="${item.idOrderBucket}+vat" th:text="${item.amount}*${item.pricePerUnit}*${item.providerProduct.vat}*0.01" /></td>
-                    <td> <a th:id="${item.idOrderBucket}+summ" th:text="${item.amount}*${item.pricePerUnit}" /> </td>
-
+                    <td> <a th:id="${item.providerProduct.idProviderProduct}+measuring" th:text="${item.measuringRate}" /></td>
+                    <td> <a th:id="${item.providerProduct.idProviderProduct}+price" th:text="${item.pricePerUnit}" /></td>
+                    <td><a th:id="${item.providerProduct.idProviderProduct}+currency" th:text="${item.currency}" /></td>
+                    <td><a th:id="${item.providerProduct.idProviderProduct}+vat" th:text="${item.amount}*${item.pricePerUnit}*${item.providerProduct.vat}*0.01" /></td>
+                    <td> <a th:id="${item.providerProduct.idProviderProduct}+summ" th:text="${item.amount}*${item.pricePerUnit}" /> </td>
                 </tr>
                 </tbody>
             </table>
@@ -138,14 +137,14 @@
 </style>
 <script >
     function copyValueTo(fromElem) {
-        let id = fromElem.id.split('a');
-        let  vat = parseFloat(document.getElementById(id[0]+'vat').text)/0.01/parseFloat(document.getElementById(id[0]+'summ').text);
+        let id = fromElem.id.split('a')[0];
+        let  vat = parseFloat(document.getElementById(id+'vat').text)/0.01/parseFloat(document.getElementById(id+'summ').text);
 
-        let summ = parseFloat(fromElem.value) * parseFloat(document.getElementById(id[0]+'price').text);
+        let summ = parseFloat(fromElem.value) * parseFloat(document.getElementById(id+'price').text);
 
-        document.getElementById(id[0]+'summ').text = summ ;
+        document.getElementById(id+'summ').text = summ ;
 
-        document.getElementById(id[0]+'vat').text = (summ * vat * 0.01).toFixed(2)  ;
+        document.getElementById(id+'vat').text = (summ * vat * 0.01).toFixed(2)  ;
 
         document.getElementById('summary').innerText = countSumm('summ') ;
 
