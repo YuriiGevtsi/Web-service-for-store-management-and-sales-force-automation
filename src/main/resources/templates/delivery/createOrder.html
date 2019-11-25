@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="temps/temp :: fragment">
-
-</head>
+<head th:replace="temps/temp :: fragment"></head>
 <body><script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
 <div class="container-fluid h-100">
     <form   class="h-100">
         <div class="row mt-3" >
             <div class="col-sm-5">
-                <a href="/myShop" type="button" class="btn btn-danger mt-2 ml-2"><i class="fas fa-times fa-2x mt-1" ></i></a>
+                <a th:href="${order} ? (${action} == 'editFromList' ? '/listOfOrders' : '/myShop' ): '/myShop'" type="button" class="btn btn-danger mt-2 ml-2"><i class="fas fa-times fa-2x mt-1" ></i></a>
             </div>
             <div class="col-sm-6">
-                <label class="h2 mt-2" th:text="${order} ? 'Edit order № ' : 'Create new order'"></label>
+                <label class="h2 mt-2" th:text="${order} ?(${accepted} ? 'ACCEPTED. Order № ' : 'Edit order № ') : 'Create new order'"></label>
                 <label class="h2 mt-2" id="idOrder" th:text="${order} ? ${order.idOrder} : ''"></label>
             </div>
         </div>
@@ -19,7 +17,7 @@
             <div class="form-group row justify-content-center">
                 <label for="provider" class="col-sm-2 w-25 col-form-label">Provider</label>
                 <div class="col-sm-2 w-50">
-                    <select class="selectpicker" title="Choose provider" name="provider"
+                    <select class="selectpicker" title="Choose provider" name="provider" th:disabled="${accepted} ? 'true' : 'false'"
                             data-live-search="true"  id="provider"   data-size="5"
                             onchange="checkProvider()"
                     >
@@ -34,11 +32,11 @@
 
         <div class="container">
             <div class="row">
-                <button type="button" onclick="$('#menageDeliveries').modal('show'); setTimeout(function() { $('#header').click(); }, 200);" class="btn btn-success mb-2 mr-5 "><span class="fas fa-plus"></span></button>
-                <button type="button" id="deleteItem" class="btn btn-danger mb-2 ml-5"><span class="fas fa-minus"></span></button>
-                <button type="button" class="btn btn-info  offset-md-1 mb-2" >Add comment</button>
-                <button type="button" onclick="$('#datepicker').modal('show'); createPicker();" class="btn btn-info  offset-md-2 mb-2">Date of delivery</button>
-                <button type="button" class="btn btn-info  offset-md-2 mb-2" onclick="showDistributionOfPayment()">Payments</button>
+                <button type="button"  th:disabled="${accepted} ? 'true' : 'false'" onclick="$('#menageDeliveries').modal('show'); setTimeout(function() { $('#header').click(); }, 200);" class="btn btn-success mb-2 mr-5 "><span class="fas fa-plus"></span></button>
+                <button type="button"  th:disabled="${accepted} ? 'true' : 'false'" id="deleteItem" class="btn btn-danger mb-2 ml-5"><span class="fas fa-minus"></span></button>
+                <button type="button"  th:disabled="${accepted} ? 'true' : 'false'" class="btn btn-info  offset-md-1 mb-2" >Add comment</button>
+                <button type="button"  th:disabled="${accepted} ? 'true' : 'false'" onclick="$('#datepicker').modal('show'); createPicker();" class="btn btn-info  offset-md-2 mb-2">Date of delivery</button>
+                <button type="button"  th:disabled="${accepted} ? 'true' : 'false'" class="btn btn-info  offset-md-2 mb-2" onclick="showDistributionOfPayment()">Payments</button>
             </div>
         </div>
         <div class="h-50">
@@ -60,14 +58,14 @@
                     <td th:text="${item.providerProduct.idProviderProduct}"></td>
                     <td th:text="${item.getProviderProduct().name}"></td>
                     <th  scope="row" >
-                    <input class="form-control-plaintext" name="amount" min="1" onchange="copyValueTo()" type="number" th:value="${item.amount}">
+                    <input  th:disabled="${accepted} ? 'true' : 'false'" class="form-control-plaintext" name="amount" min="1" onchange="copyValueTo()" type="number" th:value="${item.amount}">
                     </th>
                     <td th:text="${item.measuringRate}"></td>
                     <td th:text="${item.pricePerUnit}"></td>
                     <td th:text="${item.currency}"></td>
                     <td th:text="${item.providerProduct.getVat()}"></td>
                     <th  scope="row" >
-                    <input class="form-control-plaintext" name="sum" disabled th:value="${item.amount * item.pricePerUnit}" type="text">
+                    <input  th:disabled="${accepted} ? 'true' : 'false'" class="form-control-plaintext" name="sum" disabled th:value="${item.amount * item.pricePerUnit}" type="text">
                     </th>
                 </tr>
                 </tbody>
@@ -101,7 +99,7 @@
 
                     </div>
                     <div class="row mt-2">
-                        <div class="col-md-2">
+                        <div class="col-sm-2">
                             <p class="h6"> Includes VAT :</p>
                         </div>
                         <div class="col-1" id="vat" >
@@ -115,7 +113,7 @@
                     </div>
                 </div>
                 <div class="col-2 mt-3">
-                    <button type="button" class="btn btn-success btn-sm mb-3  w-100 h-100" id="submit">Submit</button>
+                    <button  th:disabled="${accepted} ? 'true' : 'false'" type="button" class="btn btn-success btn-sm mb-3  w-100 h-100" id="submit">Submit</button>
                 </div>
             </div>
         </div>
@@ -261,7 +259,6 @@
         let url ;
         if ($('#idOrder').text().length > 0)url = 'http://localhost:8080/updateOrder'
         else url = 'http://localhost:8080/createOrder'
-alert(getTableData())
         $.ajax({
             type: 'POST',
             contentType : "application/json",
@@ -396,8 +393,6 @@ alert(getTableData())
             $('#onDeliveryLbl').text( 'On delivery ' + on.value);
             $('#prepaymentLbl').text( 'Prepayment ' + pre.value);
         }
-
-
     }
 
     function compareSliders(number) {

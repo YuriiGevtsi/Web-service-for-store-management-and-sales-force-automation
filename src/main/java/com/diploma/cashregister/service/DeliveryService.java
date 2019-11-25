@@ -4,6 +4,7 @@ import com.diploma.cashregister.domain.*;
 import com.diploma.cashregister.repos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -55,6 +56,7 @@ public class DeliveryService {
         return orderPaymentsRepo.findWhereOrders(number);
     }
 
+    @Transactional
     public void createDelivery(Map<String, String> map) {
         long id = Long.valueOf(map.get("order"));
 
@@ -92,6 +94,7 @@ public class DeliveryService {
         return providerRepo.findAll();
     }
 
+    @Transactional
     public void updateOrder (Map<String, String> map) {
         Float price = Float.valueOf(map.get("price"));
         long id = Integer.parseInt(map.get("order"));
@@ -116,7 +119,6 @@ public class DeliveryService {
             }
             orderPaymentsRepo.save(payment);
         });
-
         orderBucketRepo.findAllByOrder(id).forEach(e-> orderBucketRepo.delete(e));
         fillOrderBucket(map, order);
     }
@@ -140,6 +142,7 @@ public class DeliveryService {
         });
     }
 
+    @Transactional
     public void createOrder(Map<String, String> map) {
         Float price = Float.valueOf(map.get("price"));
 
@@ -172,5 +175,9 @@ public class DeliveryService {
         orderPaymentsRepo.save(onPayments);
 
         fillOrderBucket(map, order);
+    }
+
+    public List<Order> getOrders() {
+        return orderRepo.findAll();
     }
 }

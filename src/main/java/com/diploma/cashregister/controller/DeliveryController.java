@@ -44,8 +44,7 @@ public class DeliveryController {
                               Model model
     ) {
         Order order = deliveryService.getOrder(number);
-        if (order != null && !order.getStatus().equals("accepted")){
-
+        if (order != null ){
             Set<OrderPayments> orderPayments = deliveryService.getOrderPayments(number);
 
             orderPayments.stream().forEach(payment ->{
@@ -54,10 +53,12 @@ public class DeliveryController {
             });
             model.addAttribute("order", order);
             model.addAttribute("bucket",deliveryService.getProductFromOrderBucket(number));
-            if (action.equals("edit")){
+            if (action.equals("edit") || action.equals("editFromList")){
                 model.addAttribute("supplier",order.getProvider().getIdProvider());
                 model.addAttribute("products",productService.getAllProductsByProvider(order.getProvider().getIdProvider()));
                 model.addAttribute("suppliers",deliveryService.getProviders());
+                model.addAttribute("action",action);
+                if (order.getStatus().equals("accepted")) model.addAttribute("accepted",true);
                 return "delivery/createOrder";
             }else return "delivery/delivery";
         }else {
@@ -97,6 +98,7 @@ public class DeliveryController {
             return e.getLocalizedMessage();
         }
     }
+
     @PostMapping(value = "/updateOrder")
     public @ResponseBody String updateOrder(
             @RequestBody String json
@@ -110,5 +112,11 @@ public class DeliveryController {
             e.printStackTrace();
             return e.getLocalizedMessage();
         }
+    }
+
+    @GetMapping("/listOfOrders")
+    public String getOrders(Model model) {
+        model.addAttribute("order",deliveryService.getOrders());
+        return "delivery/allOrders";
     }
 }

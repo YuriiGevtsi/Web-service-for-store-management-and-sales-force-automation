@@ -73,48 +73,41 @@
         <div class="container  mt-5 ">
             <div class="row">
                 <div class="col-10">
-                    <div class="row ">
+                    <div class="row">
                         <div class="col-sm col-lg-3 ">
-                            <h3><strong>Итого</strong></h3>
+                            <h3><strong>Total</strong></h3>
                         </div>
-                        <div class="col-sm col-lg-3 mt-2">
-                            <p class="h6">Заплачено авансом : </p>
+                        <div class="col-sm col-sm-1 mt-2 ">
                         </div>
-                        <div class="col-sm col-lg-1 mt-2" th:text="${pre}">
+                        <div class="col-sm col-sm-1 mt-2 ">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm col-lg-2">
-                            <p class="h6">Сумма :</p>
+                        <div class="col-sm col-sm-2">
+                            <p class="h6">Total amount :</p>
                         </div>
-                        <div class="col-sm col-lg-1 " id="summary">
-
+                        <div class="col-sm col-sm-1 " id="summary"></div>
+                        <div class="col-sm col-sm-3">
+                            <p class="h6">Prepayment : </p>
                         </div>
-                        <div class="col-sm col-lg-3">
-                            <p class="h6">Во время доставки :</p>
+                        <div class="col-sm col-sm-1" th:text="${pre}" id="pre">
                         </div>
-                        <div class="col-sm col-lg-1 " th:text="${post}" id="post">
-
+                        <div class="col-sm col-sm-3">
+                            <p class="h6">To pay :</p>
                         </div>
-                        <div class="col-md-auto">
-                            <p class="h6">К оплате :</p>
-                        </div>
-                        <div class="col-sm col-lg-1 " id="payment">
+                        <div class="col-sm col-sm-1 " id="payment">
 
                         </div>
                     </div>
                     <div class="row mt-2">
-                        <div class="col-md-2">
-                            <p class="h6"> В нем НДС :</p>
+                        <div class="col-sm-2">
+                            <p class="h6"> Includes VAT :</p>
                         </div>
-                        <div class="col-1" id="vat" >
-
+                        <div class="col-1" id="vat"></div>
+                        <div class="col-sm col-sm-3">
+                            <p class="h6">During delivery :</p>
                         </div>
-                        <div class="col-sm col-lg-3">
-                            <p class="h6">В кредит :</p>
-                        </div>
-                        <div class="col-sm col-lg-1" th:text="${credit}">
-
+                        <div class="col-sm col-sm-1 " th:text="${post}" >
                         </div>
                     </div>
                 </div>
@@ -169,7 +162,7 @@
         return obj;
     }
     function countPayment() {
-        let res = parseFloat($('#summary').text()) - parseFloat($('#post').text());
+        let res = parseFloat($('#summary').text()) - parseFloat($('#pre').text());
         return res;
     }
 
