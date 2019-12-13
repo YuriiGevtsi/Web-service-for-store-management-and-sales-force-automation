@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="temps/temp :: fragment"></head>
+
+<body><script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+<div class="container-fluid h-100">
+    <form th:action="@{/addEmployee}" method="post">
+
+        <div class="row mt-3" >
+            <div class="col-sm-5">
+                <a href="/myShop" type="button" class="btn btn-danger mt-2 ml-2"><i class="fas fa-times fa-2x mt-2" ></i></a>
+            </div>
+            <div class="col-sm-6 mt-2">
+                <label class="h2 mt-2" th:text="${employee} ? 'Edit product' : 'Add new employee'"></label>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-5">
+            <div class="row d-flex align-items-center" >
+                <div class="col-sm-5 d-flex justify-content-end mt-3">
+                    <div class="col-sm-3 mr-5">
+                        <label  for="login" class="h5">Login</label>
+                    </div>
+                </div>
+                <div class="col-sm-4 d-flex justify-content-end mt-3">
+                    <input type="text" class="form-control" id="login" placeholder="Input login"  th:value="${employee} ? ${employee}" name="login">
+                </div>
+                <div class="col-sm-5 d-flex justify-content-end mt-3">
+                    <div class="col-sm-3 mr-5">
+                        <label  for="firstName" class="h5">First name</label>
+                    </div>
+                </div>
+                <div class="col-sm-4 d-flex justify-content-end mt-3">
+                    <input type="text" class="form-control" id="firstName" placeholder="Input First name"  th:value="${employee} ? ${employee}" name="firstName">
+                </div>
+                <div class="col-sm-5 d-flex justify-content-end mt-3">
+                    <div class="col-sm-3 mr-5">
+                        <label  for="lastName" class="h5">Last name</label>
+                    </div>
+                </div>
+                <div class="col-sm-4 d-flex justify-content-end mt-3">
+                    <input type="text" class="form-control" id="lastName" placeholder="Input Last name"  th:value="${employee} ? ${employee}" name="lastName">
+                </div>
+                <div class="col-sm-5 d-flex justify-content-end mt-3">
+                    <div class="col-sm-3 mr-5">
+                        <label  for="birth" class="h5">Date of birth</label>
+                    </div>
+                </div>
+                <div class="col-sm-4 d-flex justify-content-end mt-3">
+                    <input type="date" class="form-control" id="birth" placeholder="Input Date of birth"  th:value="${employee} ? ${employee}" name="birth">
+                </div>
+                <div class="col-sm-5 d-flex justify-content-end mt-3">
+                    <div class="col-sm-3 mr-5">
+                        <label  for="pass1" class="h5">Password</label>
+                    </div>
+                </div>
+                <div class="col-sm-4 d-flex justify-content-end mt-3">
+                    <input type="text" class="form-control" id="pass1" placeholder="Input Password"  th:value="${employee} ? ${employee}" name="pass1">
+                </div>
+                <div class="col-sm-5 d-flex justify-content-end mt-3">
+                    <div class="col-sm-3 mr-5">
+                        <label  for="pass2" class="h5">Password</label>
+                    </div>
+                </div>
+                <div class="col-sm-4 d-flex justify-content-end mt-3">
+                    <input type="text" class="form-control" id="pass2" placeholder="Confirm Password"  th:value="${employee} ? ${employee}" name="pass2">
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-9 d-flex justify-content-end mt-3 ml-4">
+            <div class="col-sm-3 ">
+            <button type="submit"  class="btn btn-success btn-lg mb-3  w-100 h-100">Add</button>
+        </div>
+        </div>
+    </form>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+<script type="text/javascript">
+
+</script>
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+</style>
+
+</html>

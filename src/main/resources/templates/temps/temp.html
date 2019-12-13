@@ -264,7 +264,7 @@
                 <div class="mt-2" style="height: 40%">
                     <div class="row justify-content-around h-100">
                         <div class="col col-md-4 text-center no-float ml-5" >
-                            <a href="#" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Add employee</a>
+                            <a href="/addEmployee" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Add employee</a>
                         </div>
                         <div class="col col-md-4 text-center no-float mr-5">
                             <button onclick="" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Contracts</button>
@@ -554,7 +554,7 @@
                             </div>
                             <div class="col-sm-2  mb-3">
                                 <!--/*@thymesVar id="suppliers" type=""*/-->
-                                <button th:type="${suppliers} ? 'button' : 'submit'" onclick="setDate()" class="btn btn-primary w-100 mb-2">Ok</button>
+                                <button  type="button" onclick="setDate()" class="btn btn-primary w-100 mb-2">Ok</button>
                             </div>
                         </div>
                     </form>

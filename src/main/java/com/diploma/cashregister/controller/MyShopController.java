@@ -67,26 +67,35 @@ public class MyShopController {
                               @RequestParam(required = false, defaultValue = "-1") Long idProduct
                               ) throws IOException {
         ProviderProduct product;
-        if (idProduct!=-1) product = productService.getProduct(String.valueOf(idProduct));
-        else product = new ProviderProduct();
 
-        product.setDescription(description);
-        product.setName(productName);
-        product.setVat(vat);
+        if (idProduct!=-1){
+            product = productService.getProduct(String.valueOf(idProduct));
+            setBasicParameters(productName, vat, description, image, product);
 
-        saveFile(product,image);
-        productService.saveProduct(product,manufacturer,measuring);
+            productService.editProduct(product,manufacturer,measuring,providerPrice,price,date,barcode,category,provider);
+        }
+        else{
+            product = new ProviderProduct();
+            setBasicParameters(productName, vat, description, image, product);
+try {
 
-        if (!product.getCurrentProviderPrice().equals(providerPrice))productService.productAddProviderPrice(providerPrice,product);
-        if (idProduct == -1)productService.productAddProductPrice(price,date,product);
-        else productService.productEditPrice(price,date,product);
-        if (!product.getCurrentBarcode().getCode().equals(barcode))productService.productAddBarcode(barcode,product.getIdProviderProduct());
-        if (product.getMainCategory().getIdProductCategory() != category && idProduct != -1) productService.editCategory(category,product);
-        else productService.productAddCategory(category,product);
-        if (!product.findProvider(provider))productService.productAddProvider(provider,product);
+    productService.createProduct(product,manufacturer,measuring,providerPrice,price,date,barcode,category,provider);
+}catch (Exception e){
+    System.out.println("--------------------------------------------------------");
+    System.out.println( e);
+    System.out.println("-------" );
+}
+        }
 
         if (idProduct == -1)return "redirect:/myShop";
         else return "redirect:/allProducts";
+    }
+
+    private void setBasicParameters(@RequestParam String productName, @RequestParam Double vat, @RequestParam(required = false, defaultValue = "") String description, @RequestParam MultipartFile image, ProviderProduct product) throws IOException {
+        product.setDescription(description);
+        product.setName(productName);
+        product.setVat(vat);
+        saveFile(product, image);
     }
 
     @GetMapping("allProducts")
@@ -125,5 +134,16 @@ public class MyShopController {
             file.transferTo(new File(uploadPath + "/" + resultFileName));
             product.setPhoto(resultFileName);
         }
+    }
+
+    @GetMapping("addEmployee")
+    public String addEmployee(Model model){
+        //model.addAttribute("employee", "s");
+        return "employee/addEmployee";
+    }
+    @PostMapping("addEmployee")
+    public String createEmployee(Model model){
+        //model.addAttribute("employee", "s");
+        return "redirect:/myShop";
     }
 }
