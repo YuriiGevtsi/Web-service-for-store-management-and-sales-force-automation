@@ -13,7 +13,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "shift_worker")
 @Data
-@EqualsAndHashCode(of = "idShift")
+@EqualsAndHashCode(of = "idShiftWorker")
 @NoArgsConstructor
 public class ShiftWorker {
     @Id

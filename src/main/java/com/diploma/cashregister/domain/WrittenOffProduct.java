@@ -12,7 +12,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "written_off_product")
 @Data
-@EqualsAndHashCode(of = "idPassword")
+@EqualsAndHashCode(of = "idWrittenOffProduct")
 @NoArgsConstructor
 public class WrittenOffProduct {
     @Id
