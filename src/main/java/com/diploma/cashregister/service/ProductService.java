@@ -4,6 +4,7 @@ import com.diploma.cashregister.domain.*;
 import com.diploma.cashregister.repos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -188,5 +189,26 @@ public class ProductService {
         ProductCategory mainCategory = product.getMainCategory();
         mainCategory.setName(categoryRepo.findById(category).get().getName());
         categoryRepo.save(mainCategory);
+    }
+
+    @Transactional
+    public void editProduct(ProviderProduct product, Long manufacturer, Long measuring, Double providerPrice, Double price, String date, String barcode, Long category, Long provider) {
+        saveProduct(product,manufacturer,measuring);
+
+        if (product.getCurrentProviderPrice() == null || !product.getCurrentProviderPrice().equals(providerPrice)) productAddProviderPrice(providerPrice,product);
+        productEditPrice(price,date,product);
+        if (product.getCurrentBarcode() == null || !product.getCurrentBarcode().getCode().equals(barcode)) productAddBarcode(barcode,product.getIdProviderProduct());
+        if (product.getMainCategory() == null || product.getMainCategory().getIdProductCategory() != category) editCategory(category,product);
+        if (!product.findProvider(provider)) productAddProvider(provider,product);
+    }
+
+    @Transactional
+    public void createProduct(ProviderProduct product, Long manufacturer, Long measuring, Double price, Double providerPrice, String date, String barcode, Long category, Long provider) {
+        saveProduct(product,manufacturer,measuring);
+        productAddProviderPrice(providerPrice,product);
+        productAddProductPrice(price,date,product);
+        productAddBarcode(barcode,product.getIdProviderProduct());
+        productAddCategory(category,product);
+        productAddProvider(provider,product);
     }
 }
