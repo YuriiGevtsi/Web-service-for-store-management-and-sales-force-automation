@@ -1,6 +1,7 @@
 package com.diploma.cashregister.controller;
 
 import com.diploma.cashregister.domain.ProviderProduct;
+import com.diploma.cashregister.domain.Worker;
 import com.diploma.cashregister.service.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -138,12 +140,33 @@ try {
 
     @GetMapping("addEmployee")
     public String addEmployee(Model model){
-        //model.addAttribute("employee", "s");
+
         return "employee/addEmployee";
     }
+    @GetMapping("allEmployees")
+    public String allEmployees(Model model){
+
+        return "employee/allEmployees";
+    }
+    @GetMapping("contracts")
+    public String contracts(Model model){
+
+        return "employee/contracts";
+    }
     @PostMapping("addEmployee")
-    public String createEmployee(Model model){
-        //model.addAttribute("employee", "s");
+    public String createEmployee(@RequestParam String login,
+                                 @RequestParam String firstName,
+                                 @RequestParam String lastName,
+                                 @RequestParam LocalDate birth,
+                                 @RequestParam String pass1,
+                                 @RequestParam String pass2,
+                                 @RequestParam Long contact)
+    {
+        Worker worker = new Worker();
+        worker.setDateOfBirthday(birth);
+        worker.setName(firstName);
+        worker.setSurname(lastName);
+
         return "redirect:/myShop";
     }
 }
