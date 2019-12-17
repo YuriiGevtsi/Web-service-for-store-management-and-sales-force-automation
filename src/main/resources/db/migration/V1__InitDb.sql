@@ -39,6 +39,7 @@ create table client_card (
 create table contract (
                           id_contract int8 not null,
                           date_start date,
+                          date_end date,
                           position int8 not null,
                           worker int8 not null,
                           primary key (id_contract)
@@ -235,11 +236,13 @@ create table worker (
                         hire_date date,
                         name varchar(2048),
                         surname varchar(2048),
+                        contact varchar(255),
                         primary key (id_worker));
 
 create table worker_password (
                                  id_password int4 not null,
-                                 password varchar(2048),
+                                 login varchar(2048)  not null,
+                                 password varchar(2048)  not null,
                                  worker int8,
                                  primary key (id_password));
 
