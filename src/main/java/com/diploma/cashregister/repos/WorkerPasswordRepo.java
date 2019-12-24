@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WorkerPasswordRepo extends JpaRepository<WorkerPassword,Long> {
 
-    @Query("from WorkerPassword where idPassword = ?1")
-    WorkerPassword findById_password(int id);
+    @Query("from WorkerPassword where login = ?1")
+    WorkerPassword findByLogin(String id);
 
 
 }

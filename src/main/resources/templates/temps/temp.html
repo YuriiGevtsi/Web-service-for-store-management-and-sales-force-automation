@@ -161,6 +161,48 @@
         </div>
     </div>
 </div>
+<!-- Modal add contract-->
+<div th:fragment="addContractModal" class="modal fade " id="addContractModal" role="dialog"  data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header justify-content-md-center">
+                <label class="h5 mt-2"> Add new contract </label>
+            </div>
+            <div class="modal-body">
+                <form method="get" action="/return" class="form">
+                    <div class="row ">
+                        <div class=" col col-sm-4 mt-1 ">
+                            <label  >Date start </label>
+                        </div>
+                        <div class=" col ">
+                            <input onchange="setDates()" type="date" id="dateStart" class="form-control"  >
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col col-sm-4 mt-1">
+                            <label >Date finish </label>
+                        </div>
+                        <div class="col ">
+                            <input onchange="setDates()" type="date" id="dateFinish" class="form-control"  >
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row-reverse">
+                        <div class="col-4 mt-2" >
+                            <button type="button"  onclick = "$('.modal').modal('hide')" class="btn btn-primary btn-block" >Ok</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        function setDates() {
+            $('#start').val($('#dateStart').val());
+            $('#finish').val($('#dateFinish').val());
+        }
+    </script>
+</div>
 
 <!-- Modal finish shift-->
 <div th:fragment="finish" class="modal fade " id="finish" role="dialog" data-backdrop="static" data-keyboard="false">
@@ -206,7 +248,7 @@
             <div class="modal-body">
                 <form method="post" th:action="@{/write-off}"  class="form">
                     <div class="row ">
-                        <div class=" col col-lg-2 ">
+                        <div class=" col col-sm-2 ">
                             <label for="barcode" >Barcode</label>
                         </div>
                         <div class="col ">
@@ -217,7 +259,7 @@
                         </div>
                     </div>
                     <div class="row mt-2">
-                        <div class="col col-lg-2  ">
+                        <div class="col col-sm-2  ">
                             <label for="prodName" >Name </label>
                         </div>
                         <div class="col">
