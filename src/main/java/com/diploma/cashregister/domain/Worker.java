@@ -4,9 +4,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -30,6 +27,7 @@ public class Worker{
     @Column(name = "hire_date")
     private LocalDate hireDate;
     private String name;
+    private String contact;
     @Column(name = "date_of_birthday")
     private LocalDate dateOfBirthday;
 
@@ -48,4 +46,8 @@ public class Worker{
     @Getter
     private Set<Role> roles = new HashSet<>();
 
+
+    public void setRoles(Role role) {
+        roles.add(role);
+    }
 }
