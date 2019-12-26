@@ -23,6 +23,7 @@ public class WorkerPassword  implements UserDetails{
     private int idPassword;
 
     private String password;
+    private String login;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "worker", referencedColumnName = "id_worker")

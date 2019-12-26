@@ -6,40 +6,40 @@
 <div class="container-fluid h-100">
     <div style="height: 7%"></div>
     <div class="h-25">
-        <div class="row justify-content-sm-center  mt-3 h-100">
-            <div class="col col-sm-3 text-center no-float">
+        <div class="row justify-content-md-center  mt-3 h-100">
+            <div class="col col-lg-3 text-center no-float">
                 <a href="/myShop" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >My shop</a>
             </div>
-            <div class="col col-sm-3 text-center no-float">
+            <div class="col col-lg-3 text-center no-float">
                 <button onclick="cashInOutModal('Cash withdrawal')" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Pay out</button>
             </div>
-            <div class="col col-sm-3 text-center no-float">
+            <div class="col col-lg-3 text-center no-float">
                 <button onclick="cashInOutModal('Cash acceptance')" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Pay in</button>
             </div>
         </div>
     </div>
     <div class="h-25">
-        <div class="row justify-content-sm-center  mt-3 h-100">
-            <div class="col col-sm-3 text-center no-float">
+        <div class="row justify-content-md-center  mt-3 h-100">
+            <div class="col col-lg-3 text-center no-float">
                 <button  onclick="$('#returnProdModal').modal('show');" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center">Purchase returns</button>
             </div>
-            <div class="col col-sm-3 text-center no-float">
+            <div class="col col-lg-3 text-center no-float">
                 <button  onclick="$('#writeOff').modal('show');" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Write off the product</button>
             </div>
-            <div class="col col-sm-3 text-center no-float">
+            <div class="col col-lg-3 text-center no-float">
                 <button  onclick="$('#deliveryModal').modal('show');" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Accept delivery</button>
             </div>
         </div>
     </div>
     <div class="h-25">
-        <div class="row justify-content-sm-center mt-3 h-100">
-            <div class="col col-sm-3 text-center no-float ">
+        <div class="row justify-content-md-center mt-3 h-100">
+            <div class="col col-lg-3 text-center no-float ">
                 <button  onclick="$('#finish').modal('show')" th:disabled="${shift ? false : true}" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Finish shift</button>
             </div>
-            <div class="col col-sm-3 text-center no-float">
+            <div class="col col-lg-3 text-center no-float">
                 <button onclick="$('#printReport').modal('show');" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Print report</button>
             </div>
-            <div class="col col-sm-3 text-center no-float">
+            <div class="col col-lg-3 text-center no-float">
                 <button onclick="exit()" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Exit</button>
             </div>
         </div>

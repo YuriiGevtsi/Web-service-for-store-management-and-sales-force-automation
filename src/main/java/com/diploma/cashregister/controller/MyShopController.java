@@ -1,6 +1,7 @@
 package com.diploma.cashregister.controller;
 
 import com.diploma.cashregister.domain.ProviderProduct;
+import com.diploma.cashregister.service.EmployeeService;
 import com.diploma.cashregister.service.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,11 @@ import java.util.UUID;
 public class MyShopController {
     @Autowired
     private final ProductService productService;
+
     @Value("${upload.path}")
     private String uploadPath;
 
-    public MyShopController(ProductService productService) {
+    public MyShopController(ProductService productService, EmployeeService employeeService) {
         this.productService = productService;
     }
 
@@ -81,9 +83,7 @@ try {
 
     productService.createProduct(product,manufacturer,measuring,providerPrice,price,date,barcode,category,provider);
 }catch (Exception e){
-    System.out.println("--------------------------------------------------------");
-    System.out.println( e);
-    System.out.println("-------" );
+
 }
         }
 
@@ -136,14 +136,4 @@ try {
         }
     }
 
-    @GetMapping("addEmployee")
-    public String addEmployee(Model model){
-        //model.addAttribute("employee", "s");
-        return "employee/addEmployee";
-    }
-    @PostMapping("addEmployee")
-    public String createEmployee(Model model){
-        //model.addAttribute("employee", "s");
-        return "redirect:/myShop";
-    }
 }

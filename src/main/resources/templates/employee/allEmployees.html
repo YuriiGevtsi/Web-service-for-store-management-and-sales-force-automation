@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="temps/temp :: fragment"></head>
+<body>
+
+<div class="container-fluid h-100">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <a href="/myShop" type="button" class="btn btn-danger mt-2"><i class="fas fa-times fa-2x" ></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row d-flex justify-content-between mt-2">
+            <div class="col">
+                <a href="/addProduct" type="button" class="btn btn-success mb-2 mr-5 "><span class="fas fa-plus"></span></a>
+            </div>
+            <div class="col">
+                <button type="button" onclick="myFunction()" class="btn btn-danger mb-2 ml-5"><span class="fas fa-minus"></span></button>
+            </div>
+        </div>
+    </div>
+    <div class="h-50">
+        <table class="table table-hover table-striped " id="prods">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Surname</th>
+                <th scope="col">Phone number</th>
+                <th scope="col">Date of birth</th>
+                <th scope="col">Date of hire</th>
+                <th scope="col">Position</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="worker,iter: ${workers}" th:ondblclick="'editPersonalData('+ *{worker.getIdProviderProduct()} +')'">
+
+                <td> <a th:id="${worker.getCurrentBarcode()}+code" th:text="${worker.getCurrentBarcode().getCode()}"/></td>
+                <td> <a th:id="${worker.getIdProviderProduct()}+name" th:text="${worker.getName()}"/></td>
+                <td> <a th:id="${worker.getIdProviderProduct()}+measuring" th:text="${worker.providerProductMeasuringRate.name}" /></td>
+                <td> <a th:id="${worker.getIdProviderProduct()}+manufacrurer" th:text="${worker.manufacturer.name}" /></td>
+                <td> <a th:id="${worker.getIdProviderProduct()}+dateof" th:text="${worker.providerPrices.stream().findFirst().get().getDate()}" /></td>
+                <td> <a th:id="${worker.getIdProviderProduct()}+vat" th:text="${worker.vat}"/></td>
+                <td> <a th:id="${worker.getIdProviderProduct()}+price" th:text="${worker.getCurrentPrice()} ? ${worker.getCurrentPrice().getPrice()}" /> </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+</body>
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+</style>
+<script>
+
+    function editPersonalData(idWorker) {
+        window.location = "http://localhost:8080/editPersonalData?idWorker=" + idWorker;
+    }
+    $(document).ready( function () {
+        $('#prods').DataTable({
+            "sScrollY": "50vh",
+            "sDom": "frtiS",
+            "bDeferRender": true
+        } );
+    } );
+</script>
+</html>
