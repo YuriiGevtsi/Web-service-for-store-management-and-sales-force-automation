@@ -12,7 +12,7 @@
                 <a href="/myShop" type="button" class="btn btn-danger mt-2 ml-2"><i class="fas fa-times fa-2x mt-2" ></i></a>
             </div>
             <div class="col-sm-6 mt-2">
-                <label class="h2 mt-2" th:text="${employee} ? 'Edit product' : 'Add new employee'"></label>
+                <label class="h2 mt-2" th:text="${employee} ? 'Edit personal data' : 'Add new employee'"></label>
             </div>
         </div>
         <div class="d-flex justify-content-center mt-5">
@@ -35,10 +35,10 @@
                     </div>
                 </div>
                 <div class="col-sm-4 d-flex justify-content-end mt-3">
-                    <select required class="selectpicker" title="Choose role of employee" name="role"
+                    <select required class="selectpicker" title="Choose role of employee" name="role" multiple
                             id="role"  data-width="100%" data-size="3" >
-                        <option th:value="EMPLOYEE" th:text="EMPLOYEE"></option>
-                        <option th:value="ADMIN" th:text="ADMIN"></option>
+                        <option th:value="EMPLOYEE" th:text="EMPLOYEE" th:selected="${employee} ? (${roles.contains('EMPLOYEE')} ? true : false) : false" ></option>
+                        <option th:value="ADMIN" th:text="ADMIN" th:selected="${employee} ? (${roles.contains('ADMIN')} ? true : false) : false"></option>
                     </select>
                 </div>
                 <div class="col-sm-5 d-flex justify-content-end mt-3">
@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div class="col-sm-4 d-flex justify-content-end mt-3">
-                    <input type="text" required class="form-control" id="firstName" placeholder="Input First name"  th:value="${employee} ? ${employee}" name="firstName">
+                    <input type="text" required class="form-control" id="firstName" placeholder="Input First name"  th:value="${employee} ? ${employee.name}" name="firstName">
                 </div>
                 <div class="col-sm-5 d-flex justify-content-end mt-3">
                     <div class="col-sm-3 mr-5">
@@ -55,7 +55,7 @@
                     </div>
                 </div>
                 <div class="col-sm-4 d-flex justify-content-end mt-3">
-                    <input type="text" required class="form-control" id="lastName" placeholder="Input Last name"  th:value="${employee} ? ${employee}" name="lastName">
+                    <input type="text" required class="form-control" id="lastName" placeholder="Input Last name"  th:value="${employee} ? ${employee.surname}" name="lastName">
                 </div>
                 <div class="col-sm-5 d-flex justify-content-end mt-3">
                     <div class="col-sm-3 mr-5">
@@ -63,7 +63,7 @@
                     </div>
                 </div>
                 <div class="col-sm-4 d-flex justify-content-end mt-3">
-                    <input type="text" required class="form-control" id="contact" placeholder="Phone number"  th:value="${employee} ? ${employee}" name="contact">
+                    <input type="text" required class="form-control" id="contact" placeholder="Phone number"  th:value="${employee} ? ${employee.contact}" name="contact">
                 </div>
                 <div class="col-sm-5 d-flex justify-content-end mt-3">
                     <div class="col-sm-3 mr-5">
@@ -71,7 +71,7 @@
                     </div>
                 </div>
                 <div class="col-sm-4 d-flex justify-content-end mt-3">
-                    <input type="date" required class="form-control" id="birth" placeholder="Input Date of birth"  th:value="${employee} ? ${employee}" name="birth">
+                    <input type="date" required class="form-control" id="birth" placeholder="Input Date of birth"  th:value="${employee} ? ${employee.dateOfBirthday}" name="birth">
                 </div>
                 <div class="col-sm-5 d-flex justify-content-end mt-3">
                     <div class="col-sm-3 mr-5">
@@ -79,7 +79,7 @@
                     </div>
                 </div>
                 <div class="col-sm-4 d-flex justify-content-end mt-3">
-                    <input type="text" class="form-control" id="login" placeholder="Input login"  th:value="${employee} ? ${employee}" name="login" required>
+                    <input type="text" class="form-control" id="login" placeholder="Input login"  th:value="${password} ? ${password.login}" name="login" required>
                 </div>
                 <div class="col-sm-5 d-flex justify-content-end mt-3">
                     <div class="col-sm-3 mr-5">
@@ -87,7 +87,7 @@
                     </div>
                 </div>
                 <div class="col-sm-4 d-flex justify-content-end mt-3">
-                    <input type="password" required class="form-control" id="pass1" placeholder="Input Password"  th:value="${employee} ? ${employee}" name="pass1">
+                    <input type="password" required class="form-control" id="pass1" placeholder="Input Password"  th:value="${password} ? ${password.password}" name="pass1">
                 </div>
                 <div class="col-sm-5 d-flex justify-content-end mt-3">
                     <div class="col-sm-3 mr-5">
@@ -95,7 +95,7 @@
                     </div>
                 </div>
                 <div class="col-sm-4 d-flex justify-content-end mt-3">
-                    <input type="password" required class="form-control" id="pass2" placeholder="Confirm Password"  th:value="${employee} ? ${employee}">
+                    <input type="password" required class="form-control" id="pass2" placeholder="Confirm Password"  th:value="${password} ? ${password.password}">
                     <input type="hidden"  class="form-control" id="start"  name="start">
                     <input type="hidden"  class="form-control" id="finish" name="finish" >
                 </div>

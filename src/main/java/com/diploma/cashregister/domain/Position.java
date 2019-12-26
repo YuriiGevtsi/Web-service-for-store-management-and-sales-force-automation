@@ -26,4 +26,7 @@ public class Position {
     @OneToMany(mappedBy = "position")
     private Collection<Contract> contracts = new HashSet<>();
 
+    @OneToMany(mappedBy = "position")
+    private Collection<Worker> workers = new HashSet<>();
+
 }

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @PreAuthorize("hasAuthority('ADMIN')")
@@ -29,19 +31,29 @@ public class EmployeesController {
 
     @GetMapping("addEmployee")
     public String addEmployee(Model model){
-
         model.addAttribute("positions", employeeService.getAllPositions());
         return "employee/addEmployee";
     }
     @GetMapping("allEmployees")
     public String allEmployees(Model model){
-
+        model.addAttribute("employees",employeeService.getAllEmployees());
         return "employee/allEmployees";
     }
+
     @GetMapping("contracts")
     public String contracts(Model model){
 
         return "employee/contracts";
+    }
+    @GetMapping("editPersonalData")
+    public String editPersonalData(@RequestParam long idWorker, Model model){
+        List<String> roles = new ArrayList<>();
+        employeeService.getEmployee(idWorker).getRoles().forEach(role -> roles.add(role.name()));
+        model.addAttribute("employee", employeeService.getEmployee(idWorker));
+        model.addAttribute("password", employeeService.getEmployeesPassword(employeeService.getEmployee(idWorker)));
+        model.addAttribute("roles", roles);
+        model.addAttribute("positions", employeeService.getAllPositions());
+        return "employee/addEmployee";
     }
     @PostMapping("addEmployee")
     public String createEmployee(@RequestParam String login,

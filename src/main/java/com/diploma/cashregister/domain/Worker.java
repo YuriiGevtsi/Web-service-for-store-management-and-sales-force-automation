@@ -1,9 +1,6 @@
 package com.diploma.cashregister.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -16,6 +13,7 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(of = "idWorker")
 @NoArgsConstructor
+@ToString(of = {"idWorker","name","surname","contact","dateOfBirthday"})
 public class Worker{
     @Id
     @Column(name = "id_worker")
@@ -46,6 +44,9 @@ public class Worker{
     @Getter
     private Set<Role> roles = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "position", referencedColumnName = "id_position")
+    private Position position;
 
     public void setRoles(Role role) {
         roles.add(role);

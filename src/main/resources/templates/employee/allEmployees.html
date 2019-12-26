@@ -36,15 +36,15 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="worker,iter: ${workers}" th:ondblclick="'editPersonalData('+ *{worker.getIdProviderProduct()} +')'">
-
-                <td> <a th:id="${worker.getCurrentBarcode()}+code" th:text="${worker.getCurrentBarcode().getCode()}"/></td>
-                <td> <a th:id="${worker.getIdProviderProduct()}+name" th:text="${worker.getName()}"/></td>
-                <td> <a th:id="${worker.getIdProviderProduct()}+measuring" th:text="${worker.providerProductMeasuringRate.name}" /></td>
-                <td> <a th:id="${worker.getIdProviderProduct()}+manufacrurer" th:text="${worker.manufacturer.name}" /></td>
-                <td> <a th:id="${worker.getIdProviderProduct()}+dateof" th:text="${worker.providerPrices.stream().findFirst().get().getDate()}" /></td>
-                <td> <a th:id="${worker.getIdProviderProduct()}+vat" th:text="${worker.vat}"/></td>
-                <td> <a th:id="${worker.getIdProviderProduct()}+price" th:text="${worker.getCurrentPrice()} ? ${worker.getCurrentPrice().getPrice()}" /> </td>
+            <tr th:each="worker,iter: ${employees}" th:ondblclick="'editPersonalData('+ *{worker.getIdWorker()} +')'">
+                <td> <a th:text="${iter.index+1}"/></td>
+                <td> <a th:text="${worker.getIdWorker()}"/></td>
+                <td> <a th:text="${worker.getName()}" /></td>
+                <td> <a th:text="${worker.getSurname()}" /></td>
+                <td> <a th:text="${worker.getContact()}" /></td>
+                <td> <a th:text="${worker.getDateOfBirthday()}"/></td>
+                <td> <a th:text="${worker.getHireDate()}" /> </td>
+                <td> <a th:text="${worker.getPosition().name}" /> </td>
             </tr>
             </tbody>
         </table>

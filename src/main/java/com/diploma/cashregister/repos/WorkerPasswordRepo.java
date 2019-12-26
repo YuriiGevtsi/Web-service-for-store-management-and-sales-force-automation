@@ -1,5 +1,6 @@
 package com.diploma.cashregister.repos;
 
+import com.diploma.cashregister.domain.Worker;
 import com.diploma.cashregister.domain.WorkerPassword;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,5 +14,6 @@ public interface WorkerPasswordRepo extends JpaRepository<WorkerPassword,Long> {
     @Query("from WorkerPassword where login = ?1")
     WorkerPassword findByLogin(String id);
 
-
+    @Query("from WorkerPassword where worker = ?1")
+    WorkerPassword findByWorker(Worker idWorker);
 }

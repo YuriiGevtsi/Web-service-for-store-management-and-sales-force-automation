@@ -3,6 +3,7 @@ package com.diploma.cashregister.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,6 +16,7 @@ import java.util.Objects;
 @Data
 @EqualsAndHashCode(of = "idPassword")
 @NoArgsConstructor
+@ToString(of = {"idPassword","login","password"})
 public class WorkerPassword  implements UserDetails{
     @Id
     @Column(name = "id_password")

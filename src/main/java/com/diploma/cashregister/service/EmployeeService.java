@@ -43,4 +43,16 @@ public class EmployeeService {
     public List<Position> getAllPositions(){
         return positionRepo.findAll();
     }
+
+    public List<Worker> getAllEmployees() {
+        return workerRepo.findAll();
+    }
+
+    public Worker getEmployee(long idWorker) {
+        return workerRepo.findById(idWorker).get();
+    }
+
+    public WorkerPassword getEmployeesPassword(Worker worker) {
+        return workerPasswordRepo.findByWorker(worker);
+    }
 }
