@@ -29,26 +29,25 @@ public class Worker{
     @Column(name = "date_of_birthday")
     private LocalDate dateOfBirthday;
 
-    @OneToMany(mappedBy = "worker")
+    @OneToMany(mappedBy = "worker", orphanRemoval = true)
     private Collection<Contract> contracts = new HashSet<>();
 
-    @OneToMany(mappedBy = "worker", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "worker", fetch = FetchType.EAGER, orphanRemoval = true)
     private Collection<ShiftWorker> shiftWorkers = new HashSet<>();
 
-    @OneToMany(mappedBy = "worker")
+    @OneToMany(mappedBy = "worker", orphanRemoval = true)
     private Collection<WorkerPassword> workerPasswords = new HashSet<>();
 
     @ElementCollection(targetClass = Role.class,fetch = FetchType.EAGER)
     @CollectionTable(name = "role", joinColumns = @JoinColumn(name = "id_worker"))
     @Enumerated(EnumType.STRING)
-    @Getter
     private Set<Role> roles = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "position", referencedColumnName = "id_position")
     private Position position;
 
-    public void setRoles(Role role) {
+    public void addRole(Role role) {
         roles.add(role);
     }
 }

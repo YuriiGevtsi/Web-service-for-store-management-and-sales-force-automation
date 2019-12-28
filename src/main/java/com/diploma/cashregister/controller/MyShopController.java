@@ -65,7 +65,7 @@ public class MyShopController {
                               @RequestParam Long category,
                               @RequestParam Long manufacturer,
                               @RequestParam Long measuring,
-                              @RequestParam Long provider,
+                              @RequestParam List<Long> provider,
                               @RequestParam(required = false, defaultValue = "-1") Long idProduct
                               ) throws IOException {
         ProviderProduct product;

@@ -4,9 +4,8 @@
 
 <body><script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
 <div class="container-fluid h-100">
-    <form th:action="@{/addEmployee}" method="post"
+    <form th:action=" @{/addEmployee}" method="post"
           oninput='pass2.setCustomValidity(pass2.value != pass1.value ? "Passwords do not match." : "")'>
-
         <div class="row mt-3" >
             <div class="col-sm-5">
                 <a href="/myShop" type="button" class="btn btn-danger mt-2 ml-2"><i class="fas fa-times fa-2x mt-2" ></i></a>
@@ -15,7 +14,7 @@
                 <label class="h2 mt-2" th:text="${employee} ? 'Edit personal data' : 'Add new employee'"></label>
             </div>
         </div>
-        <div class="d-flex justify-content-center mt-5">
+        <div class="d-flex justify-content-center mt-2">
             <div class="row d-flex align-items-center" >
                 <div class="col-sm-5 d-flex justify-content-end mt-3">
                     <div class="col-sm-3 mr-5">
@@ -26,7 +25,7 @@
                     <select required class="selectpicker" title="Choose position of employee" name="position"
                             id="position"  data-width="100%" data-size="4" >
                         <option th:each="position : ${positions} " th:text="${position.name}" th:value="${position.getIdPosition()}"
-                                th:selected="${employee} ? (${employee.position == position.name} ? true : false) : false"></option>
+                                th:selected="${employee} ? (${employee.position.name == position.name} ? true : false) : false"></option>
                     </select>
                 </div>
                 <div class="col-sm-5 d-flex justify-content-end mt-3">
@@ -35,7 +34,7 @@
                     </div>
                 </div>
                 <div class="col-sm-4 d-flex justify-content-end mt-3">
-                    <select required class="selectpicker" title="Choose role of employee" name="role" multiple
+                    <select required class="selectpicker" title="Choose role of employee" name="roles" multiple
                             id="role"  data-width="100%" data-size="3" >
                         <option th:value="EMPLOYEE" th:text="EMPLOYEE" th:selected="${employee} ? (${roles.contains('EMPLOYEE')} ? true : false) : false" ></option>
                         <option th:value="ADMIN" th:text="ADMIN" th:selected="${employee} ? (${roles.contains('ADMIN')} ? true : false) : false"></option>
@@ -108,8 +107,8 @@
             <div class="col-sm-3 ">
                  <button type="submit"  class="btn btn-success btn-lg mb-3  w-100 h-100">Save</button>
             </div>
-
         </div>
+        <input type="hidden" th:value="${employee} ? ${employee.idWorker}" name="idWorker">
     </form>
 </div>
 

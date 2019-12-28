@@ -193,23 +193,27 @@ public class ProductService {
     }
 
     @Transactional
-    public void editProduct(ProviderProduct product, Long manufacturer, Long measuring, Double providerPrice, Double price, String date, String barcode, Long category, Long provider) {
+    public void editProduct(ProviderProduct product, Long manufacturer, Long measuring, Double providerPrice, Double price, String date, String barcode, Long category, List<Long> provider) {
         saveProduct(product,manufacturer,measuring);
 
         if (product.getCurrentProviderPrice() == null || !product.getCurrentProviderPrice().equals(providerPrice)) productAddProviderPrice(providerPrice,product);
         productEditPrice(price,date,product);
         if (product.getCurrentBarcode() == null || !product.getCurrentBarcode().getCode().equals(barcode)) productAddBarcode(barcode,product.getIdProviderProduct());
         if (product.getMainCategory() == null || product.getMainCategory().getIdProductCategory() != category) editCategory(category,product);
-        if (!product.findProvider(provider)) productAddProvider(provider,product);
+        provider.forEach(e-> {
+            if (!product.findProvider(e))productAddProvider(e,product);
+        });
     }
 
     @Transactional
-    public void createProduct(ProviderProduct product, Long manufacturer, Long measuring, Double price, Double providerPrice, String date, String barcode, Long category, Long provider) {
+    public void createProduct(ProviderProduct product, Long manufacturer, Long measuring, Double price, Double providerPrice, String date, String barcode, Long category, List<Long> provider) {
         saveProduct(product,manufacturer,measuring);
         productAddProviderPrice(providerPrice,product);
         productAddProductPrice(price,date,product);
         productAddBarcode(barcode,product.getIdProviderProduct());
         productAddCategory(category,product);
-        productAddProvider(provider,product);
+        provider.forEach(e-> {
+            productAddProvider(e,product);
+        });
     }
 }
