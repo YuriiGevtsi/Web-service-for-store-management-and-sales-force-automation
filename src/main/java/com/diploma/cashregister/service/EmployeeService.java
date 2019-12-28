@@ -12,7 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -34,6 +38,7 @@ public class EmployeeService {
     }
 
     public void createEmployee(Worker worker, WorkerPassword password, Contract contract, Long position){
+        worker.setPosition(positionRepo.findById(position).get());
         workerRepo.save(worker);
         workerPasswordRepo.save(password);
         contract.setPosition(positionRepo.findById(position).get());
@@ -54,5 +59,16 @@ public class EmployeeService {
 
     public WorkerPassword getEmployeesPassword(Worker worker) {
         return workerPasswordRepo.findByWorker(worker);
+    }
+
+    public Contract getCurrentContruct(Worker worker) {
+        Optional<Contract> contract = worker.getContracts().stream().filter(el ->
+                (LocalDate.now().isAfter(el.getDateStart()) || LocalDate.now().isEqual(el.getDateStart()))
+                        && (LocalDate.now().isBefore(el.getDateEnd()) || LocalDate.now().isEqual(el.getDateEnd()))).findAny();
+        return contract.isPresent() ? contract.get() : new Contract();
+    }
+
+    public void deleteEmployee(Long id) {
+        workerRepo.delete(workerRepo.findById(id).get());
     }
 }

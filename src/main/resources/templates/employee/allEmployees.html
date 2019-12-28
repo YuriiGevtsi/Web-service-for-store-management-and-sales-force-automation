@@ -14,15 +14,15 @@
     <div class="container">
         <div class="row d-flex justify-content-between mt-2">
             <div class="col">
-                <a href="/addProduct" type="button" class="btn btn-success mb-2 mr-5 "><span class="fas fa-plus"></span></a>
+                <a href="/addEmployee" type="button" class="btn btn-success mb-2 mr-5 "><span class="fas fa-plus"></span></a>
             </div>
             <div class="col">
-                <button type="button" onclick="myFunction()" class="btn btn-danger mb-2 ml-5"><span class="fas fa-minus"></span></button>
+                <button type="button" id="deleteEmployee" class="btn btn-danger mb-2 ml-5"><span class="fas fa-minus"></span></button>
             </div>
         </div>
     </div>
     <div class="h-50">
-        <table class="table table-hover table-striped " id="prods">
+        <table class="table table-hover table-striped " id="emps">
             <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
@@ -36,9 +36,9 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="worker,iter: ${employees}" th:ondblclick="'editPersonalData('+ *{worker.getIdWorker()} +')'">
+            <tr th:each="worker,iter: ${employees}" th:ondblclick="'editPersonalData('+ *{worker.getIdWorker()} +')'" th:id="${worker.getIdWorker()}">
                 <td> <a th:text="${iter.index+1}"/></td>
-                <td> <a th:text="${worker.getIdWorker()}"/></td>
+                <td > <a th:text="${worker.getIdWorker()}"/></td>
                 <td> <a th:text="${worker.getName()}" /></td>
                 <td> <a th:text="${worker.getSurname()}" /></td>
                 <td> <a th:text="${worker.getContact()}" /></td>
@@ -62,15 +62,49 @@
     }
 </style>
 <script>
+    function myFunction(idEmployee) {
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+        $.ajax({
+            type: 'post',
+            contentType : "application/json",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token)
+            },
+            url: 'http://localhost:8080/deleteEmployee',
+            data: JSON.stringify({ "id": idEmployee }),
+            dataType: 'json',
+            success : function(data) {
+                alert('Employee has been deleted')
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
+    }
 
     function editPersonalData(idWorker) {
         window.location = "http://localhost:8080/editPersonalData?idWorker=" + idWorker;
     }
     $(document).ready( function () {
-        $('#prods').DataTable({
+        let table = $('#emps').DataTable({
             "sScrollY": "50vh",
             "sDom": "frtiS",
             "bDeferRender": true
+        } );
+
+        $('#emps tbody').on( 'click', 'tr', function () {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        } );
+        $('#deleteEmployee').click( function () {
+            myFunction(table.row('.selected').id());
+            table.row('.selected').remove().draw( false );
         } );
     } );
 </script>
