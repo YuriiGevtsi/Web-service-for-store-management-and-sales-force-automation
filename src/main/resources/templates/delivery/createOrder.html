@@ -32,7 +32,7 @@
 
         <div class="container">
             <div class="row">
-                <button type="button"  th:disabled="${accepted} ? 'true' : 'false'" onclick="$('#menageDeliveries').modal('show'); setTimeout(function() { $('#header').click(); }, 200);" class="btn btn-success mb-2 mr-5 "><span class="fas fa-plus"></span></button>
+                <button type="button"  th:disabled="${accepted} ? 'true' : 'false'" onclick="$('#manageDeliveries').modal('show'); setTimeout(function() { $('#header').click(); }, 200);" class="btn btn-success mb-2 mr-5 "><span class="fas fa-plus"></span></button>
                 <button type="button"  th:disabled="${accepted} ? 'true' : 'false'" id="deleteItem" class="btn btn-danger mb-2 ml-5"><span class="fas fa-minus"></span></button>
                 <button type="button"  th:disabled="${accepted} ? 'true' : 'false'" class="btn btn-info  offset-md-1 mb-2" >Add comment</button>
                 <button type="button"  th:disabled="${accepted} ? 'true' : 'false'" onclick="$('#datepicker').modal('show'); createPicker();" class="btn btn-info  offset-md-2 mb-2">Date of delivery</button>
@@ -121,7 +121,7 @@
 </div>
 
 <!-- Modal add prod to order-->
-<div class="modal fade " id="menageDeliveries" role="dialog"  data-keyboard="false">
+<div class="modal fade " id="manageDeliveries" role="dialog"  data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-lg ">
         <!-- Modal content-->
         <div class="modal-content" style="height: 70vh"  >
@@ -339,7 +339,7 @@
                 ]);
             }
         } );
-        $('#menageDeliveries').modal('hide');
+        $('#manageDeliveries').modal('hide');
     }
 
     function copyValueTo() {

@@ -73,7 +73,7 @@
             <div class="modal-footer" th:if="${shift}">
                 <div class="container">
                     <div class="row justify-content-center">
-                        <button type="button" class="btn btn-primary btn-lg mr-3" onclick = "$('.modal').modal('hide')">Самоввоз</button>
+                        <button type="button" class="btn btn-primary btn-lg mr-3" onclick = "$('.modal').modal('hide')">Own delivery</button>
                         <button type="button" class="btn btn-primary btn-lg ml-3" onclick = "$('.modal').modal('hide')">Without number</button>
                     </div>
                 </div>
@@ -418,12 +418,12 @@
 </div>
 
 <!-- Modal manage Employee-->
-<div th:fragment="menageEmployee" class="modal fade " id="menageEmployee" role="dialog"  data-keyboard="false">
+<div th:fragment="manageEmployee" class="modal fade " id="manageEmployee" role="dialog"  data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-lg ">
         <!-- Modal content-->
         <div class="modal-content" style="height: 50vh">
             <div class="modal-header justify-content-center" >
-                <label class="h3">Menage employee</label>
+                <label class="h3">Manage employee</label>
             </div>
             <div class="modal-body container-fluid h-75">
                 <div class="mt-2" style="height: 40%">
@@ -452,13 +452,13 @@
     </div>
 </div>
 
-<!-- Modal menage products-->
-<div th:fragment="menageProducts" class="modal fade " id="menageProducts" role="dialog"  data-keyboard="false">
+<!-- Modal manage products-->
+<div th:fragment="manageProducts" class="modal fade " id="manageProducts" role="dialog"  data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-lg ">
         <!-- Modal content-->
         <div class="modal-content" style="height: 50vh">
             <div class="modal-header justify-content-center" >
-                <label class="h3">Menage products</label>
+                <label class="h3">Manage products</label>
             </div>
             <div class="modal-body container-fluid h-75">
                 <div class="mt-2" style="height: 40%">
@@ -486,13 +486,13 @@
     </div>
 </div>
 
-<!-- Modal menage deliveries-->
-<div th:fragment="menageDeliveries" class="modal fade " id="menageDeliveries" role="dialog"  data-keyboard="false">
+<!-- Modal manage deliveries-->
+<div th:fragment="manageDeliveries" class="modal fade " id="manageDeliveries" role="dialog"  data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-lg ">
         <!-- Modal content-->
         <div class="modal-content" style="height: 50vh">
             <div class="modal-header justify-content-center" >
-                <label class="h3">Menage deliveries</label>
+                <label class="h3">Manage orders</label>
             </div>
             <div class="modal-body container-fluid h-75">
                 <div class="mt-2" style="height: 40%">
