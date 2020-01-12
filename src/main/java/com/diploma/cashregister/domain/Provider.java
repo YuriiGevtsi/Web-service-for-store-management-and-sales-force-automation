@@ -27,13 +27,13 @@ public class Provider {
     private String address;
     private String eMail;
 
-    @OneToMany(mappedBy = "vendor")
+    @OneToMany(mappedBy = "vendor", orphanRemoval = true)
     private Collection<Delivery> deliveries = new HashSet<>();
 
-    @OneToMany(mappedBy = "provider")
+    @OneToMany(mappedBy = "provider", orphanRemoval = true)
     private Collection<Order> orders = new HashSet<>();
 
-    @OneToMany(mappedBy = "provider")
+    @OneToMany(mappedBy = "provider", orphanRemoval = true)
     private Collection<ProviderConnectProduct> providerConnectProducts = new HashSet<>();
 
 }

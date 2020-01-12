@@ -3,6 +3,7 @@ package com.diploma.cashregister.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -11,6 +12,7 @@ import java.util.Objects;
 @Table(name = "provider_connect_product")
 @Data
 @EqualsAndHashCode(of = "idProviderConnectProduct")
+@ToString(of = {"idProviderConnectProduct"})
 @NoArgsConstructor
 public class ProviderConnectProduct {
     @Id

@@ -24,7 +24,7 @@ public class Manufacturer {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "manufacturer")
+    @OneToMany(mappedBy = "manufacturer", orphanRemoval = true)
     private Collection<ProviderProduct> providerProducts = new HashSet<>();
 
 }

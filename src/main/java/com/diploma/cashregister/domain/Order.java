@@ -52,10 +52,10 @@ public class Order {
     @JoinColumn(name = "provider", referencedColumnName = "id_provider")
     private Provider provider;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", orphanRemoval = true)
     private Collection<OrderPayments> orderPayments = new HashSet<>();
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", orphanRemoval = true)
     private Collection<OrderBucket> orderBuckets = new HashSet<>();
 
     public void setDeliveries(Delivery delivery) {

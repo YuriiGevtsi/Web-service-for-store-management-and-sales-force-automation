@@ -95,14 +95,14 @@
                 </div>
                 <div class="col-sm-4 d-flex justify-content-end mt-3">
                     <input type="password" required class="form-control" id="pass2" placeholder="Confirm Password"  th:value="${password} ? ${password.password}">
-                    <input type="hidden"  class="form-control" id="start"  name="start">
-                    <input type="hidden"  class="form-control" id="finish" name="finish" >
+                    <input type="hidden"  class="form-control" id="start"  name="start" th:value="${password} ? ${currentContract.dateStart}">
+                    <input type="hidden"  class="form-control" id="finish" name="finish" th:value="${password} ? ${currentContract.dateEnd}">
                 </div>
             </div>
         </div>
         <div class="col-sm-9 d-flex justify-content-end mt-3 ml-4">
             <div class="col-sm-5 ">
-                <button type="button"  onclick="$('#addContractModal').modal('show');" class="btn btn-primary btn-lg mb-3  w-100 h-100">Add contract</button>
+                <button type="button" onclick="$('#showEmployeesContracts').modal('show')" th:text="${currentContract} ? 'Show contracts' : 'Create contract'" class="btn btn-primary btn-lg mb-3  w-100 h-100"></button>
             </div>
             <div class="col-sm-3 ">
                  <button type="submit"  class="btn btn-success btn-lg mb-3  w-100 h-100">Save</button>
@@ -113,12 +113,41 @@
 </div>
 
 <div th:replace="temps/temp :: addContractModal"></div>
+<div th:replace="temps/temp :: showEmployeesContracts"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 </body>
 <script type="text/javascript">
+ function showContracts(){
+     $('#addContractModal').modal('show')
+}
+function addNewContract() {
+    $('#showEmployeesContracts').modal('show')
+}
+
+ let some;
+ $(document).ready( function () {
+     some = $('#contracts').DataTable({
+         "sScrollY": "50vh",
+         "sDom": "frtiS",
+         "bDeferRender": true
+     } );
+ } );
+
+ function setDates() {
+     $('#start').val($('#dateStart').val());
+     $('#finish').val($('#dateFinish').val());
+     $('#contracts').DataTable().row.add(
+         [
+             'some',
+             $('#dateStart').val(),
+             $('#dateFinish').val()
+         ]
+     ).draw(false);
+
+ }
 
 </script>
 <style>

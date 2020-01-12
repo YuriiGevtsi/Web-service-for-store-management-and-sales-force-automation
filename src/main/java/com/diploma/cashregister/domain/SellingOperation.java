@@ -30,7 +30,7 @@ public class SellingOperation {
     private String status;
     private double summ;
 
-    @OneToMany(mappedBy = "sellingOperation")
+    @OneToMany(mappedBy = "sellingOperation", orphanRemoval = true)
     private Collection<Bucket> buckets = new HashSet<>();
 
     @ManyToOne

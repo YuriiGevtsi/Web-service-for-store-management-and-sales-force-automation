@@ -38,7 +38,7 @@ public class Delivery {
     @JoinColumn(name = "vendor", referencedColumnName = "id_provider")
     private Provider vendor;
 
-    @OneToMany(mappedBy = "delivery")
+    @OneToMany(mappedBy = "delivery", orphanRemoval = true)
     private Collection<DeliveryBasket> delivery_baskets = new HashSet<>();
 
     @ManyToMany

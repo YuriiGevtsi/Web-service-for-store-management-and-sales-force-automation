@@ -23,10 +23,10 @@ public class ProviderProductMeasuringRate {
 
     private String name;
 
-    @OneToMany(mappedBy = "providerProductMeasuringRate")
+    @OneToMany(mappedBy = "providerProductMeasuringRate", orphanRemoval = true)
     private Collection<MeasuringRateConnectProviderProduct> measuringRateConnectProviderProducts = new HashSet<>();
 
-    @OneToMany(mappedBy = "providerProductMeasuringRate")
+    @OneToMany(mappedBy = "providerProductMeasuringRate", orphanRemoval = true)
     private Collection<ProviderProduct> providerProducts = new HashSet<>();
 
 }

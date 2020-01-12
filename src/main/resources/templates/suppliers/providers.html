@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="temps/temp :: fragment"></head>
+<body>
+<div class="container-fluid h-100">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <a href="/myShop" type="button" class="btn btn-danger mt-2"><i class="fas fa-times fa-2x" ></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+
+        <div class="h-50">
+            <table class="table table-hover table-striped " id="providers">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Provider</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Provided products</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="provider: ${providers}" th:id="${provider.idProvider}" th:ondblclick="'editData(' + ${provider.idProvider}+ ')'">
+                    <td th:text="${provider.idProvider}"></td>
+                    <td th:text="${provider.name}"></td>
+                    <td th:text="${provider.address}"></td>
+                    <td th:text="${provider.EMail}"></td>
+                    <td th:text="${provider.providerConnectProducts.size()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row d-flex mt-5">
+                <div class="col-6 d-flex justify-content-start">
+                    <button type="button" id="deleteProvider"  class="btn btn-danger btn-lg ">Delete provider</button>
+                </div>
+                <div class="col-6 d-flex justify-content-end" >
+                    <button type="button" data-toggle="modal" onclick = "$('#showProviders').modal('show')" class="btn btn-success btn-lg " >Add new provider</button>
+                </div>
+        </div>
+    </div>
+
+    <div th:replace="temps/temp :: showProviders"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+</div>
+</body>
+
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+</style>
+<script th:inline="javascript">
+    function editData(id){
+        let table = $('#providers').DataTable();
+        let row = table.row('#'+id);
+
+        $('#showProviders').modal('show');
+
+        $("#providerLbl").text("Edit provider data")
+        $("#name").val(row.data()[1]);
+        $("#address").val(row.data()[2]);
+        $("#email").val(row.data()[3]);
+        $("#idProvider").val(id);
+        $("#create").text("Save");
+    }
+
+    $(document).ready( function () {
+        let table = $('#providers').DataTable({
+            "sScrollY": "50vh",
+            "sDom": "frtiS",
+            "bInfo" : false,
+            "bDeferRender": true
+        } );
+
+        $('#providers tbody').on( 'click', 'tr', function () {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        } );
+
+        $('#deleteProvider').click( function () {
+            deleteProvider(table.row('.selected').id());
+            table.row('.selected').remove().draw( false );
+        } );
+    } );
+
+    function deleteProvider(id) {
+        let token = $("meta[name='_csrf']").attr("content");
+        let header = $("meta[name='_csrf_header']").attr("content");
+
+        $.ajax({
+            type: 'POST',
+            contentType : "application/json",
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token)
+            },
+            url: 'http://localhost:8080/deleteProvider',
+            data:JSON.stringify({ id: id}),
+            success : function(data) {
+               alert("Provider have been deleted.")
+            },
+            error : function(e) {
+                location.reload();
+            }
+        });
+    }
+</script>
+</html>

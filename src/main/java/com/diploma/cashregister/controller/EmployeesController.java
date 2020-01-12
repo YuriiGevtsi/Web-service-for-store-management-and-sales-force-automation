@@ -46,8 +46,13 @@ public class EmployeesController {
 
     @GetMapping("contracts")
     public String contracts(Model model){
-
+        model.addAttribute("contracts", employeeService.getAllContracts());
         return "employee/contracts";
+    }
+    @GetMapping("suppliers")
+    public String suppliers(Model model){
+        model.addAttribute("providers", employeeService.getAllProviders());
+        return "suppliers/providers";
     }
     @GetMapping("editPersonalData")
     public String editPersonalData(@RequestParam long idWorker, Model model){
@@ -59,7 +64,7 @@ public class EmployeesController {
         model.addAttribute("password", employeeService.getEmployeesPassword(employee));
         model.addAttribute("roles", roles);
         model.addAttribute("positions", employeeService.getAllPositions());
-        model.addAttribute("contract", employeeService.getCurrentContruct(employee));
+        model.addAttribute("currentContract", employeeService.getCurrentContruct(employee));
         return "employee/addEmployee";
     }
     @PostMapping("addEmployee")
@@ -119,6 +124,34 @@ public class EmployeesController {
     public  String deleteEmployee(@RequestBody String id){
         JSONObject jsonObject = (JSONObject) JSONValue.parse(id);
         employeeService.deleteEmployee(Long.valueOf((String) jsonObject.get("id")));
+        return "200";
+    }
+    @PostMapping("deleteContract")
+    @ResponseBody
+    public  String deleteContract(@RequestBody String id){
+        JSONObject jsonObject = (JSONObject) JSONValue.parse(id);
+        employeeService.deleteContract(Long.valueOf((String) jsonObject.get("id")));
+        return "200";
+    }
+    @PostMapping("createProvider")
+    @ResponseBody
+    public  String createProvider(@RequestBody String provider){
+        JSONObject jsonObject = (JSONObject) JSONValue.parse(provider);
+        employeeService.createProvider(jsonObject.get("name").toString(),jsonObject.get("email").toString(),jsonObject.get("address").toString());
+        return "200";
+    }
+    @PostMapping("editProvider")
+    @ResponseBody
+    public  String editProvider(@RequestBody String provider){
+        JSONObject jsonObject = (JSONObject) JSONValue.parse(provider);
+        employeeService.editProvider(jsonObject.get("idProvider").toString(),jsonObject.get("name").toString(),jsonObject.get("email").toString(),jsonObject.get("address").toString());
+        return "200";
+    }
+    @PostMapping("deleteProvider")
+    @ResponseBody
+    public  String deleteProvider(@RequestBody String id){
+        JSONObject jsonObject = (JSONObject) JSONValue.parse(id);
+        employeeService.deleteProvider( Long.parseLong(jsonObject.get("id").toString()));
         return "200";
     }
 

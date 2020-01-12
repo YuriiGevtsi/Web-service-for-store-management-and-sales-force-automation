@@ -25,7 +25,7 @@ public class ClientCard {
     @JoinColumn(name = "client", referencedColumnName = "id_client")
     private Client client;
 
-    @OneToMany(mappedBy = "clientCard")
+    @OneToMany(mappedBy = "clientCard", orphanRemoval = true)
     private Collection<SellingOperation> sellingOperations = new HashSet<>();
 
 }

@@ -31,29 +31,29 @@ public class ProviderProduct {
     private String photo;
     private String description;
 
-    @OneToMany(mappedBy = "providerProduct")
+    @OneToMany(mappedBy = "providerProduct", orphanRemoval = true)
     private Collection<Action> actions = new HashSet<>();
 
-    @OneToMany(mappedBy = "providerProduct")
+    @OneToMany(mappedBy = "providerProduct", orphanRemoval = true)
     private Collection<Bucket> buckets = new HashSet<>();
 
-    @OneToMany(mappedBy = "providerProduct")
+    @OneToMany(mappedBy = "providerProduct", orphanRemoval = true)
     private Collection<DeliveryBasket> deliveryBaskets = new HashSet<>();
 
-    @OneToMany(mappedBy = "providerProductMeasuringRate")
+    @OneToMany(mappedBy = "providerProductMeasuringRate", orphanRemoval = true)
     private Collection<MeasuringRateConnectProviderProduct> measuringRateConnectProviderProducts = new HashSet<>();
 
 
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "providerProduct")
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "providerProduct", orphanRemoval = true)
     private Collection<Price> prices = new HashSet<>();
 
-    @OneToMany(mappedBy = "providerProduct")
+    @OneToMany(mappedBy = "providerProduct", orphanRemoval = true)
     private Collection<ProductConnectCategory> productConnectCategories = new HashSet<>();
 
-    @OneToMany(mappedBy = "providerProduct")
+    @OneToMany(mappedBy = "providerProduct", orphanRemoval = true)
     private Collection<ProviderConnectProduct> providerConnectProducts = new HashSet<>();
 
-    @OneToMany(mappedBy = "providerProduct")
+    @OneToMany(mappedBy = "providerProduct", orphanRemoval = true)
     private Collection<ProviderPrice> providerPrices = new HashSet<>();
 
     @ManyToOne
@@ -64,16 +64,16 @@ public class ProviderProduct {
     @JoinColumn(name = "manufacturer", referencedColumnName = "id_manufacturer")
     private Manufacturer manufacturer;
 
-    @OneToMany(mappedBy = "providerProduct")
+    @OneToMany(mappedBy = "providerProduct", orphanRemoval = true)
     private Collection<ReturnedProduct> returnedProducts = new HashSet<>();
 
-    @OneToMany(mappedBy = "providerProduct")
+    @OneToMany(mappedBy = "providerProduct", orphanRemoval = true)
     private Collection<WrittenOffProduct> writtenOffProducts = new HashSet<>();
 
-    @OneToMany(mappedBy = "providerProduct")
+    @OneToMany(mappedBy = "providerProduct", orphanRemoval = true)
     private Collection<Barcode> barcodes = new HashSet<>();
 
-    @OneToMany(mappedBy = "providerProduct")
+    @OneToMany(mappedBy = "providerProduct", orphanRemoval = true)
     private Collection<OrderBucket> orderBuckets = new HashSet<>();
 
     public Price getCurrentPrice(){

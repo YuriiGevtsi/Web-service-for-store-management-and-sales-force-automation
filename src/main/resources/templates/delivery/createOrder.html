@@ -126,7 +126,7 @@
         <!-- Modal content-->
         <div class="modal-content" style="height: 70vh"  >
             <div class="modal-header justify-content-center" >
-                <label class="h3">Menage deliveries</label>
+                <label class="h3">Add product to order</label>
             </div>
             <div class="modal-body container-fluid h-75">
                 <div class="container ">
@@ -145,7 +145,7 @@
                         <tbody>
                         <tr th:each="item,iter: ${products}" th:onclick=" 'selectItem(' + ${item.idProviderProduct} + ')'" >
                             <th  scope="row" >
-                                <input style="width: 100%; height: 1.5rem"  type="checkbox" th:id="${item.getIdProviderProduct()}" >
+                                <input style="width: 100%; height: 1.5rem" th:onclick=" 'selectItem(' + ${item.idProviderProduct} + ')'" type="checkbox" th:id="${item.getIdProviderProduct()}" >
                             </th>
                             <td> <a th:id="${item.getCurrentBarcode()}+code" th:text="${item.getCurrentBarcode().getCode()}"/></td>
                             <td> <a th:id="${item.getIdProviderProduct()}+name" th:text="${item.getName()}"/></td>

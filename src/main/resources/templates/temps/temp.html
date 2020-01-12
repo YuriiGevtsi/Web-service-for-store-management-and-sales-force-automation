@@ -162,7 +162,7 @@
     </div>
 </div>
 <!-- Modal add contract-->
-<div th:fragment="addContractModal" class="modal fade " id="addContractModal" role="dialog"  data-keyboard="false">
+<div th:fragment="addContractModal" class="modal fade " style="z-index: 1600;" id="addContractModal" role="dialog"  data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal">
         <!-- Modal content-->
         <div class="modal-content">
@@ -176,7 +176,7 @@
                             <label  >Date start </label>
                         </div>
                         <div class=" col ">
-                            <input th:value="${contract} ? (${contract.dateStart} ? ${contract.dateStart}) " type="date" id="dateStart" class="form-control"  >
+                            <input type="date" id="dateStart" class="form-control"  >
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -184,12 +184,12 @@
                             <label >Date finish </label>
                         </div>
                         <div class="col ">
-                            <input th:value="${contract} ? (${contract.dateEnd} ? ${contract.dateEnd}) " type="date" id="dateFinish" class="form-control"  >
+                            <input type="date" id="dateFinish" class="form-control"  >
                         </div>
                     </div>
                     <div class="d-flex flex-row-reverse">
                         <div class="col-4 mt-2" >
-                            <button type="button"  onclick = "$('.modal').modal('hide'); setDates()" class="btn btn-primary btn-block" >Ok</button>
+                            <button type="button"  onclick = "$('#addContractModal').modal('hide'); setDates()" class="btn btn-primary btn-block" >Save</button>
                         </div>
                     </div>
                 </form>
@@ -197,13 +197,133 @@
         </div>
     </div>
     <script>
-        $(document).ready( function () {
-           setDates()
-        } );
-        function setDates() {
-            $('#start').val($('#dateStart').val());
-            $('#finish').val($('#dateFinish').val());
-        }
+
+        /*
+
+
+         */
+    </script>
+</div>
+
+<!-- Modal showEmployeesContracts-->
+<div th:fragment="showEmployeesContracts"  class="modal fade" style="z-index: 1400;" id="showEmployeesContracts" role="dialog" >
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header justify-content-md-center">
+                <label class="h5 mt-2"> Employee's contracts </label>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <table class="table table-hover table-striped " id="contracts">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Position</th>
+                            <th scope="col">Date of start</th>
+                            <th scope="col">Date of end</th>
+                            <th hidden scope="col"></th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${employee} ? 'true' : 'false'" th:each="contract: ${employee?.contracts}" >
+                            <td> <a th:text="${contract.position.name}"/></td>
+                            <td> <a th:text="${contract.dateStart}"/></td>
+                            <td> <a  th:text="${contract.dateEnd}" /></td>
+                        </tr>
+                        <tr th:unless="${employee} ? 'true' : 'false'"  >
+                            <td> </td>
+                            <td> </td>
+                            <td> </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="d-flex flex-row-reverse">
+                    <div class="col-4 mt-2" >
+                        <button type="button" data-toggle="modal" onclick = "$('#addContractModal').modal('show')" class="btn btn-primary btn-block" >Add new contract</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+
+    </script>
+</div>
+<!-- Modal show Providers-->
+<div th:fragment="showProviders"  class="modal fade" id="showProviders" role="dialog" >
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header justify-content-lg-center">
+                <label class="h5" id="providerLbl"> Add new Provider </label>
+            </div>
+            <div class="modal-body">
+                <div class=" row ">
+                    <div class="col col-sm-3">
+                        <label for="name" class="mt-2">Name</label>
+                    </div>
+                    <div class="col  col-sm-9">
+                        <input type="text" class="form-control valid" id="name" placeholder="Provider name" required>
+                    </div>
+                </div>
+                <div class=" row mt-1">
+                    <div class="col col-sm-3">
+                        <label for="email" class="mt-2">Email</label>
+                    </div>
+                    <div class="col  col-sm-9">
+                        <input type="email" class="form-control valid" id="email" placeholder="Email" required>
+                    </div>
+                </div>
+                <div class=" row mt-1">
+                    <div class="col col-sm-3  ">
+                        <label for="address" class="mt-2">Address</label>
+                    </div>
+                    <div class="col  col-sm-9">
+                        <input type="text" class="form-control valid" id="address" placeholder="Address" required>
+                    </div>
+                    <input type="text" hidden id="idProvider" >
+                </div>
+                <div class="row d-flex justify-content-end">
+                    <div class="col-3 mt-2" >
+                        <button type="button" id="create"class="btn btn-primary btn-block" >Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $("#create").click(function(){
+            let token = $("meta[name='_csrf']").attr("content");
+            let header = $("meta[name='_csrf_header']").attr("content");
+            let name = $('#name').val();
+            let email = $('#email').val();
+            let address = $('#address').val();
+            let idProvider = $('#idProvider').val();
+            let url = $('#create').text() === "Save" ? "editProvider" : "createProvider";
+            $.ajax({
+                type: 'POST',
+                contentType : "application/json",
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(header, token)
+                },
+                url: 'http://localhost:8080/' + url,
+                data:JSON.stringify({ name: name, email : email, address : address, idProvider : idProvider}),
+                success : function(data) {
+                    $('#showProviders').modal('hide');
+                    location.reload();
+                },
+                error : function(e) {
+                    console.log("ERROR: ", e);
+                },
+                done : function(e) {
+                    console.log("DONE");
+                }
+            });
+        });
     </script>
 </div>
 
@@ -467,7 +587,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -520,6 +639,7 @@
         </div>
     </div>
 </div>
+
 <!-- Modal provider-->
 <div th:fragment="provider" class="modal fade " id="provider" role="dialog"  data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered ">
@@ -544,6 +664,7 @@
         </div>
     </div>
 </div>
+
 <!-- Modal measuring-->
 <div th:fragment="measuring" class="modal fade " id="measuring" role="dialog"  data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered ">
@@ -568,6 +689,7 @@
         </div>
     </div>
 </div>
+
 <!-- Modal datepicker-->
 <div th:fragment="datepicker" class="modal fade " id="datepicker" role="dialog"  data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-lg">

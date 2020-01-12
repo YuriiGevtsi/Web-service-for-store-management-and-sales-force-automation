@@ -24,7 +24,7 @@ public class ProductCategory {
 
     private String name;
 
-    @OneToMany(mappedBy = "productCategory")
+    @OneToMany(mappedBy = "productCategory", orphanRemoval = true)
     private Collection<ProductConnectCategory> productConnectCategories = new HashSet<>();
 
 }

@@ -28,7 +28,7 @@ public class Client {
     @Column(name = "surname")
     private String surname;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", orphanRemoval = true)
     private Set<ClientCard> clientCards = new HashSet<>();
 
 

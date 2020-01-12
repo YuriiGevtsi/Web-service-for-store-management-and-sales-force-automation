@@ -23,10 +23,10 @@ public class Position {
     private String name;
     private String description;
 
-    @OneToMany(mappedBy = "position")
+    @OneToMany(mappedBy = "position", orphanRemoval = true)
     private Collection<Contract> contracts = new HashSet<>();
 
-    @OneToMany(mappedBy = "position")
+    @OneToMany(mappedBy = "position", orphanRemoval = true)
     private Collection<Worker> workers = new HashSet<>();
 
 }

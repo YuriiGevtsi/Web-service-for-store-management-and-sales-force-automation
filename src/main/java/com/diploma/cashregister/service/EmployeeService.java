@@ -1,20 +1,12 @@
 package com.diploma.cashregister.service;
 
-import com.diploma.cashregister.domain.Contract;
-import com.diploma.cashregister.domain.Position;
-import com.diploma.cashregister.domain.Worker;
-import com.diploma.cashregister.domain.WorkerPassword;
-import com.diploma.cashregister.repos.ContractRepo;
-import com.diploma.cashregister.repos.PositionRepo;
-import com.diploma.cashregister.repos.WorkerPasswordRepo;
-import com.diploma.cashregister.repos.WorkerRepo;
+import com.diploma.cashregister.domain.*;
+import com.diploma.cashregister.repos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,12 +21,15 @@ public class EmployeeService {
     private final ContractRepo contractRepo;
     @Autowired
     private final PositionRepo positionRepo;
+    @Autowired
+    private final ProviderRepo providerRepo;
 
-    public EmployeeService(WorkerRepo workerRepo, WorkerPasswordRepo workerPasswordRepo, ContractRepo contractRepo, PositionRepo positionRepo) {
+    public EmployeeService(WorkerRepo workerRepo, WorkerPasswordRepo workerPasswordRepo, ContractRepo contractRepo, PositionRepo positionRepo, ProviderRepo providerRepo) {
         this.workerRepo = workerRepo;
         this.workerPasswordRepo = workerPasswordRepo;
         this.contractRepo = contractRepo;
         this.positionRepo = positionRepo;
+        this.providerRepo = providerRepo;
     }
 
     public void createEmployee(Worker worker, WorkerPassword password, Contract contract, Long position){
@@ -70,5 +65,39 @@ public class EmployeeService {
 
     public void deleteEmployee(Long id) {
         workerRepo.delete(workerRepo.findById(id).get());
+    }
+
+    public List<Contract> getAllContracts() {
+        return contractRepo.findAll();
+    }
+
+    public void deleteContract(Long id) {
+        contractRepo.delete(contractRepo.findById(id).get());
+    }
+
+    public List<Provider> getAllProviders() {
+        return providerRepo.findAll();
+    }
+
+    public void createProvider(String name, String email, String address) {
+        Provider provider = new Provider();
+        provider.setAddress(address);
+        provider.setEMail(email);
+        provider.setName(name);
+        providerRepo.save(provider);
+    }
+
+
+    public void deleteProvider(Long id) {
+        Provider provider = providerRepo.findById(id).get();
+        providerRepo.delete(provider);
+    }
+
+    public void editProvider(String idProvider, String name, String email, String address) {
+        Provider provider = providerRepo.findById(Long.valueOf(idProvider)).get();
+        provider.setAddress(address);
+        provider.setEMail(email);
+        provider.setName(name);
+        providerRepo.save(provider);
     }
 }
