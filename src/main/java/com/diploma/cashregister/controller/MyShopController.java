@@ -3,6 +3,7 @@ package com.diploma.cashregister.controller;
 import com.diploma.cashregister.domain.ProviderProduct;
 import com.diploma.cashregister.service.EmployeeService;
 import com.diploma.cashregister.service.ProductService;
+import com.diploma.cashregister.service.SellingOperationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,19 +15,23 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Controller
 public class MyShopController {
     @Autowired
     private final ProductService productService;
+    @Autowired
+    private final SellingOperationService sellingOperationService;
 
     @Value("${upload.path}")
     private String uploadPath;
 
-    public MyShopController(ProductService productService, EmployeeService employeeService) {
+    public MyShopController(ProductService productService, EmployeeService employeeService, SellingOperationService sellingOperationService) {
         this.productService = productService;
+        this.sellingOperationService = sellingOperationService;
     }
 
     @GetMapping("addProduct")
@@ -135,5 +140,19 @@ try {
             product.setPhoto(resultFileName);
         }
     }
+
+    @GetMapping("sales")
+    public String sales(Model model, @RequestParam(required = false) String from,@RequestParam(required = false) String to){
+        if (from != null && to != null){
+            model.addAttribute("products", sellingOperationService.findSellingsByPeriod(from,to));
+            model.addAttribute("from", LocalDate.parse(from, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            model.addAttribute("to", LocalDate.parse(to, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        }else {
+            model.addAttribute("products", sellingOperationService.findSellings());
+        }
+        return "sales/sales";
+    }
+
+
 
 }

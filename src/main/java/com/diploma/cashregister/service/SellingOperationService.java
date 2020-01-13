@@ -11,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
-import java.util.Set;
+import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -64,5 +67,63 @@ public class SellingOperationService {
         receipt.setSumm(receipt.getSumm() - price[0]);
         sellingOperationRepo.save(receipt);
 
+    }
+
+    public Set<List> findSellings() {
+        LocalDate from;
+        LocalDate to;
+        Set<List> table = new HashSet<>();
+        Set<Bucket> list1 = new HashSet<>();
+        HashMap<Long,Double> map = new HashMap<>();
+
+        bucketRepo.findAll().stream().forEach(bucket -> {
+            if (map.keySet().contains(bucket.getProviderProduct().getIdProviderProduct())){
+                double d = map.get(bucket.getProviderProduct().getIdProviderProduct());
+                d+=bucket.getSellingOperation().getSumm();
+                map.put(bucket.getProviderProduct().getIdProviderProduct(),d);
+            }else {
+                list1.add(bucket);
+                map.put(bucket.getProviderProduct().getIdProviderProduct(),bucket.getSellingOperation().getSumm());
+            }
+        });
+
+        collectList(table, list1, map);
+        return table;
+    }
+
+    private void collectList(Set<List> table, Set<Bucket> list1, HashMap<Long, Double> map) {
+        list1.forEach(el->{
+            List<String> row = new ArrayList<>();
+            row.add(el.getProviderProduct().getCurrentBarcode().getCode());
+            row.add(el.getProviderProduct().getName());
+            row.add(el.getProviderProduct().getProviderProductMeasuringRate().getName());
+            row.add(el.getProviderProduct().getVat().toString());
+            row.add(String.valueOf(el.getProviderProduct().getCurrentPrice().getPrice()));
+            row.add(String.valueOf(map.get(el.getProviderProduct().getIdProviderProduct())));
+            table.add(row);
+        });
+    }
+
+    public Set<List> findSellingsByPeriod(String from, String to) {
+        LocalDate dfrom = LocalDate.parse(from, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDate dto = LocalDate.parse(to, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        Set<List> table = new HashSet<>();
+        Set<Bucket> list1 = new HashSet<>();
+        HashMap<Long,Double> map = new HashMap<>();
+        bucketRepo.findAll().stream().filter(el ->
+                (ChronoLocalDate.from(el.getSellingOperation().getDate()).isAfter(dfrom) || ChronoLocalDate.from(el.getSellingOperation().getDate()).isEqual(dfrom))
+                        && (ChronoLocalDate.from(el.getSellingOperation().getDate()).isBefore(dto) || ChronoLocalDate.from(el.getSellingOperation().getDate()).isEqual(dto))).forEach(bucket -> {
+            if (map.keySet().contains(bucket.getProviderProduct().getIdProviderProduct())){
+                double d = map.get(bucket.getProviderProduct().getIdProviderProduct());
+                d+=bucket.getSellingOperation().getSumm();
+                map.put(bucket.getProviderProduct().getIdProviderProduct(),d);
+            }else {
+                list1.add(bucket);
+                map.put(bucket.getProviderProduct().getIdProviderProduct(),bucket.getSellingOperation().getSumm());
+            }
+        });
+
+        collectList(table, list1, map);
+        return table;
     }
 }
