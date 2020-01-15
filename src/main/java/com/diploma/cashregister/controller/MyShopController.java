@@ -165,6 +165,11 @@ try {
     public String inventory(Model model){
         return "product/inventory";
     }
+    @GetMapping("createSale")
+    public String createSale(Model model){
+        model.addAttribute("products",productService.getAllProducts());
+        return "sales/createSale";
+    }
 
 
 

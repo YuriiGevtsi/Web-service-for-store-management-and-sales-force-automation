@@ -485,6 +485,27 @@
         </div>
     </div>
 </div>
+<!-- Modal manage Sales-->
+<div th:fragment="manageSales" class="modal fade " id="manageSales" role="dialog"  data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg ">
+        <!-- Modal content-->
+        <div class="modal-content" style="height: 50vh">
+            <div class="modal-header justify-content-center" >
+                <label class="h3">Manage sales</label>
+            </div>
+            <div class="modal-body container-fluid h-50">
+                    <div class="row mt-4 justify-content-around no-float h-75">
+                        <div class="col col-md-4 text-center no-float ml-5" >
+                            <a href="/sales" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >All sales</a>
+                        </div>
+                        <div class="col col-md-4 text-center no-float mr-5">
+                            <a href="/createSale" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Create sale</a>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Modal manage deliveries-->
 <div th:fragment="manageDeliveries" class="modal fade " id="manageDeliveries" role="dialog"  data-keyboard="false">
