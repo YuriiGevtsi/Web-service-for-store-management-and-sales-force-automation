@@ -161,6 +161,10 @@ try {
     public String shifts(Model model){
         return "employee/shifts";
     }
+    @GetMapping("inventory")
+    public String inventory(Model model){
+        return "product/inventory";
+    }
 
 
 

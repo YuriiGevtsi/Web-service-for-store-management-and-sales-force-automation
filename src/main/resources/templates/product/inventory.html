@@ -6,53 +6,66 @@
 <div class="container-fluid h-100">
     <div class="container-fluid">
         <div class="row">
-            <div class="col">
+            <div class="col-4">
                 <a href="/myShop"  class="btn btn-danger mt-2"><i class="fas fa-times fa-2x" ></i></a>
             </div>
+            <div class="col-4 d-flex justify-content-center mt-4">
+                <label class="h1 mt-4">Inventory</label>
+            </div>
+            <div class="col-4 "></div>
         </div>
     </div>
-    <form  th:action=" @{/sales}" class="d-flex justify-content-center " method="get">
-        <div class="row  mt-2">
-            <div class="col-2 form-group mt-1 d-flex justify-content-end">
-                <label>Date from</label>
-            </div>
-            <div class="col-3 form-group">
-                <input id="dateFrom" name="from" class="ml-2 form-control" th:value="${from} ? ${from} " type="date"/>
-            </div>
-            <div class="col-2 form-group mt-1 d-flex justify-content-end">
-                <label>Date to  </label>
-            </div>
-            <div class="col-3 form-group">
-                <input id="dateTo" name="to" class="ml-2 form-control" th:value="${to} ? ${to} " type="date"/>
-            </div>
-            <div class="col-2 form-group ">
-                <button type="submit" class="btn btn-success  " > Show sales</button>
-            </div>
-        </div>
 
-    </form>
-    <div class="h-50">
-        <table class="table table-hover table-striped " id="sales">
+    <div class="h-50 mt-5">
+        <table class="table table-hover  " id="inventory">
             <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Barcode</th>
                 <th scope="col">Product</th>
                 <th scope="col">Measuring rate</th>
-                <th scope="col">VAT</th>
-                <th scope="col">Price</th>
-                <th scope="col">Summary</th>
+                <th scope="col">Count</th>
+                <th scope="col" style="width: 150px">Actual</th>
+                <th scope="col">Difference</th>
+                <th scope="col">Date of inventory</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:if="${products}" th:each="item,iter: ${products}">
-                <th  scope="row" th:text="${iter.count}" ></th>
-                <td> <a th:text="${item.get(0)}"/></td>
-                <td> <a th:text="${item.get(1)}"/></td>
-                <td> <a th:text="${item.get(2)}"/></td>
-                <td> <a th:text="${item.get(3)}"/></td>
-                <td> <a th:text="${item.get(4)}"/></td>
-                <td> <a th:text="${item.get(5)}"/></td>
+            <tr >
+                <th  scope="row"  >1</th>
+                <td> 125634 </td>
+                <td> Milk 1L</td>
+                <td> Bottle</td>
+                <td> 18</td>
+                <td>
+                    <input style="border: 0;" onchange="count()" type="number" class="form-control w-50" min="0" step="1" />
+                </td>
+                <td></td>
+                <td ><input style="border: 0;" class="textbox-n form-control w-75" type="text" onfocus="(this.type='date')" placeholder="09.01.2020"/> </td>
+            </tr>
+            <tr >
+                <th  scope="row"  >2</th>
+                <td> 123698 </td>
+                <td> Milk 2L</td>
+                <td> Bottle</td>
+                <td> 10</td>
+                <td>
+                    <input style="border: 0;" onchange="count()" type="number" class="form-control w-50" min="0" step="1" />
+                </td>
+                <td></td>
+                <td><input style="border: 0;" class="textbox-n form-control w-75" type="text" onfocus="(this.type='date')" placeholder="----------"/></td>
+            </tr>
+            <tr >
+                <th  scope="row"  >3</th>
+                <td> 127964 </td>
+                <td> Water 2,5L</td>
+                <td> Bottle</td>
+                <td> 35</td>
+                <td>
+                    <input style="border: 0;" onchange="count()" type="number" class="form-control w-50" min="0" step="1" />
+                </td>
+                <td></td>
+                <td><input style="border: 0;" class="textbox-n form-control w-75" type="text" onfocus="(this.type='date')" placeholder="----------"/> </td>
             </tr>
             </tbody>
         </table>
@@ -70,13 +83,24 @@
     }
 </style>
 <script>
+    function count(){
+        let table = $('#inventory').DataTable();
+        table.rows().every( function ( rowIdx ) {
+            let sum = this.data()[4];
+            let count =$(this.node()).find('input').eq(0).val();
+            if (count) {
+                table.cell({row: rowIdx, column: 6}).data(count - sum).draw();
+            }
+        } );
+    }
 
     $(document).ready( function () {
-        $('#sales').DataTable({
+        $('#inventory').DataTable({
             "sScrollY": "50vh",
             "sDom": "frtiS",
             "bDeferRender": true
         } );
+
     } );
 </script>
 </html>
