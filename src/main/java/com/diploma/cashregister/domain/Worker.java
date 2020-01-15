@@ -47,6 +47,9 @@ public class Worker{
     @JoinColumn(name = "position", referencedColumnName = "id_position")
     private Position position;
 
+    @OneToMany(mappedBy = "worker", orphanRemoval = true)
+    private Collection<ShiftSchedule> shiftSchedules = new HashSet<>();
+
     public void addRole(Role role) {
         roles.add(role);
     }

@@ -76,6 +76,9 @@ public class ProviderProduct {
     @OneToMany(mappedBy = "providerProduct", orphanRemoval = true)
     private Collection<OrderBucket> orderBuckets = new HashSet<>();
 
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
+    private Collection<Inventory> inventories = new HashSet<>();
+
     public Price getCurrentPrice(){
         Optional<Price> price = prices.stream().filter(el ->
                 (LocalDate.now().isAfter(el.getDateStart()) || LocalDate.now().isEqual(el.getDateStart()))
