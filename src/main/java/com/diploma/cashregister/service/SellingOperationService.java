@@ -3,10 +3,7 @@ package com.diploma.cashregister.service;
 import com.diploma.cashregister.domain.Bucket;
 import com.diploma.cashregister.domain.FinancialOperations;
 import com.diploma.cashregister.domain.SellingOperation;
-import com.diploma.cashregister.repos.BucketRepo;
-import com.diploma.cashregister.repos.FinancialOperationRepo;
-import com.diploma.cashregister.repos.PriceRepo;
-import com.diploma.cashregister.repos.SellingOperationRepo;
+import com.diploma.cashregister.repos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +12,6 @@ import java.time.LocalDate;
 import java.time.chrono.ChronoLocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -28,14 +24,13 @@ public class SellingOperationService {
 
     @Autowired
     private final SellingOperationRepo sellingOperationRepo;
-    @Autowired
-    private final PriceRepo priceRepo;
 
-    public SellingOperationService(BucketRepo bucketRepo, FinancialOperationRepo financialOperationRepo, SellingOperationRepo sellingOperationRepo, PriceRepo priceRepo) {
+
+
+    public SellingOperationService(BucketRepo bucketRepo, FinancialOperationRepo financialOperationRepo, SellingOperationRepo sellingOperationRepo, DeliveryBasketRepo deliveryBasketRepo, WrittenOffProductRepo writtenOffProductRepo) {
         this.bucketRepo = bucketRepo;
         this.financialOperationRepo = financialOperationRepo;
         this.sellingOperationRepo = sellingOperationRepo;
-        this.priceRepo = priceRepo;
     }
 
     public Set<Bucket> getReceiptProducts (Long number){

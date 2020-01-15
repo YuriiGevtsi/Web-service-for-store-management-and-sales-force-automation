@@ -152,6 +152,15 @@ try {
         }
         return "sales/sales";
     }
+    @GetMapping("store")
+    public String store(Model model){
+       productService.showStore();
+        return "product/store";
+    }
+    @GetMapping("shifts")
+    public String shifts(Model model){
+        return "employee/shifts";
+    }
 
 
 

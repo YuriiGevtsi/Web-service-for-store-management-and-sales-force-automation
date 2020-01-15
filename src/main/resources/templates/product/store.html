@@ -11,26 +11,7 @@
             </div>
         </div>
     </div>
-    <form  th:action=" @{/sales}" class="d-flex justify-content-center " method="get">
-        <div class="row  mt-2">
-            <div class="col-2 form-group mt-1 d-flex justify-content-end">
-                <label>Date from</label>
-            </div>
-            <div class="col-3 form-group">
-                <input id="dateFrom" name="from" class="ml-2 form-control" th:value="${from} ? ${from} " type="date"/>
-            </div>
-            <div class="col-2 form-group mt-1 d-flex justify-content-end">
-                <label>Date to  </label>
-            </div>
-            <div class="col-3 form-group">
-                <input id="dateTo" name="to" class="ml-2 form-control" th:value="${to} ? ${to} " type="date"/>
-            </div>
-            <div class="col-2 form-group ">
-                <button type="submit" class="btn btn-success  " > Show sales</button>
-            </div>
-        </div>
 
-    </form>
     <div class="h-50">
         <table class="table table-hover table-striped " id="sales">
             <thead class="thead-dark">
@@ -38,10 +19,10 @@
                 <th scope="col">#</th>
                 <th scope="col">Barcode</th>
                 <th scope="col">Product</th>
+                <th scope="col">Count</th>
                 <th scope="col">Measuring rate</th>
                 <th scope="col">VAT</th>
                 <th scope="col">Price</th>
-                <th scope="col">Summary</th>
             </tr>
             </thead>
             <tbody>
@@ -53,6 +34,15 @@
                 <td> <a th:text="${item.get(3)}"/></td>
                 <td> <a th:text="${item.get(4)}"/></td>
                 <td> <a th:text="${item.get(5)}"/></td>
+            </tr>
+            <tr >
+                <th  scope="row" th:text="1" ></th>
+                <td> <a th:text="125684"/></td>
+                <td> <a text="Milk"/> Milk 1L</td>
+                <td> <a th:text="18"/></td>
+                <td> <a th:text="Bottle"/></td>
+                <td> <a th:text="2"/></td>
+                <td> <a th:text="6.80"/></td>
             </tr>
             </tbody>
         </table>

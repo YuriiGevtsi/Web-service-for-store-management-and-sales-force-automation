@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,8 +38,12 @@ public class ProductService {
     private final ProductConnectCategoryRepo productConnectCategoryRepo;
     @Autowired
     private final ProviderConnectProductRepo providerConnectProductRepo;
+    @Autowired
+    private final DeliveryBasketRepo deliveryBasketRepo;
+    @Autowired
+    private final BucketRepo bucketRepo;
 
-    public ProductService(ProductRepo productRepo, BarcodeRepo barcodeRepo, WrittenOffProductRepo writtenOffProductRepo, CategoryRepo categoryRepo, ManufacturerRepo manufacturerRepo, MeasuringRepo measuringRepo, ProviderRepo providerRepo, ProviderPriceRepo providerPriceRepo, PriceRepo priceRepo, ProductConnectCategoryRepo productConnectCategoryRepo, ProviderConnectProductRepo providerConnectProductRepo) {
+    public ProductService(ProductRepo productRepo, BarcodeRepo barcodeRepo, WrittenOffProductRepo writtenOffProductRepo, CategoryRepo categoryRepo, ManufacturerRepo manufacturerRepo, MeasuringRepo measuringRepo, ProviderRepo providerRepo, ProviderPriceRepo providerPriceRepo, PriceRepo priceRepo, ProductConnectCategoryRepo productConnectCategoryRepo, ProviderConnectProductRepo providerConnectProductRepo, DeliveryBasketRepo deliveryBasketRepo, BucketRepo bucketRepo) {
         this.productRepo = productRepo;
         this.barcodeRepo = barcodeRepo;
         this.writtenOffProductRepo = writtenOffProductRepo;
@@ -50,6 +55,8 @@ public class ProductService {
         this.priceRepo = priceRepo;
         this.productConnectCategoryRepo = productConnectCategoryRepo;
         this.providerConnectProductRepo = providerConnectProductRepo;
+        this.deliveryBasketRepo = deliveryBasketRepo;
+        this.bucketRepo = bucketRepo;
     }
 
     public  ProviderProduct findProductByBarcode(String code){
@@ -215,5 +222,11 @@ public class ProductService {
         provider.forEach(e-> {
             productAddProvider(e,product);
         });
+    }
+
+    public Set<List> showStore() {
+        List<ProviderProduct> products = productRepo.findAll();
+        deliveryBasketRepo.findAll();
+        return null;
     }
 }
