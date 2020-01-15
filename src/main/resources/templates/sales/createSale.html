@@ -99,7 +99,7 @@
                                 <input style="width: 100%; height: 1.5rem" class="w-100"  type="checkbox" th:onclick=" 'selectItem(' + ${item.idProviderProduct} + ')'" th:id="${item.getIdProviderProduct()}">
                             </th>
                             <td> <a th:text="${item.getCurrentBarcode().getCode()}"/></td>
-                            <td> <a th:text="${item.name}"/></td>
+                            <td> <a th:text="${item.getName()}"/></td>
                             <td> <a th:text="${item.providerProductMeasuringRate.name} " /></td>
                             <td> <a th:text="${item.currentPrice.price}" /> </td>
                             <td hidden> <a th:text="${item.idProviderProduct}" /> </td>
