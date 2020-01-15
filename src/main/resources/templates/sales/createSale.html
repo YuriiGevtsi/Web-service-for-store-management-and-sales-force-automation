@@ -186,7 +186,7 @@
             "bInfo": false,
             "searching": false
         });
-        $('#prods tbody').on( 'click', 'tr', function () {
+        $('#sale tbody').on( 'click', 'tr', function () {
             $(this).toggleClass('selected');
         } );
         copyValueTo();
@@ -216,7 +216,7 @@
                     el[2],
                     el[3],
                     el[4],
-                    '<input class="form-control-plaintext w-50" name="amount" min="1" onchange="copyValueTo()" type="number" step="0.1">',
+                    '<input class="form-control-plaintext " name="amount" min="1" onchange="copyValueTo()" type="number" step="0.1">',
                     '<input class="form-control-plaintext" name="sum" disabled  type="text">'
                 ]);
             }
@@ -242,7 +242,7 @@
 
 
     $('#deleteItem').click( function () {
-        $('#productsTable').DataTable().rows('.selected').remove().draw( false );
+        $('#sale').DataTable().rows('.selected').remove().draw( false );
         copyValueTo();
     } );
 
