@@ -170,6 +170,11 @@ try {
         model.addAttribute("products",productService.getAllProducts());
         return "sales/createSale";
     }
+    @GetMapping("discounts")
+    public String discounts(Model model){
+        //model.addAttribute("products",productService.getAllProducts());
+        return "product/discounts";
+    }
 
 
 
