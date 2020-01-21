@@ -1,9 +1,13 @@
 package com.diploma.cashregister.domain;
 
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -53,4 +57,5 @@ public class Worker{
     public void addRole(Role role) {
         roles.add(role);
     }
+
 }

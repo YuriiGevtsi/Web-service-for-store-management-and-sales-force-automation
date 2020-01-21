@@ -21,6 +21,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 </head>
 <body>
 
@@ -170,13 +171,13 @@
                 <label class="h5 mt-2"> Add new contract </label>
             </div>
             <div class="modal-body">
-                <form method="get" action="/return" class="form">
+                <form id="form1" class="form">
                     <div class="row ">
                         <div class=" col col-sm-4 mt-1 ">
                             <label  >Date start </label>
                         </div>
                         <div class=" col ">
-                            <input type="date" id="dateStart" class="form-control"  >
+                            <input required type="date" id="dateStart" class="form-control"  >
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -184,12 +185,12 @@
                             <label >Date finish </label>
                         </div>
                         <div class="col ">
-                            <input type="date" id="dateFinish" class="form-control"  >
+                            <input required type="date" id="dateFinish" class="form-control"  >
                         </div>
                     </div>
                     <div class="d-flex flex-row-reverse">
                         <div class="col-4 mt-2" >
-                            <button type="button"  onclick = "$('#addContractModal').modal('hide'); setDates()" class="btn btn-primary btn-block" >Save</button>
+                            <button type="button"  onclick = "checkValidit() " class="btn btn-primary btn-block" >Save</button>
                         </div>
                     </div>
                 </form>
@@ -197,11 +198,21 @@
         </div>
     </div>
     <script>
-
-        /*
-
-
-         */
+        function checkValidit(){
+            $("#form1").validate({
+                rules: {
+                    field: {
+                        required: true
+                    }
+                }
+            });
+            if ($("#form1").valid()){
+                if ($('#position option:selected').text() !==""){
+                    setDates();
+                    $('#addContractModal').modal('hide');
+                }else alert("Select position first")
+            }
+        }
     </script>
 </div>
 
@@ -218,11 +229,9 @@
                     <table class="table table-hover table-striped " id="contracts">
                         <thead class="thead-dark">
                         <tr>
-                            <th scope="col">Position</th>
+                            <th scope="col" id="head">Position</th>
                             <th scope="col">Date of start</th>
                             <th scope="col">Date of end</th>
-                            <th hidden scope="col"></th>
-
                         </tr>
                         </thead>
                         <tbody>
@@ -249,7 +258,6 @@
         </div>
     </div>
     <script>
-
 
     </script>
 </div>

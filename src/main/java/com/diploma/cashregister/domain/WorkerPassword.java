@@ -22,7 +22,7 @@ public class WorkerPassword  implements UserDetails{
     @Column(name = "id_password")
     @SequenceGenerator(name="worker_password_id_password_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="worker_password_id_password_seq")
-    private int idPassword;
+    private long idPassword;
 
     private String password;
     private String login;
