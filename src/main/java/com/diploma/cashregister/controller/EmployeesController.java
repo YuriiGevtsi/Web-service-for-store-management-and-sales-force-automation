@@ -78,7 +78,8 @@ public class EmployeesController {
                                  @RequestParam String start,
                                  @RequestParam String finish,
                                  @RequestParam String contact,
-                                 @RequestParam(required = false, defaultValue = "-1") Long idWorker)
+                                 @RequestParam(required = false, defaultValue = "-1") Long idWorker,
+                                Model model)
     {
         Worker worker;
         WorkerPassword password;
@@ -94,30 +95,19 @@ public class EmployeesController {
             worker = new Worker();
             password = new WorkerPassword();
             contract = new Contract();
+            if (start.isEmpty()){
+                model.addAttribute("contractError", "Create new contract for employee");
+                return "employee/addEmployee";
+            }
             worker.setHireDate(LocalDate.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         }
 
-        worker.setDateOfBirthday(LocalDate.parse(birth, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        worker.setName(firstName);
-        worker.setSurname(lastName);
-        worker.setContact(contact);
-        worker.setRoles(new HashSet<>());
-        roles.forEach(role-> worker.addRole(Role.valueOf(role)));
-
-
-        password.setPassword(pass1);
-        password.setLogin(login);
-        password.setWorker(worker);
-
-
-        contract.setDateStart(LocalDate.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        contract.setDateEnd(LocalDate.parse(finish, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        contract.setWorker(worker);
-
-        employeeService.createEmployee(worker,password,contract,position);
+        employeeService.createEmployee(worker,password,contract,position,login,roles,firstName,lastName,birth,pass1,contact,start,finish);
 
         return "redirect:/myShop";
     }
+
+
 
     @PostMapping("deleteEmployee")
     @ResponseBody

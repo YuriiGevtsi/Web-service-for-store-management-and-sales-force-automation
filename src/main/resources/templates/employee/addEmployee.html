@@ -42,7 +42,7 @@
                 </div>
                 <div class="col-sm-5 d-flex justify-content-end mt-3">
                     <div class="col-sm-3 mr-5">
-                        <label  for="firstName" class="h5">First name</label>
+                        <label  for="firstName" th:text="${login} ? ${login} : 'suka'" class="h5">First name</label>
                     </div>
                 </div>
                 <div class="col-sm-4 d-flex justify-content-end mt-3">

@@ -26,10 +26,7 @@ public class WorkerPasswordService implements UserDetailsService {
     private final ShiftWorkerRepo shiftWorkerRepo;
     @Autowired
     private final ShiftRepo shiftRepo;
-/*
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-*/
+
     public WorkerPasswordService(WorkerPasswordRepo workerPasswordRepo, ShiftWorkerRepo shiftWorkerRepo, ShiftRepo shiftRepo) {
         this.workerPasswordRepo = workerPasswordRepo;
         this.shiftWorkerRepo = shiftWorkerRepo;

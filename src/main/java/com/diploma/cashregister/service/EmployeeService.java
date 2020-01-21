@@ -3,10 +3,13 @@ package com.diploma.cashregister.service;
 import com.diploma.cashregister.domain.*;
 import com.diploma.cashregister.repos.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,22 +26,19 @@ public class EmployeeService {
     private final PositionRepo positionRepo;
     @Autowired
     private final ProviderRepo providerRepo;
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
 
-    public EmployeeService(WorkerRepo workerRepo, WorkerPasswordRepo workerPasswordRepo, ContractRepo contractRepo, PositionRepo positionRepo, ProviderRepo providerRepo) {
+    public EmployeeService(WorkerRepo workerRepo, WorkerPasswordRepo workerPasswordRepo, ContractRepo contractRepo, PositionRepo positionRepo, ProviderRepo providerRepo, PasswordEncoder passwordEncoder) {
         this.workerRepo = workerRepo;
         this.workerPasswordRepo = workerPasswordRepo;
         this.contractRepo = contractRepo;
         this.positionRepo = positionRepo;
         this.providerRepo = providerRepo;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public void createEmployee(Worker worker, WorkerPassword password, Contract contract, Long position){
-        worker.setPosition(positionRepo.findById(position).get());
-        workerRepo.save(worker);
-        workerPasswordRepo.save(password);
-        contract.setPosition(positionRepo.findById(position).get());
-        contractRepo.save(contract);
-    }
+   
 
     public List<Position> getAllPositions(){
         return positionRepo.findAll();
@@ -87,7 +87,6 @@ public class EmployeeService {
         providerRepo.save(provider);
     }
 
-
     public void deleteProvider(Long id) {
         Provider provider = providerRepo.findById(id).get();
         providerRepo.delete(provider);
@@ -99,5 +98,41 @@ public class EmployeeService {
         provider.setEMail(email);
         provider.setName(name);
         providerRepo.save(provider);
+    }
+
+    public void createEmployee(Worker worker, WorkerPassword password, Contract contract, Long position, String login, List<String> roles, String firstName, String lastName, String birth, String pass1, String contact, String start, String finish){
+
+        createWorker(roles, firstName, lastName, birth, contact, worker);
+
+        createPassword(login, pass1, worker, password);
+
+        createContract(start, finish, worker, contract);
+
+        worker.setPosition(positionRepo.findById(position).get());
+        workerRepo.save(worker);
+        workerPasswordRepo.save(password);
+        contract.setPosition(positionRepo.findById(position).get());
+        contractRepo.save(contract);
+    }
+
+    private void createContract( String start,  String finish, Worker worker, Contract contract) {
+        contract.setDateStart(LocalDate.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        contract.setDateEnd(LocalDate.parse(finish, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        contract.setWorker(worker);
+    }
+
+    private void createPassword( String login,  String pass1, Worker worker, WorkerPassword password) {
+        password.setPassword(passwordEncoder.encode(pass1));
+        password.setLogin(login);
+        password.setWorker(worker);
+    }
+
+    private void createWorker( List<String> roles,  String firstName,  String lastName,  String birth,  String contact, Worker worker) {
+        worker.setDateOfBirthday(LocalDate.parse(birth, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        worker.setName(firstName);
+        worker.setSurname(lastName);
+        worker.setContact(contact);
+        worker.setRoles(new HashSet<>());
+        roles.forEach(role-> worker.addRole(Role.valueOf(role)));
     }
 }

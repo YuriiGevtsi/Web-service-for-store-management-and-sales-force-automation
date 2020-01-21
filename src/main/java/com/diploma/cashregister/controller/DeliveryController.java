@@ -40,9 +40,8 @@ public class DeliveryController {
     }
 
     @GetMapping("/delivery_number")
-    public String getDelivery(@RequestParam long number,@RequestParam String action,
-                              Model model
-    ) {
+    public String getDelivery(@RequestParam long number,@RequestParam String action,Model model)
+    {
         Order order = deliveryService.getOrder(number);
         if (order != null ){
             Set<OrderPayments> orderPayments = deliveryService.getOrderPayments(number);
