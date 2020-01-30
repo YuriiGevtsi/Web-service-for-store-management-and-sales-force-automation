@@ -4,7 +4,10 @@ import com.diploma.cashregister.domain.ProviderProduct;
 import com.diploma.cashregister.service.EmployeeService;
 import com.diploma.cashregister.service.ProductService;
 import com.diploma.cashregister.service.SellingOperationService;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -72,7 +75,7 @@ public class MyShopController {
                               @RequestParam Long measuring,
                               @RequestParam List<Long> provider,
                               @RequestParam(required = false, defaultValue = "-1") Long idProduct
-                              ) throws IOException {
+    ) throws IOException {
         ProviderProduct product;
 
         if (idProduct!=-1){
@@ -84,12 +87,11 @@ public class MyShopController {
         else{
             product = new ProviderProduct();
             setBasicParameters(productName, vat, description, image, product);
-try {
+            try {
+                productService.createProduct(product,manufacturer,measuring,providerPrice,price,date,barcode,category,provider);
+            }catch (Exception e){
 
-    productService.createProduct(product,manufacturer,measuring,providerPrice,price,date,barcode,category,provider);
-}catch (Exception e){
-
-}
+            }
         }
 
         if (idProduct == -1)return "redirect:/myShop";
@@ -115,7 +117,7 @@ try {
             @RequestBody String json
     ) throws IOException {
         List<String> list = new ObjectMapper().readValue(json, List.class);
-    productService.removeProduct(list);
+        productService.removeProduct(list);
         System.out.println(list.get(0));
         return json;
     }
@@ -142,8 +144,8 @@ try {
     }
 
     @GetMapping("sales")
-    public String sales(Model model, @RequestParam(required = false) String from,@RequestParam(required = false) String to){
-        if (from != null && to != null){
+    public String sales(Model model, @RequestParam(required = false, defaultValue = "") String from,@RequestParam(required = false, defaultValue = "") String to){
+        if (!from.isEmpty() && !to.isEmpty()){
             model.addAttribute("products", sellingOperationService.findSellingsByPeriod(from,to));
             model.addAttribute("from", LocalDate.parse(from, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             model.addAttribute("to", LocalDate.parse(to, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
@@ -154,7 +156,7 @@ try {
     }
     @GetMapping("store")
     public String store(Model model){
-       productService.showStore();
+        model.addAttribute("products",productService.showStore());
         return "product/store";
     }
     @GetMapping("shifts")
@@ -163,6 +165,7 @@ try {
     }
     @GetMapping("inventory")
     public String inventory(Model model){
+        model.addAttribute("products",productService.showStore());
         return "product/inventory";
     }
     @GetMapping("createSale")
@@ -176,6 +179,14 @@ try {
         return "product/discounts";
     }
 
+    @PostMapping("createSale")
+    @ResponseBody
+    public  String createSale(@RequestBody String json) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, String> map = objectMapper.readValue(json, new TypeReference<Map<String,String>>(){});
+        sellingOperationService.createSale(map);
+        return "200";
+    }
 
 
 }

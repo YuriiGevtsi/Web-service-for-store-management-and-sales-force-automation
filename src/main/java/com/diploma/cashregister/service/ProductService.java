@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,8 +42,12 @@ public class ProductService {
     private final DeliveryBasketRepo deliveryBasketRepo;
     @Autowired
     private final BucketRepo bucketRepo;
+    @Autowired
+    private final ReturnedProductRepo returnedProductRepo;
+    @Autowired
+    private final InventoryRepo inventoryRepo;
 
-    public ProductService(ProductRepo productRepo, BarcodeRepo barcodeRepo, WrittenOffProductRepo writtenOffProductRepo, CategoryRepo categoryRepo, ManufacturerRepo manufacturerRepo, MeasuringRepo measuringRepo, ProviderRepo providerRepo, ProviderPriceRepo providerPriceRepo, PriceRepo priceRepo, ProductConnectCategoryRepo productConnectCategoryRepo, ProviderConnectProductRepo providerConnectProductRepo, DeliveryBasketRepo deliveryBasketRepo, BucketRepo bucketRepo) {
+    public ProductService(ProductRepo productRepo, BarcodeRepo barcodeRepo, WrittenOffProductRepo writtenOffProductRepo, CategoryRepo categoryRepo, ManufacturerRepo manufacturerRepo, MeasuringRepo measuringRepo, ProviderRepo providerRepo, ProviderPriceRepo providerPriceRepo, PriceRepo priceRepo, ProductConnectCategoryRepo productConnectCategoryRepo, ProviderConnectProductRepo providerConnectProductRepo, DeliveryBasketRepo deliveryBasketRepo, BucketRepo bucketRepo, ReturnedProductRepo returnedProductRepo, InventoryRepo inventoryRepo) {
         this.productRepo = productRepo;
         this.barcodeRepo = barcodeRepo;
         this.writtenOffProductRepo = writtenOffProductRepo;
@@ -57,6 +61,8 @@ public class ProductService {
         this.providerConnectProductRepo = providerConnectProductRepo;
         this.deliveryBasketRepo = deliveryBasketRepo;
         this.bucketRepo = bucketRepo;
+        this.returnedProductRepo = returnedProductRepo;
+        this.inventoryRepo = inventoryRepo;
     }
 
     public  ProviderProduct findProductByBarcode(String code){
@@ -224,9 +230,31 @@ public class ProductService {
         });
     }
 
-    public Set<List> showStore() {
-        List<ProviderProduct> products = productRepo.findAll();
-        deliveryBasketRepo.findAll();
-        return null;
+    public HashMap<ProviderProduct, Double> showStore() {
+        HashMap<ProviderProduct,Double> table = new HashMap<>();
+        productRepo.findAll().stream().forEach(el-> table.put(el,0.0));
+
+        deliveryBasketRepo.findAll().stream().forEach(el->{
+            double count = table.get(el.getProviderProduct()) + el.getAmount();
+            table.replace(el.getProviderProduct(), count);
+        });
+
+        returnedProductRepo.findAll().stream().forEach(el->{
+            double count = table.get(el.getProviderProduct()) + el.getAmount();
+            table.replace(el.getProviderProduct(), count);
+        });
+
+        bucketRepo.findAll().stream().forEach(el->{
+            double count = table.get(el.getProviderProduct()) - el.getCount();
+            table.replace(el.getProviderProduct(), count);
+        });
+
+        writtenOffProductRepo.findAll().stream().forEach(el->{
+            double count = table.get(el.getProviderProduct()) - el.getAmount();
+            table.replace(el.getProviderProduct(), count);
+        });
+
+        return table;
     }
+
 }

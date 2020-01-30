@@ -132,30 +132,28 @@
 
     function getTableData() {
         let obj = Object.create(null);
-        let table = $('#productsTable').DataTable();
+        let table = $('#sale').DataTable();
+        obj['price'] = document.getElementById('amount').innerText;
         table.rows().every( function ( rowIdx ) {
             let id = this.data()[0];
             let count =$(this.node()).find('input').eq(0).val();
-            obj[id] = count;
+            if (obj[id] != null)obj[id] = parseFloat(obj[id]) + parseFloat(count);
+            else obj[id] = count;
         } );
-        obj['order'] = $('#idOrder').text();
-        obj['price'] = document.getElementById('amount').innerText;
+
         return JSON.stringify(obj);
     }
 
     $("#submit").click(function(){
         let token = $("meta[name='_csrf']").attr("content");
         let header = $("meta[name='_csrf_header']").attr("content");
-        let url ;
-        if ($('#idOrder').text().length > 0)url = 'http://localhost:8080/updateOrder'
-        else url = 'http://localhost:8080/createOrder'
         $.ajax({
             type: 'POST',
             contentType : "application/json",
             beforeSend: function(xhr) {
                 xhr.setRequestHeader(header, token)
             },
-            url: url,
+            url: 'http://localhost:8080/createSale',
             data: getTableData(),
             dataType: "json",
             timeout: 1000000,
@@ -217,7 +215,7 @@
                     el[3],
                     el[4],
                     '<input class="form-control-plaintext " name="amount" min="1" onchange="copyValueTo()" type="number" step="0.1">',
-                    '<input class="form-control-plaintext" name="sum" disabled  type="text">'
+                    '<input class="form-control-plaintext" name="sum" disabled  type="text">',
                 ]);
             }
         } );

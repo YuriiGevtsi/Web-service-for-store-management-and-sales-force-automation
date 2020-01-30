@@ -137,9 +137,7 @@ public class EmployeesController {
         worker.setHireDate(LocalDate.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
         createWorker(roles, birthday, worker);
-
         createPassword(pass1, worker, password);
-
         createContract(start, finish, worker, contract);
 
         employeeService.saveEmployee(worker,contract,password);

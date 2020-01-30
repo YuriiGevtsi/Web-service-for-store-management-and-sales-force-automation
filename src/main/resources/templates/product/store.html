@@ -26,24 +26,16 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:if="${products}" th:each="item,iter: ${products}">
+            <tr th:each="item,iter: ${products.keySet()}">
                 <th  scope="row" th:text="${iter.count}" ></th>
-                <td> <a th:text="${item.get(0)}"/></td>
-                <td> <a th:text="${item.get(1)}"/></td>
-                <td> <a th:text="${item.get(2)}"/></td>
-                <td> <a th:text="${item.get(3)}"/></td>
-                <td> <a th:text="${item.get(4)}"/></td>
-                <td> <a th:text="${item.get(5)}"/></td>
+                <td> <a th:text="${item.getCurrentBarcode().getCode()}"/></td>
+                <td> <a th:text="${item.name}"/></td>
+                <td> <a th:text="${products.get(item)}"/></td>
+                <td> <a th:text="${item.providerProductMeasuringRate.name}"/></td>
+                <td> <a th:text="${item.vat}"/></td>
+                <td> <a th:text="${item.currentPrice.price}"/></td>
             </tr>
-            <tr >
-                <th  scope="row" th:text="1" ></th>
-                <td> <a th:text="125684"/></td>
-                <td> <a text="Milk"/> Milk 1L</td>
-                <td> <a th:text="18"/></td>
-                <td> <a th:text="Bottle"/></td>
-                <td> <a th:text="2"/></td>
-                <td> <a th:text="6.80"/></td>
-            </tr>
+
             </tbody>
         </table>
     </div>

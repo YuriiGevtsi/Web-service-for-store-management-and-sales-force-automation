@@ -86,18 +86,13 @@ public class ProviderProduct {
                             .min(Comparator.comparingLong(x -> ChronoUnit.DAYS.between(x.getDateStart(), LocalDate.now())));
         return price.isPresent() ? price.get() : null;
     }
+    public Inventory getLastInventory(){
+        return inventories.stream().min(Comparator.comparingLong(x -> ChronoUnit.DAYS.between(x.getDate(), LocalDate.now()))).orElse(null);
+    }
     public Double getCurrentProviderPrice(){
         Optional<ProviderPrice> price = providerPrices.stream()
                             .min(Comparator.comparingLong(x -> ChronoUnit.DAYS.between(x.getDate(), LocalDate.now())));
-        return price.isPresent() ? price.get().getPrice() : 0;
-    }
-
-    public Barcode getCurrentBarcode(){
-        return barcodes.stream().findAny().orElse(null);
-    }
-
-    public ProductCategory getMainCategory(){
-        return getProductConnectCategories().stream().findAny().get().getProductCategory();
+        return price.isPresent() ? price.get().getPrice() : -1;
     }
 
     public boolean findProvider(Long idProviderProduct){
@@ -106,5 +101,13 @@ public class ProviderProduct {
 
     public boolean checkProvider(Long idProvider){
         return providerConnectProducts.stream().anyMatch(e -> e.getProvider().getIdProvider() == idProvider);
+    }
+
+    public ProductCategory getMainCategory(){
+        return getProductConnectCategories().stream().findAny().get().getProductCategory();
+    }
+
+    public Barcode getCurrentBarcode(){
+        return barcodes.stream().findAny().orElse(null);
     }
 }

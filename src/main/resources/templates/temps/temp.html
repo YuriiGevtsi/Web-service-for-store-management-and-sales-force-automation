@@ -5,7 +5,8 @@
     <meta th:name="_csrf" th:content="${_csrf.token}" type="hidden"/>
     <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>CashRegister</title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+          integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
     <script
@@ -14,7 +15,8 @@
             crossorigin="anonymous"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
 
 
@@ -54,21 +56,21 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header justify-content-sm-center">
-                    <label class="h5 mt-2" id="action" th:text="${shift} ? 'Accept delivery' : 'Edit order'" > </label>
+                <label class="h5 mt-2" id="action" th:text="${shift} ? 'Accept delivery' : 'Edit order'" > </label>
             </div>
             <div class="modal-body">
-                    <div class="form-row align-items-center">
-                        <label class="col-sm-2 col-form-label" for="number">Number</label>
-                        <div class="col-sm-7">
-                            <input id="number" type="number" class="form-control" name="number" placeholder="Number of delivery">
-                            <div class="invalid-feedback">
-                                No order with this number was found.
-                            </div>
-                        </div>
-                        <div class="col-sm-2 justify-content-sm-end">
-                            <button type="button" class="btn btn-primary" id="submit">Continue</button>
+                <div class="form-row align-items-center">
+                    <label class="col-sm-2 col-form-label" for="number">Number</label>
+                    <div class="col-sm-7">
+                        <input id="number" type="number" class="form-control" name="number" placeholder="Number of delivery">
+                        <div class="invalid-feedback">
+                            No order with this number was found.
                         </div>
                     </div>
+                    <div class="col-sm-2 justify-content-sm-end">
+                        <button type="button" class="btn btn-primary" id="submit">Continue</button>
+                    </div>
+                </div>
             </div>
             <!--/*@thymesVar id="shift" type=""*/-->
             <div class="modal-footer" th:if="${shift}">
@@ -270,67 +272,81 @@
                 <label class="h5" id="providerLbl"> Add new Provider </label>
             </div>
             <div class="modal-body">
-                <div class=" row ">
-                    <div class="col col-sm-3">
-                        <label for="name" class="mt-2">Name</label>
+                <form id="providerForm">
+                    <div class=" row ">
+                        <div class="col col-sm-3">
+                            <label for="name" class="mt-2">Name</label>
+                        </div>
+                        <div class="col  col-sm-9">
+                            <input type="text" class="form-control valid" id="name" name="name" placeholder="Provider name" required>
+                        </div>
                     </div>
-                    <div class="col  col-sm-9">
-                        <input type="text" class="form-control valid" id="name" placeholder="Provider name" required>
+                    <div class=" row mt-1">
+                        <div class="col col-sm-3">
+                            <label for="email" class="mt-2">Contact</label>
+                        </div>
+                        <div class="col  col-sm-9">
+                            <input type="text" class="form-control valid" id="email" name="email" placeholder="Email or phone number" required>
+                        </div>
                     </div>
-                </div>
-                <div class=" row mt-1">
-                    <div class="col col-sm-3">
-                        <label for="email" class="mt-2">Email</label>
+                    <div class=" row mt-1">
+                        <div class="col col-sm-3  ">
+                            <label for="address" class="mt-2">Address</label>
+                        </div>
+                        <div class="col  col-sm-9">
+                            <input type="text" class="form-control valid" id="address" name="address" placeholder="Address" required>
+                        </div>
+                        <input type="text" hidden id="idProvider" >
                     </div>
-                    <div class="col  col-sm-9">
-                        <input type="email" class="form-control valid" id="email" placeholder="Email" required>
+                    <div class="row d-flex justify-content-end">
+                        <div class="col-3 mt-2" >
+                            <button type="button" id="create"class="btn btn-primary btn-block" >Create</button>
+                        </div>
                     </div>
-                </div>
-                <div class=" row mt-1">
-                    <div class="col col-sm-3  ">
-                        <label for="address" class="mt-2">Address</label>
-                    </div>
-                    <div class="col  col-sm-9">
-                        <input type="text" class="form-control valid" id="address" placeholder="Address" required>
-                    </div>
-                    <input type="text" hidden id="idProvider" >
-                </div>
-                <div class="row d-flex justify-content-end">
-                    <div class="col-3 mt-2" >
-                        <button type="button" id="create"class="btn btn-primary btn-block" >Create</button>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
     <script>
+
         $("#create").click(function(){
-            let token = $("meta[name='_csrf']").attr("content");
-            let header = $("meta[name='_csrf_header']").attr("content");
-            let name = $('#name').val();
-            let email = $('#email').val();
-            let address = $('#address').val();
-            let idProvider = $('#idProvider').val();
-            let url = $('#create').text() === "Save" ? "editProvider" : "createProvider";
-            $.ajax({
-                type: 'POST',
-                contentType : "application/json",
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader(header, token)
-                },
-                url: 'http://localhost:8080/' + url,
-                data:JSON.stringify({ name: name, email : email, address : address, idProvider : idProvider}),
-                success : function(data) {
-                    $('#showProviders').modal('hide');
-                    location.reload();
-                },
-                error : function(e) {
-                    console.log("ERROR: ", e);
-                },
-                done : function(e) {
-                    console.log("DONE");
+
+            $("#providerForm").validate({
+                rules: {
+                    name: "required",
+                    email: "required",
+                    address: "required"
                 }
             });
+
+            if ($("#providerForm").valid()){
+                let token = $("meta[name='_csrf']").attr("content");
+                let header = $("meta[name='_csrf_header']").attr("content");
+                let name = $('#name').val();
+                let email = $('#email').val();
+                let address = $('#address').val();
+                let idProvider = $('#idProvider').val();
+                let url = $('#create').text() === "Save" ? "editProvider" : "createProvider";
+                $.ajax({
+                    type: 'POST',
+                    contentType : "application/json",
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader(header, token)
+                    },
+                    url: 'http://localhost:8080/' + url,
+                    data:JSON.stringify({ name: name, email : email, address : address, idProvider : idProvider}),
+                    success : function(data) {
+                        $('#showProviders').modal('hide');
+                        location.reload();
+                    },
+                    error : function(e) {
+                        console.log("ERROR: ", e);
+                    },
+                    done : function(e) {
+                        console.log("DONE");
+                    }
+                });
+            }
         });
     </script>
 </div>
@@ -502,14 +518,14 @@
                 <label class="h3">Manage sales</label>
             </div>
             <div class="modal-body container-fluid h-50">
-                    <div class="row mt-4 justify-content-around no-float h-75">
-                        <div class="col col-md-4 text-center no-float ml-5" >
-                            <a href="/sales" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >All sales</a>
-                        </div>
-                        <div class="col col-md-4 text-center no-float mr-5">
-                            <a href="/createSale" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Create sale</a>
-                        </div>
+                <div class="row mt-4 justify-content-around no-float h-75">
+                    <div class="col col-md-4 text-center no-float ml-5" >
+                        <a href="/sales" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >All sales</a>
                     </div>
+                    <div class="col col-md-4 text-center no-float mr-5">
+                        <a href="/createSale" class="btn btn-primary btn-lg w-100 p-3 h-100 d-flex justify-content-center align-items-center" >Create sale</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

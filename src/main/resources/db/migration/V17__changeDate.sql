@@ -1,0 +1,1 @@
+alter table inventory alter column date type date using date::date;

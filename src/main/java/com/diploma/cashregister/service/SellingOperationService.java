@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -24,13 +25,19 @@ public class SellingOperationService {
 
     @Autowired
     private final SellingOperationRepo sellingOperationRepo;
+    @Autowired
+    private final WorkerPasswordService workerPasswordService;
+    @Autowired
+    private final ProductRepo productRepo;
 
 
 
-    public SellingOperationService(BucketRepo bucketRepo, FinancialOperationRepo financialOperationRepo, SellingOperationRepo sellingOperationRepo, DeliveryBasketRepo deliveryBasketRepo, WrittenOffProductRepo writtenOffProductRepo) {
+    public SellingOperationService(BucketRepo bucketRepo, FinancialOperationRepo financialOperationRepo, SellingOperationRepo sellingOperationRepo, DeliveryBasketRepo deliveryBasketRepo, WrittenOffProductRepo writtenOffProductRepo, WorkerPasswordService workerPasswordService, ProductRepo productRepo) {
         this.bucketRepo = bucketRepo;
         this.financialOperationRepo = financialOperationRepo;
         this.sellingOperationRepo = sellingOperationRepo;
+        this.workerPasswordService = workerPasswordService;
+        this.productRepo = productRepo;
     }
 
     public Set<Bucket> getReceiptProducts (Long number){
@@ -65,8 +72,6 @@ public class SellingOperationService {
     }
 
     public Set<List> findSellings() {
-        LocalDate from;
-        LocalDate to;
         Set<List> table = new HashSet<>();
         Set<Bucket> list1 = new HashSet<>();
         HashMap<Long,Double> map = new HashMap<>();
@@ -120,5 +125,25 @@ public class SellingOperationService {
 
         collectList(table, list1, map);
         return table;
+    }
+
+    public void createSale(Map<String, String> map) {
+        SellingOperation selling = new SellingOperation();
+        map.forEach((key,val)->{
+            if (key.equals("price")){
+                selling.setSumm(Double.parseDouble(val));
+                selling.setDate(LocalDateTime.now());
+                selling.setShift(workerPasswordService.getCurrentShift());
+                selling.setStatus("manual");
+                sellingOperationRepo.save(selling);
+            }else {
+                Bucket bucket = new Bucket();
+                bucket.setCount(Double.parseDouble(val));
+                bucket.setProviderProduct(productRepo.findById(Long.valueOf(key)).get());
+                bucket.setSellingOperation(selling);
+                sellingOperationRepo.save(selling);
+                bucketRepo.save(bucket);
+            }
+        });
     }
 }

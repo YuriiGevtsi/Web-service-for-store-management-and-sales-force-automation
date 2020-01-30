@@ -39,7 +39,6 @@ public class WorkerPasswordService implements UserDetailsService {
         shiftWorkerRepo.save(currentShift);
     }
 
-
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
         return workerPasswordRepo.findByLogin(id);

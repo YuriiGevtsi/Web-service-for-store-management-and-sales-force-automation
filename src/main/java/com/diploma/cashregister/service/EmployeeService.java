@@ -104,6 +104,7 @@ public class EmployeeService {
         workerPasswordRepo.save(workerPassword);
         contractRepo.save(contract);
     }
+
     public void saveEmployeesNewContract(Contract contract) {
         contractRepo.save(contract);
     }

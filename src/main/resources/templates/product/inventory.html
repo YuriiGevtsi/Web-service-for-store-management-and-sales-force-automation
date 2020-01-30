@@ -31,41 +31,18 @@
             </tr>
             </thead>
             <tbody>
-            <tr >
-                <th  scope="row"  >1</th>
-                <td> 125634 </td>
-                <td> Milk 1L</td>
-                <td> Bottle</td>
-                <td> 18</td>
+            <tr th:each="item,iter: ${products.keySet()}">
+                <th  scope="row" th:text="${iter.count}" ></th>
+                <td> <a th:text="${item.getCurrentBarcode().getCode()}"/></td>
+                <td> <a th:text="${item.name}"/></td>
+                <td> <a th:text="${item.providerProductMeasuringRate.name}"/></td>
+                <td> <a th:text="${products.get(item)}"/></td>
                 <td>
                     <input style="border: 0;" onchange="count()" type="number" class="form-control w-50" min="0" step="1" />
                 </td>
-                <td></td>
-                <td ><input style="border: 0;" class="textbox-n form-control w-75" type="text" onfocus="(this.type='date')" placeholder="09.01.2020"/> </td>
-            </tr>
-            <tr >
-                <th  scope="row"  >2</th>
-                <td> 123698 </td>
-                <td> Milk 2L</td>
-                <td> Bottle</td>
-                <td> 10</td>
-                <td>
-                    <input style="border: 0;" onchange="count()" type="number" class="form-control w-50" min="0" step="1" />
-                </td>
-                <td></td>
-                <td><input style="border: 0;" class="textbox-n form-control w-75" type="text" onfocus="(this.type='date')" placeholder="----------"/></td>
-            </tr>
-            <tr >
-                <th  scope="row"  >3</th>
-                <td> 127964 </td>
-                <td> Water 2,5L</td>
-                <td> Bottle</td>
-                <td> 35</td>
-                <td>
-                    <input style="border: 0;" onchange="count()" type="number" class="form-control w-50" min="0" step="1" />
-                </td>
-                <td></td>
-                <td><input style="border: 0;" class="textbox-n form-control w-75" type="text" onfocus="(this.type='date')" placeholder="----------"/> </td>
+                <td> <a th:text="${item.getLastInventory()} ? ${item.getLastInventory().getDifference()}"/> </td>
+                <td ><input style="border: 0;" class="textbox-n form-control w-75" type="date" th:value="${item.getLastInventory()} ? ${item.getLastInventory().getDate()}" /> </td>
+
             </tr>
             </tbody>
         </table>

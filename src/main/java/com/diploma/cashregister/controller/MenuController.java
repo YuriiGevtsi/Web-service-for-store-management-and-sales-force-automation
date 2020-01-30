@@ -20,15 +20,15 @@ import java.util.Set;
 
 @Controller
 public class MenuController {
-
+    @Autowired
+    private final WorkerPasswordService workerPasswordService;
     @Autowired
     private final SellingOperationService sellingOperationService;
     @Autowired
     private final ProductService productService ;
-    @Autowired
-    private final WorkerPasswordService workerPasswordService;
 
-    public MenuController(SellingOperationService sellingOperationService, ProductService productService, WorkerPasswordService workerPasswordService) {
+    public MenuController(SellingOperationService sellingOperationService, ProductService productService,
+                          WorkerPasswordService workerPasswordService) {
         this.sellingOperationService = sellingOperationService;
         this.productService = productService;
         this.workerPasswordService = workerPasswordService;
@@ -125,8 +125,8 @@ public class MenuController {
 
     @PostMapping(value = "/write-off")
     public String writeOff(@RequestParam(required = true) String barcode,
-                                         @RequestParam(required = true) double amount,
-                                         @RequestParam(required = false, defaultValue = "") String reason
+                           @RequestParam(required = true) double amount,
+                           @RequestParam(required = false, defaultValue = "") String reason
     ){
         WrittenOffProduct product = new WrittenOffProduct();
         product.setAmount(amount);
@@ -147,4 +147,5 @@ public class MenuController {
     public String myShop(){
         return "mainMenu/myShop";
     }
+
 }
