@@ -257,4 +257,13 @@ public class ProductService {
         return table;
     }
 
+    public void saveInventory(List<List<String>> list) {
+        list.stream().forEach(e->{
+            Inventory inventory = new Inventory();
+            inventory.setDate(LocalDate.parse(e.get(2)));
+            inventory.setDifference(Integer.parseInt(e.get(1)));
+            inventory.setProduct(productRepo.findById(Long.valueOf(e.get(0))).get());
+            inventoryRepo.save(inventory);
+        });
+    }
 }

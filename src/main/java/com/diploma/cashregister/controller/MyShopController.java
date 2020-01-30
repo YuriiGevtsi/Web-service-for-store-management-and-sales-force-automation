@@ -118,7 +118,6 @@ public class MyShopController {
     ) throws IOException {
         List<String> list = new ObjectMapper().readValue(json, List.class);
         productService.removeProduct(list);
-        System.out.println(list.get(0));
         return json;
     }
 
@@ -168,6 +167,18 @@ public class MyShopController {
         model.addAttribute("products",productService.showStore());
         return "product/inventory";
     }
+
+    @PostMapping(value = "/saveInventory")
+    public @ResponseBody
+    String saveInventory(
+            @RequestBody String json
+    ) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<List<String>> list = objectMapper.readValue(json, new TypeReference<List<List<String>>>(){});
+        productService.saveInventory(list);
+        return json;
+    }
+
     @GetMapping("createSale")
     public String createSale(Model model){
         model.addAttribute("products",productService.getAllProducts());
